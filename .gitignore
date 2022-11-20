@@ -12,7 +12,6 @@ node_modules/
 .hugo_build.lock
 go.sum
 resources/
-public/
 
 # Mac
 .DS_Store
