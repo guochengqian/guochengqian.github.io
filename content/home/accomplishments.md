@@ -19,33 +19,43 @@ date_format = "Jan 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[item]]
+  organization = "KAUST"
+  organization_url = "https://www.kaust.edu.sa/en"
+  title = "Dean’s List  Award"
+  url = ""
+  certificate_url = ""
+  date_start = "2022-05-01"
+  date_end = ""
+  description = "CEMSE Dean’s List  Award for academic year 21/22, an Award given to only 20% of the student population by Division."
+
+[[item]]
+  organization = "KAUST"
+  organization_url = "https://www.kaust.edu.sa/en"
+  title = "Dean’s List  Award"
+  url = ""
+  certificate_url = ""
+  date_start = "2021-12-01"
+  date_end = ""
+  description = "CEMSE Research Excellence Award for academic year 21/22. Less than a handful of students are selected every year, following nominations and based on research outputs/achievement. "
+
+[[item]]
   organization = "Xi'an Jiaotong University"
   organization_url = "https://en.wikipedia.org/wiki/Xi%27an_Jiaotong_University"
-  title = "Outstanding Undergraduate (Top 10, highest undergraduate honor)"
+  title = "Outstanding Undergraduate"
   url = ""
   certificate_url = ""
   date_start = "2017-12-01"
   date_end = ""
-  description = ""
+  description = "Highest undergraduate honor given to 10 selected undergraduates"
 
 [[item]]
   organization = "Ministry of Education, China"
   organization_url = ""
-  title = "National First Class Scholarship (Top 2%)"
+  title = "National First Class Scholarship"
   url = ""
   certificate_url = ""
   date_start = "2017-10-01"
   date_end = ""
-  description = ""  
-
-[[item]]
-  organization = "Department of Higher Education, Ministry of Education, China"
-  organization_url = ""
-  title = "National Second Prize for the National Undergraduate Electronics Design Contest (Top 5%)"
-  url = ""
-  certificate_url = ""
-  date_start = "2017-12-01"
-  date_end = ""
-  description = ""  
+  description = "Highest scholarship awarded to TOP 2% unversity student."  
 
 +++
