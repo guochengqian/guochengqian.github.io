@@ -1,6 +1,6 @@
 +++
 
-title = "ASSANet: An Anisotropic Separable Set Abstraction forEfficient Point Cloud Representation Learning"
+title = "ASSANet: An Anisotropic Separable Set Abstraction for Efficient Point Cloud Representation Learning"
 date = 2021-10-10T00:00:00
 draft = false
 
