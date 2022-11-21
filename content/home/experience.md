@@ -29,7 +29,7 @@ date_format = "Jan 2006"
 
 
 [[experience]]
-  title = "Remote Collboration"
+  title = "Remote Collaboration"
   company = "Microsoft Research"
   company_url = "https://www.microsoft.com/en-us/research/"
   location = "remote"
@@ -39,10 +39,10 @@ date_format = "Jan 2006"
   logo = "microsoft.png"
 
 [[experience]]
-  title = "Research Intern"
+  title = "Remote Research Intern"
   company = "Megvii Technology"
   company_url = "https://en.megvii.com/"
-  location = "Beijing, China"
+  location = "Remote"
   date_start = "2020-06-01"
   date_end = "2021-12-01"
   description = "Worked with [Xiangyu Zhang](https://scholar.google.com/citations?user=yuB-cfoAAAAJ) and [Xuanyang Zhang](https://scholar.google.com/citations?user=oPV20eMAAAAJ) on paper [TNAS](https://openaccess.thecvf.com/content/CVPR2022W/ECV/papers/Qian_When_NAS_Meets_Trees_An_Efficient_Algorithm_for_Neural_Architecture_CVPRW_2022_paper.pdf) (CVPRW'22)."

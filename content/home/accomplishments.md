@@ -39,6 +39,17 @@ date_format = "Jan 2006"
   description = "Less than a handful of students are selected every year, following nominations and based on research outputs/achievement. "
 
 [[item]]
+  organization = "KAUST"
+  organization_url = "https://www.kaust.edu.sa/en"
+  title = "KAUST Fellowship for MS and PhD Studies"
+  url = ""
+  certificate_url = ""
+  date_start = "2019-06-01"
+  date_end = ""
+  description = "Fellowship covering ​full tuition support, monthly living allowance, housing, and medical coverage."
+
+
+[[item]]
   organization = "Xi'an Jiaotong University"
   organization_url = "https://en.wikipedia.org/wiki/Xi%27an_Jiaotong_University"
   title = "Outstanding Undergraduate"
