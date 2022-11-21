@@ -83,4 +83,4 @@ social:
 
 Gordon Guocheng Qian is currently a Ph.D. candidate in Computer Science at <a target="_blank" href="https://www.kaust.edu.sa/en"> KAUST</a>. He is part of the <a target="_blank" href="https://ivul.kaust.edu.sa/Pages/Home.aspx"> Image and Video Understanding Lab (IVUL)</a> advised by <a target="_blank" href="http://www.bernardghanem.com/">Prof. Bernard Ghanem</a>. Before that, Guocheng received his B.Eng degree with first class honors from <a target="_blank" href="https://en.wikipedia.org/wiki/Xi%27an_Jiaotong_University">Xi'an Jiaotong University (XJTU)</a>, China in 2018. His current research interests focus on 3D perception and generation. 
 
-<span style="color:blue">Looking for Internship (2023 Spring, Summer, or Fall) and full-time job (2024 Spring) </span>
+<span style="color:blue">Looking for Internship (2023) and full-time job (2024 Spring) </span>
