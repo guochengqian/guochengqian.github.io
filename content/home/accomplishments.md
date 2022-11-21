@@ -21,22 +21,22 @@ date_format = "Jan 2006"
 [[item]]
   organization = "KAUST"
   organization_url = "https://www.kaust.edu.sa/en"
-  title = "Dean’s List  Award"
+  title = "CEMSE Dean’s List  Award (year 21/22)"
   url = ""
   certificate_url = ""
   date_start = "2022-05-01"
   date_end = ""
-  description = "CEMSE Dean’s List  Award for academic year 21/22, an Award given to only 20% of the student population by Division."
+  description = "Given to only 20% of the student population by Division."
 
 [[item]]
   organization = "KAUST"
   organization_url = "https://www.kaust.edu.sa/en"
-  title = "Dean’s List  Award"
+  title = "CEMSE Research Excellence Award (year 21/22)"
   url = ""
   certificate_url = ""
   date_start = "2021-12-01"
   date_end = ""
-  description = "CEMSE Research Excellence Award for academic year 21/22. Less than a handful of students are selected every year, following nominations and based on research outputs/achievement. "
+  description = "Less than a handful of students are selected every year, following nominations and based on research outputs/achievement. "
 
 [[item]]
   organization = "Xi'an Jiaotong University"
