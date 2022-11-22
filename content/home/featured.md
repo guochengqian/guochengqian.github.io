@@ -9,7 +9,7 @@ active = true  # Activate this widget? true/false
 weight = 80  # Order that this section will appear.
 
 title = "Selected Publications"
-subtitle = ""
+subtitle = "Check my full publication at [Google Scholar](https://scholar.google.com/citations?hl=zh-CN&user=DUDaxg4AAAAJ)"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
