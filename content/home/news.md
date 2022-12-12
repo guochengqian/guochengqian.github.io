@@ -47,13 +47,13 @@ subtitle = ""
  css_class = ""
 +++
 - :pushpin: *Publications so far*: 2 CVPR, 2 NeurIPS, 1 TPAMI, 1 Advanced Science, 1 ICCP, 1 CVPRW, 2 Arxiv
-- *2022/11*: One paper gets accepted to Adavanced Science (IF 2021: 17.52). Quantitative and real‐time evaluation of human respiration signals.  
-- *2022/10*: First-authored paper [PointNeXt](https://arxiv.org/abs/2206.04670) gets accepted by __NeurIPS'22__. We find with advanced training and model scaling strategies, the classical PointNet++ can outperform SOTA in various tasks. Code relased at [PointNeXt](https://github.com/guochengqian/PointNeXt). 
+- *2022/11*: One paper gets accepted to Adavanced Science (IF 2021: 17.52).
+- *2022/10*: First-authored paper [PointNeXt](https://arxiv.org/abs/2206.04670) gets accepted by __NeurIPS'22__. 
 - *2022/08*: I joined On Device AI team under XRTech in Meta as an AI research scientist intern. 
-- *2022/08*: First-authored paper [Pix4Point](https://arxiv.org/abs/2208.12259) is reprinted at ArXiv. We propose a state-of-the-art Standard Transformer model for point cloud understanding and find that image pretraining helps point cloud tasks.  
-- *2022/06*: First-authored paper [TENet](https://arxiv.org/abs/2206.04670) gets accepted to ICCP'22. [Code](https://github.com/guochengqian/TENet) is avaliable.
-- *2022/04*: First-authored Paper [TNAS](https://openaccess.thecvf.com/content/CVPR2022W/ECV/papers/Qian_When_NAS_Meets_Trees_An_Efficient_Algorithm_for_Neural_Architecture_CVPRW_2022_paper.pdf) gets accepted to CVPR'22 workshop. [Code](https://github.com/guochengqian/TNAS).  
-- *2021/10* : First-authored paper [ASSANet](https://arxiv.org/abs/2110.10538) gets accepted to __NeurIPS'21__ as a __spotlight__ paper. [code](https://github.com/guochengqian/ASSANet) <span class="enhance">**NEW!**</span>. 
+- *2022/08*: First-authored paper [Pix4Point](https://arxiv.org/abs/2208.12259) is reprinted at ArXiv. 
+- *2022/06*: First-authored paper [TENet](https://arxiv.org/abs/2206.04670) gets accepted to ICCP'22.
+- *2022/04*: First-authored Paper [TNAS](https://openaccess.thecvf.com/content/CVPR2022W/ECV/papers/Qian_When_NAS_Meets_Trees_An_Efficient_Algorithm_for_Neural_Architecture_CVPRW_2022_paper.pdf) gets accepted to CVPR'22 workshop. 
+- *2021/10* : First-authored paper [ASSANet](https://arxiv.org/abs/2110.10538) gets accepted to __NeurIPS'21__ as a __spotlight__ paper. 
 - *2021/03* : Co-first authored paper [DeepGCNs](https://arxiv.org/abs/1910.06849) gets accpected to journal __TPAMI'21__ .
 - *2021/03* : First authored paper [PU-GCN](https://arxiv.org/abs/1912.03264) gets accepted to __CVPR'21__ 
 - *2020/12* : I graduate as a Master in Computer Science! 

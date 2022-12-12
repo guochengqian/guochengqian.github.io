@@ -11,7 +11,7 @@ authors:
 superuser: true
 
 # Role/position
-role: Ph.D. student in Computer Science
+role: Ph.D. Candidate in Computer Science
 
 # Organizations/Affiliations
 organizations:
