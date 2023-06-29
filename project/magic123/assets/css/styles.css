@@ -444,6 +444,14 @@ h6 {
     background-color: Gainsboro;
 }
 
+.author-container {
+    max-width: 60%;
+}
+@media (max-width: 600px) {
+    .author-container {
+        max-width: 100%;
+    }
+}
 @media (max-width: 600px) {
     .news,
     .citation {
