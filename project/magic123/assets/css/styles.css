@@ -444,7 +444,7 @@ h6 {
     background-color: Gainsboro;
 }
 
-@media only screen and (max-width: 600px) {
+@media (max-width: 600px) {
     .news,
     .citation {
         margin-left: 0;
@@ -456,7 +456,7 @@ h6 {
         font-size: 12px;
     }
     .authors h5 {
-        font-size: 20px;
+        font-size: 10px;
     }
     .authors h6 {
         font-size: 16px;
