@@ -1,0 +1,72 @@
+{{ $item := . }}
+
+
+{{/* Dynamic view adjusts to content type. */}}
+{{ $show_buttons := false }}
+{{ if eq $item.Type "talk" }}
+  {{ $show_buttons = true }}
+{{ else if eq $item.Type "publication" }}
+  {{ $show_buttons = true }}
+{{ end }}
+
+{{/* Get summary. */}}
+{{ $summary := "" }}
+{{ if $item.Params.summary }}
+  {{ $summary = $item.Params.summary | markdownify | emojify }}
+{{ else if .Params.abstract }}
+  {{ $summary = .Params.abstract_short | markdownify | emojify }}
+{{ else if $item.Truncated }}
+  {{ $summary = $item.Summary }}
+{{ else }}
+  {{ $summary = $item.Content }}
+{{ end }}
+
+<div class="card-simple">
+  <div class="row">
+    {{ $resource := ($item.Resources.ByType "image").GetMatch "*featured*" }}
+    <div class="col-12 col-lg-4">
+      {{ with $resource }}
+      <a href="{{ $item.RelPermalink }}">
+          <img src="{{$item.RelPermalink}}{{$resource}}" class="article-banner" alt="">
+      </a>
+      {{end}}
+    </div>
+
+    <div class="col-12 col-lg-8">
+      <h3 class="article-title mb-0 mt-0">
+        <a href="{{ $item.RelPermalink }}">{{ $item.Title }}</a>
+      </h3>
+
+      {{ if eq $item.Type "talk" }}
+      <div class="article-metadata">
+        {{ if $item.Params.authors }}
+        <div>
+          {{ partial "page_metadata_authors" $item }}
+        </div>
+        {{ end }}
+        <span>
+          {{ partial "functions/get_event_dates" $item }}
+        </span>
+        {{ with $item.Params.location }}
+        <span class="middot-divider"></span>
+        <span>{{ . }}</span>
+        {{ end }}
+      </div>
+      {{ else }}
+        {{ partial "page_metadata" (dict "page" $item "is_list" 1) }}
+      {{ end }}
+
+      {{ with $summary }}
+      <div class="article-style">
+        <p>{{.}}</p>
+      </div>
+      {{ end }}
+
+      {{ if $show_buttons }}
+      <div class="btn-links">
+        {{ partial "page_links" (dict "page" $item "is_list" 1) }}
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</div>
