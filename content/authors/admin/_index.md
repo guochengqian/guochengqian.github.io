@@ -77,7 +77,7 @@ social:
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.  
 - icon: cv
   icon_pack: ai
-  link: files/guochengqian_cv.pdf
+  link: files/resume.pdf
 
 
 # Organizational groups that you belong to (for People widget)
