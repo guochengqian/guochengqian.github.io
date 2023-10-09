@@ -48,7 +48,7 @@ subtitle = ""
 +++
 - *2023/10*: [ZeroSeg](https://arxiv.org/abs/2306.00450) gets accepted to ICCV.
 - *2023/06*: First-authored paper [Magic123](https://arxiv.org/abs/2306.17843) is preprinted at ArXiv. 
-- *2023/05*: I join Snap Inc. working on text/image-to-3D.
+- *2023/05*: I join Snap Inc. as a research scientist intern working on text/image-to-3D.
 - *2022/11*: One paper gets accepted to __Adavanced Science__ (IF 2021: 17.52).
 - *2022/10*: First-authored paper [PointNeXt](https://arxiv.org/abs/2206.04670) gets accepted by __NeurIPS'22__. 
 - *2022/08*: I joined On Device AI team under XRTech in Meta as an AI research scientist intern. 
