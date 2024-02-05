@@ -46,13 +46,15 @@ subtitle = ""
  # CSS class.
  css_class = ""
 +++
+- *2024/02*: First-authored paper [AToM](https://arxiv.org/abs/2402.00867) is preprinted at arXiv.
+- *2024/01*: First-authored paper [Magic123](https://arxiv.org/abs/2306.17843) get accepts to ICLR.  
+- *2023/12*: I join Snap Inc. as a research scientist working on personalized generation with Kfir Aberman. 
 - *2023/10*: [ZeroSeg](https://arxiv.org/abs/2306.00450) gets accepted to ICCV.
-- *2023/06*: First-authored paper [Magic123](https://arxiv.org/abs/2306.17843) is preprinted at ArXiv. 
 - *2023/05*: I join Snap Inc. as a research scientist intern working on text/image-to-3D.
 - *2022/11*: One paper gets accepted to __Adavanced Science__ (IF 2021: 17.52).
 - *2022/10*: First-authored paper [PointNeXt](https://arxiv.org/abs/2206.04670) gets accepted by __NeurIPS'22__. 
 - *2022/08*: I joined On Device AI team under XRTech in Meta as an AI research scientist intern. 
-- *2022/08*: First-authored paper [Pix4Point](https://arxiv.org/abs/2208.12259) is preprinted at ArXiv. 
+- *2022/08*: First-authored paper [Pix4Point](https://arxiv.org/abs/2208.12259) is preprinted at arXiv. 
 - *2022/06*: First-authored paper [TENet](https://arxiv.org/abs/2206.04670) gets accepted to ICCP'22.
 - *2022/04*: First-authored Paper [TNAS](https://openaccess.thecvf.com/content/CVPR2022W/ECV/papers/Qian_When_NAS_Meets_Trees_An_Efficient_Algorithm_for_Neural_Architecture_CVPRW_2022_paper.pdf) gets accepted to CVPR'22 workshop. 
 - *2021/10* : First-authored paper [ASSANet](https://arxiv.org/abs/2110.10538) gets accepted to __NeurIPS'21__ as a __spotlight__ paper. 

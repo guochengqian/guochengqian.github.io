@@ -17,14 +17,25 @@ date_format = "Jan 2006"
 #   Required fields are `title`, `company`, and `date_start`.
 #   Leave `date_end` empty if it's your current employer.
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
+
 [[experience]]
-  title = "AIGC Scientist Research Intern"
+  title = "Research Scientist"
+  company = "Snap Research"
+  company_url = "https://www.snapchat.com/"
+  location = "Dubai, UAE"
+  date_start = "2023-12-18"
+  date_end = "" 
+  description = "Work with [Kfir Aberman](https://kfiraberman.github.io/) and [Sergey Tulyakov](http://www.stulyakov.com/) on personalized AI generation"
+  logo = "snapchat.png"
+
+[[experience]]
+  title = "Research Scientist Intern"
   company = "Snap Research"
   company_url = "https://www.snapchat.com/"
   location = "Santa Monica, CA, USA"
   date_start = "2023-05-29"
   date_end = "2023-09-17"
-  description = "Worked with [Sergey Tulyakov](http://www.stulyakov.com/), [Jian Ren](https://alanspike.github.io/), [Aliaksandr Siarohin](https://aliaksandrsiarohin.github.io/aliaksandr-siarohin-website/) on paper Magic123 (under review) and other onging projects with [Kfir Aberman](https://kfiraberman.github.io/) and many others."
+  description = "Worked with [Sergey Tulyakov](http://www.stulyakov.com/) on Magic123 and [Kfir Aberman](https://kfiraberman.github.io/) on AToM."
   logo = "snapchat.png"
 
 

@@ -27,7 +27,7 @@ education:
     institution: KAUST
     link: https://www.kaust.edu.sa/en
     logo: "kaust.png"
-    year: 2019 - present
+    year: 2019 - 2023 
   - course: B.Eng in ME (3.9/4.3)
     institution: XJTU
     link: https://en.wikipedia.org/wiki/Xi%27an_Jiaotong_University
@@ -43,7 +43,7 @@ interests:
   - item: 3D Perception
     works:  <a target="_blank" href="https://arxiv.org/abs/2206.04670">PointNeXt</a>, <a target="_blank" href="https://arxiv.org/abs/1910.06849">DeepGCNs</a>
   - item: 3D Generation 
-    works: <a target="_blank" href="https://guochengqian.github.io/project/magic123">Magic123</a>
+    works: <a target="_blank" href="https://guochengqian.github.io/project/magic123">Magic123</a>, <a target="_blank" href="https://snap-research.github.io/AToM/">AToM</a>
   - item: Efficient/Mobile Deep Learning
     works: <a target="_blank" href="https://arxiv.org/abs/2110.10538">ASSANet</a> 
   # - 3D Generation: 

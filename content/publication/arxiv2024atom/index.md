@@ -1,12 +1,11 @@
 +++
 
-title = "Magic123: One Image to High-Quality 3D Object Generation Using Both 2D and 3D Diffusion Priors"
-date = 2023-06-05T00:00:00
+title = "AToM: Amortized Text-to-Mesh using 2D Diffusion"
+date = 2024-02-03T00:00:00
 draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
-authors = ["__**Guocheng Qian**__", "Jinjie Mai", "Abdullah Hamdi", "Jian Ren", "Aliaksandr Siarohin", "Bing Li", "Hsin-Ying Lee", "Ivan Skorokhodov", "Peter Wonka", "Sergey Tulyakov", "Bernard Ghanem"]
-
+authors = ["__**Guocheng Qian**__", "Junli Cao", "Aliaksandr Siarohin", "Yash Kant", "Chaoyang Wang", "Michael Vasilkovsky", "Hsin-Ying Lee", "Yuwei Fang", "Ivan Skorokhodov", "Peiye Zhuang", "Igor Gilitschenski", "Jian Ren", "Bernard Ghanem", "Kfir Aberman", "Sergey Tulyakov"]
 # Publication type.
 # Legend:
 # 0 = Uncategorized
@@ -19,12 +18,12 @@ authors = ["__**Guocheng Qian**__", "Jinjie Mai", "Abdullah Hamdi", "Jian Ren", 
 publication_types = ["1"]
 
 # Publication name and optional abbreviated version.
-publication ="Arxiv, 2023"
-publication_short = "*Arxiv'23*"
+publication ="preprint, 2024"
+publication_short = "*arXiv'24*"
 
 # Abstract and optional shortened version.
-abstract = "We present “Magic123”, a two-stage coarse-to-fine solution for high-quality, tex-tured 3D meshes generation from a single unposed image in the wild using both 2D and 3D priors. In the first stage, we optimize a coarse neural radiance field and focus on learning geometry. In the second stage, a memory-efficient differentiable mesh representation is adopted to yield a high-resolution mesh with a visually appealing texture. In both stages, the 3D content is learned through reference view supervision and novel views guided by both 2D and 3D diffusion priors. A tradeoff parameter between the 2D and 3D priors controls the exploration (more imaginative) and exploitation (more precise) of the generated geometry. We further leverage textual inversion to encourage consistent appearances across views. Monocular depth estimation is used to constrain the 3D reconstruction and avoid collapsed solutions, e.g. flat geometry. Our Magic123 approach outperforms prior image-to-3D techniques by a large margin, as demonstrated through extensive experiments on various real images in the wild and on synthetic benchmarks. Our code, models, and generated 3D assets are available at https://guochengqian.github.io/project/magic123/."
-abstract_short = "Magic123 is a coarse-to-fine image-to-3D pipeline that produces high-quality high-resolution 3D content from a single unposed image by the guidance of both 2D and 3D priors."
+abstract = "We introduce Amortized Text-to-Mesh (AToM), a feed-forward text-to-mesh framework optimized across multiple text prompts simultaneously. In contrast to existing text-to-3D methods that often entail time-consuming per-prompt optimization and commonly output representations other than polygonal meshes, AToM directly generates high-quality textured meshes in less than 1 second in inference with around 10 times reduction in the training cost, and generalizes to unseen prompts. Our key idea is a novel triplane-based text-to-mesh architecture with a two-stage training strategy that ensures stable optimization and scalability. Through extensive experiments on various prompt benchmarks, AToM significantly outperforms state-of-the-art amortized approaches with over 4 times higher accuracy (in DF415 dataset) and more distinguishable and higher-quality 3D outputs. AToM demonstrates strong generalizability, offering finegrained details of 3D content for unseen interpolated prompts, unlike per-prompt solutions. Our code, models, and generated 3D assets are available at https://github.com/snap-research/AToM."
+abstract_short = "AToM trains a single text-to-mesh model on many prompts using 2D diffusion without 3D supervision, yileds high-quality textured meshes under a second, and generalizes to unseen prompts."
 # Is this a selected publication? (true/false)
 selected = true
 # Is this a featured publication? (true/false)
