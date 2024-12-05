@@ -18,3 +18,5 @@ resources/
 
 # Test
 test/go.sum
+
+public/

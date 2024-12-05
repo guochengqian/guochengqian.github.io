@@ -11,15 +11,15 @@ authors:
 superuser: true
 
 # Role/position
-role: Ph.D. Candidate in Computer Science
+role: Research Scientist at Snap Research 
 
 # Organizations/Affiliations
 organizations:
-- name: King Abdullah University of Science and Technology (KAUST)
-  url: "https://www.kaust.edu.sa/en"
+- name: Snap Research
+  url: "https://research.snap.com/team/creative-vision.html"
 
 # Short bio (displayed in user profile at end of posts)
-bio: Guocheng Qian (Gordon) is a Ph.D. cadidate at KAUST, researching 3D vision. 
+bio: Guocheng Qian (Gordon) is a Research Scientist at Snap Research specializing in generative modeling and personalization.. 
 
 education:
   courses:
@@ -28,7 +28,7 @@ education:
     link: https://www.kaust.edu.sa/en
     logo: "kaust.png"
     year: 2019 - 2023 
-  - course: B.Eng in ME (3.9/4.3)
+  - course: B.Eng in ME
     institution: XJTU
     link: https://en.wikipedia.org/wiki/Xi%27an_Jiaotong_University
     logo: "xjtu.png"
@@ -40,15 +40,10 @@ education:
     year: 2017 Spring
 
 interests:
-  - item: 3D Perception
+  - item: generative modeling
+    works: <a target="_blank" href="https://guochengqian.github.io/project/magic123">Magic123</a> 
+  - item: 3D 
     works:  <a target="_blank" href="https://arxiv.org/abs/2206.04670">PointNeXt</a>, <a target="_blank" href="https://arxiv.org/abs/1910.06849">DeepGCNs</a>
-  - item: 3D Generation 
-    works: <a target="_blank" href="https://guochengqian.github.io/project/magic123">Magic123</a>, <a target="_blank" href="https://snap-research.github.io/AToM/">AToM</a>
-  - item: Efficient/Mobile Deep Learning
-    works: <a target="_blank" href="https://arxiv.org/abs/2110.10538">ASSANet</a> 
-  # - 3D Generation: 
-  # - Efficient Neural Network: <a target="_blank" href="https://arxiv.org/abs/2110.10538">ASSANet</a> 
-  # - 3D Perception: <a target="_blank" href="https://arxiv.org/abs/2206.04670">PointNeXt</a>, <a target="_blank" href="https://arxiv.org/abs/1910.06849">DeepGCNs</a>
   
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/widgets/#icons
@@ -60,7 +55,7 @@ social:
   link: '#contact'  # For a direct email link, use "mailto:guocheng.qian@kaust.edu.sa".
 - icon: google-scholar
   icon_pack: ai
-  link: https://scholar.google.com/citations?hl=zh-CN&user=DUDaxg4AAAAJ
+  link: https://scholar.google.com/citations?user=DUDaxg4AAAAJ
 - icon: github
   icon_pack: fab
   link: https://github.com/guochengqian
@@ -70,9 +65,9 @@ social:
 - icon: twitter 
   icon_pack: fab
   link: https://twitter.com/guocheng_qian
-- icon: zhihu
-  icon_pack: fab
-  link: https://www.zhihu.com/people/GordonQian/
+# - icon: zhihu
+#   icon_pack: fab
+#   link: https://www.zhihu.com/people/GordonQian/
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.  
 - icon: cv
