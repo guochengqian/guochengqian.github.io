@@ -22,10 +22,10 @@ date_format = "Jan 2006"
   title = "Research Scientist"
   company = "Snap Research"
   company_url = "https://www.snapchat.com/"
-  location = "Dubai, UAE"
+  location = "Palo Alto, USA"
   date_start = "2023-12-18"
   date_end = "" 
-  description = "Work with [Kfir Aberman](https://kfiraberman.github.io/) and [Sergey Tulyakov](http://www.stulyakov.com/) on personalized AI generation"
+  description = "Work with [Kfir Aberman](https://kfiraberman.github.io/) and [Sergey Tulyakov](http://www.stulyakov.com/) on personalized AI generation, such as Omni-ID"
   logo = "snapchat.png"
 
 [[experience]]
@@ -51,7 +51,7 @@ date_format = "Jan 2006"
 
 
 [[experience]]
-  title = "Remote Collaboration"
+  title = "Remote Job"
   company = "Microsoft Research"
   company_url = "https://www.microsoft.com/en-us/research/"
   location = "remote"
