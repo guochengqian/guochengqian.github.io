@@ -3,9 +3,9 @@
 name: Guocheng Qian
 namecn: 钱国成
 
-# Username (this should match the folder name)
-authors:
-- admin
+# # Username (this should match the folder name)
+# authors:
+# - admin
 
 # Is this the primary user of the site?
 superuser: true
@@ -40,6 +40,8 @@ education:
     year: 2017 Spring
 
 interests:
+  - item: Personalized Generation
+    works: <a target="_blank" href="https://snap-research.github.io/Omni-ID/">Omni-ID</a> 
   - item: generative modeling
     works: <a target="_blank" href="https://guochengqian.github.io/project/magic123">Magic123</a> 
   - item: 3D 

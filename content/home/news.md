@@ -5,7 +5,7 @@
 
 widget = "blank"  # See https://sourcethemes.com/academic/docs/page-builder/
 headless = false  # This file represents a page section.
-active = true  # Activate this widget? true/false
+active = false  # Activate this widget? true/false
 weight = 25  # Order that this section will appear.
 
 title = "News"
@@ -46,6 +46,7 @@ subtitle = ""
  # CSS class.
  css_class = ""
 +++
+- *2024/02*: First-authored paper [AToM](https://arxiv.org/abs/2402.00867) is preprinted at arXiv.
 - *2024/02*: First-authored paper [AToM](https://arxiv.org/abs/2402.00867) is preprinted at arXiv.
 - *2024/01*: First-authored paper [Magic123](https://arxiv.org/abs/2306.17843) get accepts to ICLR.  
 - *2023/12*: I join Snap Inc. as a research scientist working on personalized generation with Kfir Aberman. 

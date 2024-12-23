@@ -47,7 +47,7 @@ slides = ""
 
 # Tags (optional).
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
-tags = ["AIGC", "3D"]
+tags = ["Generative Models", "3D"]
 
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/2306.17843"
