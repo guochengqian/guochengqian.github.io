@@ -1,14 +1,14 @@
 +++
 
-title = "Wonderland: Navigating 3D Scenes from a Single Image"
-date = 2024-12-16T00:00:00
+title = "AC3D: Analyzing and Improving 3D Camera Control in Video Diffusion Transformers"
+date = 2024-11-17T00:00:00
 draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
 authors = [
-    "Hanwen Liang", "Junli Cao", "Vidit Goel", "__**Guocheng Qian**__",
-    "Sergei Korolev", "Demetri Terzopoulos", "Konstantinos N. Plataniotis",
-    "Sergey Tulyakov", "Jian Ren"
+    "Sherwin Bahmani", "Ivan Skorokhodov", "__**Guocheng Qian**__", 
+    "Aliaksandr Siarohin", "Willi Menapace", "Andrea Tagliasacchi", 
+    "David B. Lindell", "Sergey Tulyakov"
 ]
 
 # Publication type.
@@ -27,8 +27,8 @@ publication ="preprint, 2024"
 publication_short = "*arXiv'24*"
 
 # Abstract and optional shortened version.
-abstract = "This paper addresses a challenging question: How can we efficiently create high-quality, wide-scope 3D scenes from a single arbitrary image? Existing methods face several constraints, such as requiring multi-view data, time-consuming per-scene optimization, low visual quality in backgrounds, and distorted reconstructions in unseen areas. We propose a novel pipeline to overcome these limitations. Specifically, we introduce a large-scale reconstruction model that uses latents from a video diffusion model to predict 3D Gaussian Splattings for the scenes in a feed-forward manner. The video diffusion model is designed to create videos precisely following specified camera trajectories, allowing it to generate compressed video latents that contain multi-view information while maintaining 3D consistency. We train the 3D reconstruction model to operate on the video latent space with a progressive training strategy, enabling the efficient generation of high-quality, wide-scope, and generic 3D scenes. Extensive evaluations across various datasets demonstrate that our model significantly outperforms existing methods for single-view 3D scene generation, particularly with out-of-domain images. For the first time, we demonstrate that a 3D reconstruction model can be effectively built upon the latent space of a diffusion model to realize efficient 3D scene generation."
-abstract_short = "WonderLand is a video-latent based approach for single-image 3D reconstruction in large-scale scenes."
+abstract = "In this work, we analyze camera motion from a first principles perspective, uncovering insights that enable precise 3D camera manipulation without compromising synthesis quality. First, we determine that motion induced by camera movements in videos is low-frequency in nature. This motivates us to adjust train and test pose conditioning schedules, accelerating training convergence while improving visual and motion quality. Then, by probing the representations of an unconditional video diffusion transformer, we observe that they implicitly perform camera pose estimation under the hood, and only a sub-portion of their layers contain the camera information. This suggested us to limit the injection of camera conditioning to a subset of the architecture to prevent interference with other video features, leading to 4x reduction of training parameters, improved training speed and 10% higher visual quality. Finally, we complement the typical dataset for camera control learning with a curated dataset of 20K diverse dynamic videos with stationary cameras. This helps the model disambiguate the difference between camera and scene motion, and improves the dynamics of generated pose-conditioned videos. We compound these findings to design the Advanced 3D Camera Control (AC3D) architecture, the new state-of-the-art model for generative video modeling with camera control."
+abstract_short = "AC3D studies when and how you should condition camera signals into a video diffusion model for a better camera control and a higher video quality."
 # Is this a selected publication? (true/false)
 selected = true
 # Is this a featured publication? (true/false)
@@ -55,10 +55,10 @@ slides = ""
 tags = ["Generative Models", "3D", "Video"]
 
 # Links (optional).
-url_preprint = "https://arxiv.org/abs/2412.12091"
+url_preprint = "https://arxiv.org/abs/2411.18673"
 #url_code = "https://snap-research.github.io/Omni-ID/"
 #url_dataset = ""
-url_project = "https://snap-research.github.io/wonderland/"
+url_project = "https://snap-research.github.io/ac3d/"
 #url_slides = "https://docs.google.com/presentation/d/1L82wWymMnHyYJk3xUKvteEWD5fX0jVRbCbI65Cxxku0/edit?usp=sharing"
 #url_video = "https://youtu.be/CHB96wBV4Ts"
 #url_poster = ""
