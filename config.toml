@@ -1,0 +1,11 @@
+# Update the baseURL, languageCode, and other settings as needed
+baseURL = "https://example.com/"
+languageCode = "en-us"
+title = "My Hugo Site"
+theme = "your-theme"
+
+# Add or update any new configuration options introduced in Hugo 0.140
+# Refer to the Hugo documentation for the latest options
+
+[params]
+  author = "your-author-name"  # Ensure this matches the author page filename

@@ -40,11 +40,9 @@ education:
     year: 2017 Spring
 
 interests:
-  - item: Personalized Generation
-    works: <a target="_blank" href="https://snap-research.github.io/Omni-ID/">Omni-ID</a> 
-  - item: generative modeling
-    works: <a target="_blank" href="https://guochengqian.github.io/project/magic123">Magic123</a> 
-  - item: 3D 
+  - item: Generative AI
+    works: <a target="_blank" href="https://snap-research.github.io/Omni-ID/">Omni-ID</a>, <a target="_blank" href="https://guochengqian.github.io/project/magic123">Magic123</a> 
+  - item: Computer Vision
     works:  <a target="_blank" href="https://arxiv.org/abs/2206.04670">PointNeXt</a>, <a target="_blank" href="https://arxiv.org/abs/1910.06849">DeepGCNs</a>
   
 # Social/Academic Networking

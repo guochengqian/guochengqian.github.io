@@ -25,7 +25,7 @@ date_format = "Jan 2006"
   location = "Palo Alto, USA"
   date_start = "2023-12-18"
   date_end = "" 
-  description = "Work with [Kfir Aberman](https://kfiraberman.github.io/) and [Sergey Tulyakov](http://www.stulyakov.com/) on personalized AI generation, such as Omni-ID"
+  description = "Work with [Kfir Aberman](https://kfiraberman.github.io/) on personalized AI generation. Projects: Omni-ID (CVPR'25), ComposeMe (preprint)"
   logo = "snapchat.png"
 
 [[experience]]
@@ -35,7 +35,7 @@ date_format = "Jan 2006"
   location = "Santa Monica, CA, USA"
   date_start = "2023-05-29"
   date_end = "2023-09-17"
-  description = "Worked with [Sergey Tulyakov](http://www.stulyakov.com/) on Magic123 and [Kfir Aberman](https://kfiraberman.github.io/) on AToM."
+  description = "Projects: high-quality 3D generation Magic123 (ICLR'24), AToM (preprint)"
   logo = "snapchat.png"
 
 
@@ -46,7 +46,7 @@ date_format = "Jan 2006"
   location = "San Jose, CA, USA"
   date_start = "2022-08-15"
   date_end = "2023-01-27"
-  description = "Worked with amazing researchers such as [Yunyang Xiong](https://scholar.google.com/citations?user=k5FaRwcAAAAJ), [Haoqi Fan](https://haoqifan.github.io/), [Zhuang Liu](https://liuzhuang13.github.io/), and other amzing researchers on paper GTMNet (under review)."
+  description = "Project: efficient long video understanding"
   logo = "meta.png"
 
 
@@ -57,7 +57,7 @@ date_format = "Jan 2006"
   location = "remote"
   date_start = "2021-12-01"
   date_end = "2022-05-31"
-  description = "Worked with [Houwen Peng](http://www.houwenpeng.com/) on paper [PointNeXt](https://arxiv.org/abs/2206.04670) (NeurIPS'22). "
+  description = "Worked with [Houwen Peng](http://www.houwenpeng.com/) on point cloud processing backbone, data scaling and training [PointNeXt](https://arxiv.org/abs/2206.04670) (NeurIPS'22). "
   logo = "microsoft.png"
 
 [[experience]]
@@ -67,7 +67,7 @@ date_format = "Jan 2006"
   location = "Remote"
   date_start = "2020-06-01"
   date_end = "2021-12-01"
-  description = "Worked with [Xiangyu Zhang](https://scholar.google.com/citations?user=yuB-cfoAAAAJ) and [Xuanyang Zhang](https://scholar.google.com/citations?user=oPV20eMAAAAJ) on paper [TNAS](https://openaccess.thecvf.com/content/CVPR2022W/ECV/papers/Qian_When_NAS_Meets_Trees_An_Efficient_Algorithm_for_Neural_Architecture_CVPRW_2022_paper.pdf) (CVPRW'22)."
+  description = "Worked with [Xiangyu Zhang](https://scholar.google.com/citations?user=yuB-cfoAAAAJ) and [Xuanyang Zhang](https://scholar.google.com/citations?user=oPV20eMAAAAJ) on atuomated architecture search project [TNAS](https://openaccess.thecvf.com/content/CVPR2022W/ECV/papers/Qian_When_NAS_Meets_Trees_An_Efficient_Algorithm_for_Neural_Architecture_CVPRW_2022_paper.pdf) (CVPRW'22)."
   logo = "megvii.png"
 
 [[experience]]
@@ -77,6 +77,6 @@ date_format = "Jan 2006"
   location = "Shenzhen, China"
   date_start = "2018-07-01"
   date_end = "2019-05-01"
-  description = "Worked with [Jimmy S. Ren](http://www.jimmyren.com/) and [Dong Chao](https://scholar.google.com.hk/citations?user=OSDCB0UAAAAJ) on paper [TENet](https://arxiv.org/abs/1905.02538) (ICCP'22). "
+  description = "Worked with [Jimmy S. Ren](http://www.jimmyren.com/) and [Dong Chao](https://scholar.google.com.hk/citations?user=OSDCB0UAAAAJ) on paper end-to-end raw image quality enhancement [ISPNet](https://arxiv.org/abs/1905.02538) (ICCP'22). "
   logo = "sensetime.jpg"
 +++

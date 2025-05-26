@@ -22,8 +22,8 @@ authors = [
 publication_types = ["1"]
 
 # Publication name and optional abbreviated version.
-publication ="preprint, 2024"
-publication_short = "*arXiv'24*"
+publication ="CVPR, 2025"
+publication_short = "*CVPR'25*"
 
 # Abstract and optional shortened version.
 abstract = "We introduce Omni-ID, a novel facial representation designed specifically for generative tasks. Omni-ID encodes holistic information about an individual's appearance across diverse expressions and poses within a fixed-size representation. It consolidates information from a varied number of unstructured input images into a structured representation, where each entry represents certain global or local identity features. Our approach leverages a few-to-many identity reconstruction training paradigm, where a few images of an individual serve as input to reconstruct multiple target images of the same individual in varied poses and expressions. To train the Omni-ID encoder, we use a multi-decoder framework that leverages the complementary strengths of different decoders during the representation learning phase. Unlike conventional representations, such as CLIP and ArcFace, which are typically learned through discriminative or contrastive objectives, Omni-ID is optimized with a generative objective, resulting in a more comprehensive and nuanced identity capture for generative tasks. Trained on our MFHQ dataset -- a multi-view facial image collection, Omni-ID demonstrates substantial improvements over conventional representations across various generative tasks."
