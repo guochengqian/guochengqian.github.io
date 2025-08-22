@@ -26,9 +26,16 @@
     {{ $resource := ($item.Resources.ByType "image").GetMatch "*featured*" }}
     <div class="col-12 col-lg-4">
       {{ with $resource }}
-      <a href="{{ $item.RelPermalink }}">
-          <img src="{{$item.RelPermalink}}{{$resource}}" class="article-banner" alt="">
-      </a>
+      <div class="publication-image-container">
+        <a href="{{ $item.RelPermalink }}">
+            <img src="{{$item.RelPermalink}}{{$resource}}" class="article-banner" alt="">
+        </a>
+        {{ if $item.Params.publication_short }}
+        <div class="venue-badge">
+          {{ $item.Params.publication_short | replaceRE "\\*|'" "" | markdownify }}
+        </div>
+        {{ end }}
+      </div>
       {{end}}
     </div>
 

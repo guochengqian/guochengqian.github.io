@@ -340,3 +340,49 @@ ul.share li a {
 ul.share li:hover i {
   transform: scale(1.4)
 }
+
+/*************************************************
+ *  Venue Badges for Publications
+ **************************************************/
+
+.publication-image-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.publication-image-container-compact {
+  position: relative;
+  display: inline-block;
+}
+
+.venue-badge, .venue-badge-compact {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(30, 144, 255, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.venue-badge-compact {
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  top: 6px;
+  left: 6px;
+}
+
+.venue-badge p, .venue-badge-compact p {
+  margin: 0;
+  padding: 0;
+  color: white;
+}

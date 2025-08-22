@@ -3,62 +3,131 @@
 
 <!-- Experience widget -->
 <div class="row">
-  <div class="col-12 col-lg-4 section-heading">
+  <div class="col-12 section-heading">
     <h1>{{ with $page.Title }}{{ . | markdownify }}{{ end }}</h1>
     {{ with $page.Params.subtitle }}<p>{{ . | markdownify }}</p>{{ end }}
   </div>
-  <div class="col-12 col-lg-8">
+  <div class="col-12">
     {{ with $page.Content }}{{ . }}{{ end }}
 
     {{ if $page.Params.experience }}
-    {{ $exp_len := len $page.Params.experience }}
-    {{ range $idx, $key := sort $page.Params.experience ".date_start" "desc" }}
-    <div class="row experience">
-      <!-- Timeline -->
-      <div class="col-auto text-center flex-column d-none d-sm-flex">
-        <div class="row h-50">
-          <div class="col {{if gt $idx 0}}border-right{{end}}">&nbsp;</div>
-          <div class="col">&nbsp;</div>
-        </div>
-        <div class="m-2">
-          <span class="badge badge-pill border {{if not .date_end}}exp-fill{{end}}">&nbsp;</span>
-        </div>
-        <div class="row h-50">
-          <div class="col {{if lt $idx (sub $exp_len 1)}}border-right{{end}}">&nbsp;</div>
-          <div class="col">&nbsp;</div>
-        </div>
+    <div class="horizontal-scroll-container">
+      <div class="scroll-indicator">
+        <i class="fas fa-chevron-right"></i>
+        <span>Scroll</span>
       </div>
-      <!-- Content -->
-      <div class="col py-2">
-        <div class="card">
-          <div class="card-body row">
-            <div class="col-5">
-              <h4 class="card-title exp-company text-muted my-0">
-                {{- with .company_url}}<a href="{{.}}" target="_blank" rel="noopener">{{end}}<img src="img/logo/{{ .logo }}" style="width:auto;height:3em;align:middle">{{.company | markdownify | emojify}}{{with .company_url}}</a>{{end -}}
-              </h4>
-            </div>
-
-            <div class="col-7">
-              <h4 class="card-title exp-title text-muted mt-0 mb-1">{{.title | markdownify | emojify}}</h4>
-              <div class="text-muted exp-meta">
-                {{ (time .date_start).Format ($page.Params.date_format | default "January 2006") }} –
+      <div class="horizontal-scroll-wrapper">
+        {{ range $idx, $key := sort $page.Params.experience ".date_start" "desc" }}
+        <div class="experience-card">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="text-center mb-3">
+                {{- with .company_url}}<a href="{{.}}" target="_blank" rel="noopener">{{end}}
+                <img src="img/logo/{{ .logo }}" style="width:auto;height:4em;" alt="{{.company}}">
+                {{with .company_url}}</a>{{end -}}
+              </div>
+              <h5 class="card-title text-center">{{.title | markdownify | emojify}}</h5>
+              <h6 class="card-subtitle mb-2 text-muted text-center">{{.company | markdownify | emojify}}</h6>
+              <div class="text-muted text-center mb-2">
+                {{ (time .date_start).Format ($page.Params.date_format | default "Jan 2006") }} –
                 {{ if .date_end}}
-                  {{ (time .date_end).Format ($page.Params.date_format | default "January 2006") }}
+                  {{ (time .date_end).Format ($page.Params.date_format | default "Jan 2006") }}
                 {{else}}
                   {{ i18n "present" | default "Present" }}
                 {{end}}
-                {{with .location}}
-                  <span class="middot-divider"></span>
-                  <span>{{.}}</span>
-                {{end}}
               </div>
+              {{with .location}}
+              <div class="text-muted text-center mb-2">{{.}}</div>
+              {{end}}
               {{with .description}}<div class="card-text">{{. | markdownify | emojify}}</div>{{end}}
             </div>
           </div>
         </div>
+        {{end}}
       </div>
     </div>
     {{end}}
-    {{end}}
   </div>
 </div>
+
+<style>
+.horizontal-scroll-container {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.horizontal-scroll-wrapper {
+  display: flex;
+  gap: 20px;
+  padding: 10px 0;
+  min-width: max-content;
+}
+
+.experience-card {
+  flex: 0 0 300px;
+  min-height: 250px;
+}
+
+.experience-card .card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #e9ecef;
+}
+
+.experience-card .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.scroll-indicator {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 0.9rem;
+  animation: blink-scroll 2s infinite;
+  pointer-events: none;
+}
+
+.scroll-indicator i {
+  font-size: 1.2rem;
+  animation: pulse-arrow 1.5s infinite;
+}
+
+@keyframes blink-scroll {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+@keyframes pulse-arrow {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+
+.horizontal-scroll-container:hover .scroll-indicator {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+</style>

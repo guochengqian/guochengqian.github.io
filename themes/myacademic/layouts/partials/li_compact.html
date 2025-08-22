@@ -77,9 +77,16 @@
     {{ $resource := ($item.Resources.ByType "image").GetMatch "*featured*" }}
     {{ with $resource }}
     {{ $image := .Resize "150x" }}
-    <a href="{{$link}}" {{ $target | safeHTMLAttr }}>
-      <img src="{{ $image.RelPermalink }}" alt="">
-    </a>
+    <div class="publication-image-container-compact">
+      <a href="{{$link}}" {{ $target | safeHTMLAttr }}>
+        <img src="{{ $image.RelPermalink }}" alt="">
+      </a>
+      {{ if $item.Params.publication_short }}
+      <div class="venue-badge-compact">
+        {{ $item.Params.publication_short | replaceRE "\\*|'" "" | markdownify }}
+      </div>
+      {{ end }}
+    </div>
     {{end}}
   </div>
 </div>
