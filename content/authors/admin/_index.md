@@ -1,6 +1,6 @@
 ---
 # Display name
-name: Guocheng Gordon Qian
+name: Guocheng Qian
 namecn: 钱国成
 
 # # Username (this should match the folder name)
@@ -11,7 +11,7 @@ namecn: 钱国成
 superuser: true
 
 # Role/position
-role: Research Scientist at Snap Research 
+role: Research Scientist 
 
 # Organizations/Affiliations
 organizations:

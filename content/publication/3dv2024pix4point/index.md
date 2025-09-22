@@ -1,7 +1,7 @@
 +++
 
 title = "Pix4Point: Image Pretrained Standard Transformers for 3D Point Cloud Understanding"
-date = 2023-12-15T00:00:00
+date = 2023-10-15T00:00:00
 draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
