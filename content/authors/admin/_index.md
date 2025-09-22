@@ -1,6 +1,6 @@
 ---
 # Display name
-name: Guocheng Qian
+name: Guocheng Gordon Qian
 namecn: 钱国成
 
 # # Username (this should match the folder name)
