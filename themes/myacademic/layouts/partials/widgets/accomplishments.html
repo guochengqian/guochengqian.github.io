@@ -31,12 +31,14 @@
                 {{- with .organization_url}}</a>{{end -}}
               </div>
 
+              {{ if and .date_start ($page.Params.date_format | ne "") }}
               <div class="text-center text-muted mb-2">
                 {{ (time .date_start).Format ($page.Params.date_format | default "Jan 2006") }}
                 {{ if .date_end}}
                 – {{ (time .date_end).Format ($page.Params.date_format | default "Jan 2006") }}
                 {{end}}
               </div>
+              {{ end }}
 
               {{with .description}}
                 <div class="card-text">{{. | markdownify | emojify}}</div>
