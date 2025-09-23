@@ -59,7 +59,7 @@ slides = ""
 tags = ["Generative Models", "Personalization"]
 
 # Links (optional).
-#url_preprint = "https://arxiv.org/abs/2412.09694"
+url_preprint = "https://arxiv.org/pdf/2509.18092"
 #url_code = "https://snap-research.github.io/Omni-ID/"
 #url_dataset = ""
 url_project = "https://snap-research.github.io/composeme/"
