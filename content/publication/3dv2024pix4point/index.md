@@ -51,7 +51,7 @@ slides = ""
 tags = ["point cloud", "3D"]
 
 # Links (optional).
-url_preprint = "https://arxiv.org/abs/2206.04670"
+url_preprint = "https://arxiv.org/abs/2208.12259"
 url_code = "https://github.com/guochengqian/pix4point"
 #url_dataset = ""
 #url_project = "https://www.deepgcns.org/"

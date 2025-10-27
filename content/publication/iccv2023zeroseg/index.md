@@ -52,7 +52,7 @@ tags = ["segmentation"]
 
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/2306.00450"
-url_code = "https://github.com/facebookresearch/ZeroSeg"
+#url_code = "https://github.com/facebookresearch/ZeroSeg"
 #url_dataset = ""
 #url_project = "https://guochengqian.github.io/project/magic123/"
 #url_slides = "https://docs.google.com/presentation/d/1L82wWymMnHyYJk3xUKvteEWD5fX0jVRbCbI65Cxxku0/edit?usp=sharing"

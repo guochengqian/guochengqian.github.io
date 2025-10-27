@@ -50,10 +50,10 @@ slides = ""
 tags = ["Generative Models", "3D"]
 
 # Links (optional).
-url_preprint = "https://arxiv.org/abs/2306.17843"
-url_code = "https://github.com/guochengqian/Magic123"
+url_preprint = "https://arxiv.org/abs/2402.00867"
+#url_code = "https://github.com/snap-research/AToM"
 #url_dataset = ""
-url_project = "https://guochengqian.github.io/project/magic123/"
+url_project = "https://snap-research.github.io/AToM/"
 #url_slides = "https://docs.google.com/presentation/d/1L82wWymMnHyYJk3xUKvteEWD5fX0jVRbCbI65Cxxku0/edit?usp=sharing"
 #url_video = "https://youtu.be/CHB96wBV4Ts"
 #url_poster = ""
