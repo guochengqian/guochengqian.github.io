@@ -53,7 +53,7 @@ tags = ["neural architecture search", "graph convolutional network", "3D", "poin
 
 # Links (optional).
 url_project = "https://www.deepgcns.org/auto/sgas"
-url_pdf = "https://arxiv.org/abs/1912.00195"
+#url_pdf = "https://arxiv.org/abs/1912.00195"
 url_preprint = "https://arxiv.org/abs/1912.00195"
 url_code = "https://github.com/lightaime/sgas"
 #url_dataset = ""

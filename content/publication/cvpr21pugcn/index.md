@@ -54,9 +54,9 @@ tags = ["point cloud", "graph convolutional network", "3D", "Generative Models"]
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/1912.03264.pdf"
 url_code = "https://github.com/guochengqian/PU-GCN"
-url_video = "https://www.youtube.com/watch?v=dbWLdnq0FQ8"
+#url_video = "https://www.youtube.com/watch?v=dbWLdnq0FQ8"
 url_project = "https://sites.google.com/kaust.edu.sa/pugcn"
-url_dataset = "https://sites.google.com/kaust.edu.sa/pugcn"
+#url_dataset = "https://sites.google.com/kaust.edu.sa/pugcn"
 url_abstract = "Upsampling sparse, noisy, and non-uniform point clouds is a challenging task. In this paper, we propose 3 novel point upsampling modules: Multi-branch GCN, Clone GCN, and NodeShuffle. Our modules use Graph Convolutional Networks (GCNs) to better encode local point information. Our upsampling modules are versatile and can be incorporated into any point cloud upsampling pipeline. We show how our 3 modules consistently improve state-of-the-art methods in all point upsampling metrics. We also propose a new multi-scale point feature extractor, called Inception DenseGCN. We modify current Inception GCN algorithms by introducing DenseGCN blocks. By aggregating data at multiple scales, our new feature extractor is more resilient to density changes along point cloud surfaces. We combine Inception DenseGCN with one of our upsampling modules (NodeShuffle) into a new point upsampling pipeline: PU-GCN. We show both qualitatively and quantitatively the advantages of PU-GCN against the state-of-the-art in terms of fine-grained upsampling quality and point cloud uniformity. "
 # Custom links (optional).
 # Uncomment line below to enable. For multiple links, use the form [{...}, {...}, {...}].
