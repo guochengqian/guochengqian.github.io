@@ -9,7 +9,7 @@ active = true  # Activate this widget? true/false
 weight = 80  # Order that this section will appear.
 
 title = "Featured Publications"
-subtitle = "Check my full publication at [Google Scholar](https://scholar.google.com/citations?user=DUDaxg4AAAAJ&hl=en)"
+subtitle = "Check my full publication list at [Google Scholar](https://scholar.google.com/citations?user=DUDaxg4AAAAJ&hl=en). See below for my selected projects, * / † denotes equal contribution / corresponding author."
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
