@@ -50,6 +50,9 @@ slides = ""
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
 tags = ["point cloud", "3D"]
 
+# Citation count and GitHub stars
+citations = "118"
+
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/2110.10538"
 url_code = "https://github.com/guochengqian/ASSANet"

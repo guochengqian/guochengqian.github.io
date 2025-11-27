@@ -50,6 +50,10 @@ slides = ""
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
 tags = ["Generative Models", "3D"]
 
+# Citation count and GitHub stars
+citations = "442"
+github_stars = "1600"
+
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/2306.17843"
 url_code = "https://github.com/guochengqian/Magic123"

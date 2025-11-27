@@ -44,6 +44,21 @@
         <a href="{{ $item.RelPermalink }}">{{ $item.Title }}</a>
       </h3>
 
+      {{ if or $item.Params.citations $item.Params.github_stars }}
+      <div class="article-metadata-badges" style="margin-top: 8px; margin-bottom: 8px;">
+        {{ with $item.Params.citations }}
+        <span class="badge badge-light" style="background-color: #e3f2fd; color: #1976d2; margin-right: 8px; padding: 4px 8px; border-radius: 12px; font-size: 0.85em;">
+          <i class="fas fa-graduation-cap"></i> {{ . }} citations
+        </span>
+        {{ end }}
+        {{ with $item.Params.github_stars }}
+        <span class="badge badge-light" style="background-color: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 12px; font-size: 0.85em;">
+          <i class="fab fa-github"></i> {{ . }} ★
+        </span>
+        {{ end }}
+      </div>
+      {{ end }}
+
       {{ if eq $item.Type "talk" }}
       <div class="article-metadata">
         {{ if $item.Params.authors }}

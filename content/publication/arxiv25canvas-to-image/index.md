@@ -1,24 +1,19 @@
 +++
 
-title = "LayerComposer: Multi-Human Personalized Generation via Layered Canvas"
-date = 2025-10-25T00:00:00
+title = "Canvas-to-Image: Compositional Image Generation with Multimodal Controls"
+date = 2025-11-27T00:00:00
 draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
 authors = [
-"__**Guocheng Gordon Qian**__", 
-"Ruihang Zhang", 
-"Tsai-Shien Chen", 
-"Yusuf Dalva", 
-"Anujraaj Goyal", 
-"Willi Menapace", 
-"Ivan Skorokhodov", 
-"Daniil Ostashev", 
-"Meng Dong", 
-"Arpit Sahni", 
-"Ju Hu", 
-"Sergey Tulyakov", 
-"Kuan-Chieh Jackson Wang", 
+"Yusuf Dalva*", 
+"__**Guocheng Gordon Qian**__*<sup>†</sup>", 
+"Maya Goldenberg", 
+"Tsai-Shien Chen",
+"Kfir Aberman",
+"Sergey Tulyakov",
+"Pinar Yanardag",
+"Kuan-Chieh Jackson Wang",
 ]
 
 # Publication type.
@@ -37,8 +32,8 @@ publication ="arXiv preprint, 2025"
 publication_short = "*arXiv'25*"
 
 # Abstract and optional shortened version.
-abstract = "Despite their impressive visual fidelity, existing personalized generative models lack interactive control over spatial composition and scale poorly to multiple subjects. To address these limitations, we present LayerComposer, an interactive framework for personalized, multi-subject text-to-image generation. Our approach introduces two main contributions: (1) a layered canvas, a novel representation in which each subject is placed on a distinct layer, enabling occlusion-free composition; and (2) a locking mechanism that preserves selected layers with high fidelity while allowing the remaining layers to adapt flexibly to the surrounding context. Similar to professional image-editing software, the layered canvas allows users to place, resize, or lock input subjects through intuitive layer manipulation. Our versatile locking mechanism requires no architectural changes, relying instead on inherent positional embeddings combined with a complementary data sampling strategy. Extensive experiments demonstrate that LayerComposer achieves superior spatial control and identity preservation compared to the state-of-the-art methods in human-centric personalized image generation."
-abstract_short = "LayerComposer enables Photoshop-like control for multi-subject text-to-image generation, allowing users to naturally compose scenes by intuitively placing, resizing, and locking elements in a layered canvas with high fidelity."
+abstract = "While modern diffusion models excel at generating high-quality and diverse images, they still struggle with high-fidelity compositional and multimodal control. We introduce Canvas-to-Image, a unified framework that consolidates these heterogeneous controls into a single canvas interface. Our key idea is to encode diverse control signals, including subject references, bounding boxes, and pose skeletons, into a single composite canvas image that the model can directly interpret for integrated visual-spatial reasoning."
+abstract_short = "Canvas-to-Image introduces a unified framework that consolidates heterogeneous controls (subject references, bounding boxes, pose skeletons) into a single canvas interface for high-fidelity compositional image generation."
 # Is this a selected publication? (true/false)
 selected = true
 # Is this a featured publication? (true/false)
@@ -62,15 +57,15 @@ slides = ""
 
 # Tags (optional).
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
-tags = ["Generative Models", "Personalization", "Interactive AI"]
+tags = ["Generative Models", "Compositional Control", "Text-to-Image"]
 
 # Links (optional).
-url_preprint = "https://arxiv.org/abs/2510.20820"
+url_preprint = "https://arxiv.org/abs/2511.21691"
 #url_code = ""
 #url_dataset = ""
-url_project = "https://snap-research.github.io/layercomposer/"
+url_project = "https://snap-research.github.io/canvas-to-image/"
 #url_slides = ""
-url_video = "https://www.youtube.com/watch?v=veBk9Ur3Fe4"
+#url_video = ""
 #url_poster = ""
 #url_source = ""
 
@@ -90,7 +85,7 @@ math = true
 
 [image]  
   # Caption (optional)
-  # caption = "LayerComposer"
+  # caption = "Canvas-to-Image"
   
   # Focal point (optional)
   # Options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
@@ -99,4 +94,5 @@ math = true
   # preview_only = true
 
 +++
+
 

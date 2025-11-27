@@ -52,6 +52,10 @@ slides = ""
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
 tags = ["image processing"]
 
+# Citation count and GitHub stars
+citations = "106"
+github_stars = "299"
+
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/1905.02538"
 url_code = "https://github.com/guochengqian/TENet"
