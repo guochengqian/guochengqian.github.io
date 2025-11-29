@@ -1,6 +1,6 @@
 ---
 # Display name
-name: Guocheng Qian
+name: Guocheng G. Qian
 namecn: 钱国成
 
 # # Username (this should match the folder name)
@@ -33,11 +33,11 @@ education:
     link: https://en.wikipedia.org/wiki/Xi%27an_Jiaotong_University
     logo: "xjtu.png"
     year: 2014 - 2018
-  - course: Exchange Student 
-    institution: HKUST
-    link: https://www.ust.hk/
-    logo: "hkust.png"
-    year: 2017 Spring
+  # - course: Exchange Student 
+  #   institution: HKUST
+  #   link: https://www.ust.hk/
+  #   logo: "hkust.png"
+  #   year: 2017 Spring
 
 interests:
   - item: Generative AI
