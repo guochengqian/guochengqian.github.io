@@ -49,6 +49,7 @@ subtitle = ""
 - *2025/11/01* 新智元: [锁定角色，「多主体」也可控！个性化文生图，给你PS般交互体验](https://mp.weixin.qq.com/s/r4sNRsMipn2fZ0a0pFWMGw).
 - *2025/01/16* 机器之心: [单张图像探索3D奇境：Wonderland让高质量3D场景生成更高效](https://mp.weixin.qq.com/s/ViSQcx3UNLjRb7goIRhQFg).
 - *2025/01/13* 机器之心: [同时提升摄像机控制效率、视频质量，可控视频生成架构AC3D来了](https://mp.weixin.qq.com/s/xdSdY_pBts8LMkilGnRmqQ).
+- *2023/08/03* Y Combinator Hacker News: [Magic123: One Image to High-Quality 3D Object Generation](https://news.ycombinator.com/item?id=36991434).
 - *2023/07/22* 量子位: [一张图转3D质量起飞！GitHub刚建空仓就有300+人赶来标星](https://mp.weixin.qq.com/s/IPNRWLFn63JkYkI0E86SmQ).
 
 
