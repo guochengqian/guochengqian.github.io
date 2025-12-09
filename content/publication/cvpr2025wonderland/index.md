@@ -1,7 +1,7 @@
 +++
 
 title = "Wonderland: Navigating 3D Scenes from a Single Image"
-date = 2024-12-16T00:00:00
+date = 2024-12-10T00:00:00
 draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
@@ -67,6 +67,11 @@ url_project = "https://snap-research.github.io/wonderland/"
 # Custom links (optional).
 # Uncomment line below to enable. For multiple links, use the form [{...}, {...}, {...}].
 # url_custom = [{name = "Custom Link", url = "http://example.org"}]
+[[links]]
+  name = "Media · 机器之心"
+  url  = "https://mp.weixin.qq.com/s/ViSQcx3UNLjRb7goIRhQFg"
+  icon = "syncedtech.jpg"
+  icon_pack = "img"
 # Digital Object Identifier (DOI)
 doi = ""
 

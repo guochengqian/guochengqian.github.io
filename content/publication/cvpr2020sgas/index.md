@@ -51,9 +51,9 @@ slides = ""
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
 tags = ["neural architecture search", "graph convolutional network", "3D", "point cloud"]
 
-# Citation count and GitHub stars
+# Citation count
 citations = "279"
-github_stars = "163"
+github_repo = "lightaime/sgas"
 
 # Links (optional).
 url_project = "https://www.deepgcns.org/auto/sgas"

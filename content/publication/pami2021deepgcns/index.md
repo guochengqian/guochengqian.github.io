@@ -50,8 +50,8 @@ slides = ""
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
 tags = ["point cloud", "graph convolutional network", "3D"]
 
-# Citation count and GitHub stars
-github_stars = "1200"
+# Citation count
+github_repo = "lightaime/deep_gcns"
 
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/1910.06849"

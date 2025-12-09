@@ -52,6 +52,7 @@ tags = ["point cloud", "3D"]
 
 # Citation count and GitHub stars
 citations = "118"
+github_repo = "guochengqian/ASSANet"
 
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/2110.10538"

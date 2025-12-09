@@ -50,15 +50,15 @@ slides = ""
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
 tags = ["point cloud", "3D"]
 
-# Citation count and GitHub stars
+# Citation count
 citations = "1066"
-github_stars = "967"
+github_repo = "guochengqian/pointnext"
 
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/2206.04670"
 url_code = "https://github.com/guochengqian/pointnext"
 #url_dataset = ""
-#url_project = "https://www.deepgcns.org/"
+url_project = "https://guochengqian.github.io/PointNeXt/"
 #url_slides = "https://docs.google.com/presentation/d/1L82wWymMnHyYJk3xUKvteEWD5fX0jVRbCbI65Cxxku0/edit?usp=sharing"
 #url_video = "https://youtu.be/CHB96wBV4Ts"
 #url_poster = ""

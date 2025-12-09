@@ -44,17 +44,22 @@
         <a href="{{ $item.RelPermalink }}">{{ $item.Title }}</a>
       </h3>
 
-      {{ if or $item.Params.citations $item.Params.github_stars }}
-      <div class="article-metadata-badges" style="margin-top: 8px; margin-bottom: 8px;">
-        {{ with $item.Params.citations }}
-        <span class="badge badge-light" style="background-color: #e3f2fd; color: #1976d2; margin-right: 8px; padding: 4px 8px; border-radius: 12px; font-size: 0.85em;">
-          <i class="fas fa-graduation-cap"></i> {{ . }} citations
-        </span>
+      {{ $slug := $item.File.ContentBaseName }}
+      {{ $citesPath := printf "static/img/pub/%s_cites.png" $slug }}
+      {{ $starsPath := printf "static/img/pub/%s_stars.png" $slug }}
+      {{ $hasCites := fileExists $citesPath }}
+      {{ $hasStars := fileExists $starsPath }}
+      {{ if or $hasCites $hasStars }}
+      <div class="article-metadata-badges" style="margin-top: 8px; margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+        {{ if $hasCites }}
+        <img src="{{ printf "/img/pub/%s_cites.png" $slug }}"
+             alt="Google Scholar citations"
+             style="height:20px; vertical-align:middle;">
         {{ end }}
-        {{ with $item.Params.github_stars }}
-        <span class="badge badge-light" style="background-color: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 12px; font-size: 0.85em;">
-          <i class="fab fa-github"></i> {{ . }} ★
-        </span>
+        {{ if $hasStars }}
+        <img src="{{ printf "/img/pub/%s_stars.png" $slug }}"
+             alt="GitHub stars"
+             style="height:20px; vertical-align:middle;">
         {{ end }}
       </div>
       {{ end }}
