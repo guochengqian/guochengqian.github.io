@@ -50,9 +50,9 @@ slides = ""
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
 tags = ["Generative Models", "3D"]
 
-# Citation count and GitHub stars
+# Citation count
 citations = "442"
-github_stars = "1600"
+github_repo = "guochengqian/Magic123"
 
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/2306.17843"
@@ -67,6 +67,11 @@ url_project = "https://guochengqian.github.io/project/magic123/"
 # Custom links (optional).
 # Uncomment line below to enable. For multiple links, use the form [{...}, {...}, {...}].
 # url_custom = [{name = "Custom Link", url = "http://example.org"}]
+[[links]]
+  name = "Media · 量子位"
+  url  = "https://mp.weixin.qq.com/s/IPNRWLFn63JkYkI0E86SmQ"
+  icon = "liangziwei.png"
+  icon_pack = "img"
 # Digital Object Identifier (DOI)
 doi = ""
 

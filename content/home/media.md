@@ -6,9 +6,9 @@
 widget = "blank"  # See https://sourcethemes.com/academic/docs/page-builder/
 headless = false  # This file represents a page section.
 active = true  # Activate this widget? true/false
-weight = 100  # Order that this section will appear.
+weight = 95  # Order that this section will appear.
 
-title = "Accomplishments"
+title = "Media Coverage"
 subtitle = ""
 
 [design]
@@ -46,10 +46,10 @@ subtitle = ""
  # CSS class.
  css_class = ""
 +++
-- *2022/05* KAUST: CEMSE Dean's List Award (year 21/22), awarded to Top 20%.
-- *2021/12* KAUST: CEMSE Research Excellence Award (year 21/22), awarded to less than 12 students.
-- *2019/06* KAUST: KAUST Fellowship for MS and PhD Studies, fellowship covering full tuition support, monthly living allowance, housing, and medical coverage.
-- *2017/12* Xi'an Jiaotong University: Outstanding Undergraduate, highest undergraduate honor awarded to 10 selected undergraduates.
-- *2017/10* Ministry of Education, China: National First Class Scholarship, highest scholarship awarded to top 1% undergraduates.
+- *2025/11/01* 新智元: [锁定角色，「多主体」也可控！个性化文生图，给你PS般交互体验](https://mp.weixin.qq.com/s/r4sNRsMipn2fZ0a0pFWMGw).
+- *2025/01/16* 机器之心: [单张图像探索3D奇境：Wonderland让高质量3D场景生成更高效](https://mp.weixin.qq.com/s/ViSQcx3UNLjRb7goIRhQFg).
+- *2025/01/13* 机器之心: [同时提升摄像机控制效率、视频质量，可控视频生成架构AC3D来了](https://mp.weixin.qq.com/s/xdSdY_pBts8LMkilGnRmqQ).
+- *2023/07/22* 量子位: [一张图转3D质量起飞！GitHub刚建空仓就有300+人赶来标星](https://mp.weixin.qq.com/s/IPNRWLFn63JkYkI0E86SmQ).
+
 
 

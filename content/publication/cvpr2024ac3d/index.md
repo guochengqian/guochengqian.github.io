@@ -56,7 +56,7 @@ tags = ["Generative Models", "3D", "Video"]
 
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/2411.18673"
-#url_code = "https://snap-research.github.io/Omni-ID/"
+url_code = "https://github.com/snap-research/ac3d"
 #url_dataset = ""
 url_project = "https://snap-research.github.io/ac3d/"
 #url_slides = "https://docs.google.com/presentation/d/1L82wWymMnHyYJk3xUKvteEWD5fX0jVRbCbI65Cxxku0/edit?usp=sharing"
@@ -67,6 +67,11 @@ url_project = "https://snap-research.github.io/ac3d/"
 # Custom links (optional).
 # Uncomment line below to enable. For multiple links, use the form [{...}, {...}, {...}].
 # url_custom = [{name = "Custom Link", url = "http://example.org"}]
+[[links]]
+  name = "Media · 机器之心"
+  url  = "https://mp.weixin.qq.com/s/xdSdY_pBts8LMkilGnRmqQ"
+  icon = "syncedtech.jpg"
+  icon_pack = "img"
 # Digital Object Identifier (DOI)
 doi = ""
 

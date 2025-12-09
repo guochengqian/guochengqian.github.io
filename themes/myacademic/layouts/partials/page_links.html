@@ -142,7 +142,7 @@
 {{ range $page.Params.links }}
   {{ $pack := or .icon_pack "fas" }}
   {{ $pack_prefix := $pack }}
-  {{ if in (slice "fab" "fas" "far" "fal") $pack }}
+  {{ if and (ne $pack "img") (in (slice "fab" "fas" "far" "fal") $pack) }}
     {{ $pack_prefix = "fa" }}
   {{ end }}
   {{ $link := .url | default "" }}
@@ -158,8 +158,16 @@
   {{ else if in (slice "http" "https") $scheme }}
     {{ $target = "target=\"_blank\" rel=\"noopener\"" }}
   {{ end }}
-  <a class="btn btn-outline-primary my-1 mr-1{{ if $is_list }} btn-sm{{end}}" href="{{ $link | safeURL }}" {{ $target | safeHTMLAttr }}>
-    {{ if .icon }}<i class="{{ $pack }} {{ $pack_prefix }}-{{ .icon }} {{if .name}}mr-1{{end}}"></i>{{end}}
+  <a class="btn btn-outline-primary my-1 mr-1{{ if $is_list }} btn-sm{{end}}"
+     href="{{ $link | safeURL }}"
+     {{ $target | safeHTMLAttr }}
+     style="white-space:nowrap; display:inline-flex; align-items:center; gap:0.35em;">
+    {{ if eq $pack "img" }}
+      {{/* Use `.icon` as the logo filename under static/img/logo (including extension). */}}
+      <img src="{{ printf "/img/logo/%s" .icon }}" alt="{{ .name }}" style="height:1em; vertical-align:middle;">
+    {{ else if .icon }}
+      <i class="{{ $pack }} {{ $pack_prefix }}-{{ .icon }} {{if .name}}mr-1{{end}}"></i>
+    {{ end }}
     {{ with .name }}{{ . | safeHTML }}{{end}}
   </a>
 {{ end }}

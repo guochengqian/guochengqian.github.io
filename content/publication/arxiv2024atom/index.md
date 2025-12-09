@@ -25,9 +25,9 @@ publication_short = "*arXiv'24*"
 abstract = "We introduce Amortized Text-to-Mesh (AToM), a feed-forward text-to-mesh framework optimized across multiple text prompts simultaneously. In contrast to existing text-to-3D methods that often entail time-consuming per-prompt optimization and commonly output representations other than polygonal meshes, AToM directly generates high-quality textured meshes in less than 1 second in inference with around 10 times reduction in the training cost, and generalizes to unseen prompts. Our key idea is a novel triplane-based text-to-mesh architecture with a two-stage training strategy that ensures stable optimization and scalability. Through extensive experiments on various prompt benchmarks, AToM significantly outperforms state-of-the-art amortized approaches with over 4 times higher accuracy (in DF415 dataset) and more distinguishable and higher-quality 3D outputs. AToM demonstrates strong generalizability, offering finegrained details of 3D content for unseen interpolated prompts, unlike per-prompt solutions. Our code, models, and generated 3D assets are available at https://github.com/snap-research/AToM."
 abstract_short = "AToM trains a single text-to-mesh model on many prompts using 2D diffusion without 3D supervision, yileds high-quality textured meshes under a second, and generalizes to unseen prompts."
 # Is this a selected publication? (true/false)
-selected = true
+selected = false 
 # Is this a featured publication? (true/false)
-featured = true
+featured = false
 
 # Projects (optional).
 # Associate this publication with one or more of your projects.

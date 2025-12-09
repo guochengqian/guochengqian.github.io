@@ -77,6 +77,12 @@ url_video = "https://www.youtube.com/watch?v=veBk9Ur3Fe4"
 # Custom links (optional).
 # Uncomment line below to enable. For multiple links, use the form [{...}, {...}, {...}].
 # url_custom = [{name = "Custom Link", url = "http://example.org"}]
+[[links]]
+  name = "Media · 新智元"
+  url  = "https://mp.weixin.qq.com/s/r4sNRsMipn2fZ0a0pFWMGw"
+  icon = "aiera.png"
+  icon_pack = "img"
+
 # Digital Object Identifier (DOI)
 doi = ""
 
