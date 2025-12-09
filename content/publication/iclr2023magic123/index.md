@@ -72,6 +72,12 @@ url_project = "https://guochengqian.github.io/project/magic123/"
   url  = "https://mp.weixin.qq.com/s/IPNRWLFn63JkYkI0E86SmQ"
   icon = "liangziwei.png"
   icon_pack = "img"
+
+[[links]]
+  name = "Media · Y Combinator Hacker News"
+  url  = "https://news.ycombinator.com/item?id=36991434"
+  icon = "Y_Combinator_logo.png"
+  icon_pack = "img"
 # Digital Object Identifier (DOI)
 doi = ""
 
