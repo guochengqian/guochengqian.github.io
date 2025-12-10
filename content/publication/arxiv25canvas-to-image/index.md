@@ -65,16 +65,18 @@ url_preprint = "https://arxiv.org/abs/2511.21691"
 #url_dataset = ""
 url_project = "https://snap-research.github.io/canvas-to-image/"
 #url_slides = ""
-#url_video = ""
+url_video = "https://www.youtube.com/watch?v=5x3vyzQIMEQ"
 #url_poster = ""
 #url_source = ""
 
 # Custom links (optional).
 # Uncomment line below to enable. For multiple links, use the form [{...}, {...}, {...}].
 # url_custom = [{name = "Custom Link", url = "http://example.org"}]
-# Digital Object Identifier (DOI)
-doi = ""
-
+[[links]]
+  name = "Media · 机器之心"
+  url  = "https://mp.weixin.qq.com/s/buHx__D3ziFfISa4fetptw"
+  icon = "syncedtech.jpg"
+  icon_pack = "img"
 # Does this page contain LaTeX math? (true/false)
 math = true
 
