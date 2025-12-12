@@ -37,6 +37,19 @@
           {{ if .url }}</a>{{ end }}
         </h3>
         {{ end }}
+        
+        {{ if $person.address.street | or $person.address.city | or $person.address.region | or $person.address.postcode | or $person.address.country }}
+          {{ $addr := slice }}
+          {{with $person.address.street}}{{$addr = $addr | append .}}{{end}}
+          {{with $person.address.city}}{{$addr = $addr | append .}}{{end}}
+          {{with $person.address.region}}{{$addr = $addr | append .}}{{end}}
+          {{with $person.address.postcode}}{{$addr = $addr | append .}}{{end}}
+          {{with $person.address.country}}{{$addr = $addr | append .}}{{end}}
+          {{ $addr_formatted := delimit $addr (site.Params.list_delimiter | default ", ") }}
+          <h3 style="font-size: 0.9rem; color: rgba(0,0,0,0.54);">
+            <i class="fas fa-map-marker-alt" style="margin-right: 0.3rem;"></i>{{ $addr_formatted }}
+          </h3>
+        {{ end }}
       </div>
 
       <ul class="network-icon" aria-hidden="true">
@@ -56,7 +69,12 @@
         {{ end }}
         <li>
           <a href="{{ $link | safeURL }}" {{ $target | safeHTMLAttr }}>
-            <i class="{{ $pack }} {{ $pack_prefix }}-{{ .icon }} big-icon"></i>
+            {{ if eq $pack "img" }}
+              {{/* Use `.icon` as the logo filename under static/img/logo (including extension). */}}
+              <img src="{{ printf "/img/logo/%s" .icon }}" alt="{{ .icon }}" style="height:1.7em; width:1.7em; object-fit:contain; vertical-align:middle;">
+            {{ else }}
+              <i class="{{ $pack }} {{ $pack_prefix }}-{{ .icon }} big-icon"></i>
+            {{ end }}
           </a>
         </li>
         {{ end }}
@@ -75,7 +93,7 @@
       Prior to that, I received my B.Eng degree from Xi'an Jiaotong University (XJTU), China with the university’s highest undergraduate honor. 
       My primary research interests lie in computer vision and generative models. 
       I have authored 19 top-tier conference and journal papers, including one first-authored work with over 1,000 citations and three first-authored works with over 300 citations each.
-      In total, my publications have received over 3000 citations, and my current h-index is 18.
+      In total, my publications have received over 3000 citations, and my current h-index is 19.
       My representative work includes <a target="_blank" href="https://arxiv.org/abs/2206.04670"> PointNeXt</a> (NeurIPS, >1000 cites, >900 GitHub stars), <a target="_blank" href="https://guochengqian.github.io/project/magic123/">Magic123</a>  (ICLR, >400 cites, >1.6K GitHub stars) and <a target="_blank" href="https://snap-research.github.io/Omni-ID/">Omni-ID</a> (CVPR'25, products integrated into Snapchat).
       I also serve as area chair for ICLR starting from 2025.
       <br>
