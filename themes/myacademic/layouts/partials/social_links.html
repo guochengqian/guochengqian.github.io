@@ -15,7 +15,12 @@
     {{ end }}
     <li>
       <a href="{{ $link | safeURL }}" {{ $target | safeHTMLAttr }}>
-        <i class="{{ $pack }} {{ $pack_prefix }}-{{ .icon }}"></i>
+        {{ if eq $pack "img" }}
+          {{/* Use `.icon` as the logo filename under static/img/logo (including extension). */}}
+          <img src="{{ printf "/img/logo/%s" .icon }}" alt="{{ .icon }}" style="height:1.5em; width:1.5em; vertical-align:middle;">
+        {{ else }}
+          <i class="{{ $pack }} {{ $pack_prefix }}-{{ .icon }}"></i>
+        {{ end }}
       </a>
     </li>
   {{end}}

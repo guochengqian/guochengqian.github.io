@@ -18,6 +18,15 @@ organizations:
 - name: Snap Research
   url: "https://research.snap.com/team/creative-vision.html"
 
+# Address
+# For available fields see: https://sourcethemes.com/academic/docs/page-builder/#contact
+address:
+  street: ""
+  city: Palo Alto
+  region: CA
+  postcode: ""
+  country: United States
+
 # Short bio (displayed in user profile at end of posts)
 bio: Guocheng Qian (Gordon) is a Research Scientist at Snap Research specializing in generative modeling and personalization.. 
 
@@ -59,9 +68,12 @@ social:
 - icon: linkedin
   icon_pack: fab
   link: https://www.linkedin.com/in/guochengqian/
-- icon: twitter 
+- icon: x-twitter
   icon_pack: fab
-  link: https://twitter.com/guocheng_qian
+  link: https://x.com/guocheng_qian
+# - icon: rednote.png
+#   icon_pack: img
+#   link: https://www.xiaohongshu.com/user/profile/58894a2982ec39681b4a7842
 # - icon: zhihu
 #   icon_pack: fab
 #   link: https://www.zhihu.com/people/GordonQian/
