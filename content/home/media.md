@@ -46,7 +46,10 @@ subtitle = ""
  # CSS class.
  css_class = ""
 +++
+- *2025/12/05* 新智元: [高保真、多控制集成于「统一画布」，组合式图像生成新范式！](https://mp.weixin.qq.com/s/rn0I1b9rwexWTVkH7n27Kw).
+- *2025/12/08* 机器之心: [Snapchat提出Canvas-to-Image：一张画布集成 ID、姿态与布局](https://mp.weixin.qq.com/s/buHx__D3ziFfISa4fetptw).
 - *2025/11/01* 新智元: [锁定角色，「多主体」也可控！个性化文生图，给你PS般交互体验](https://mp.weixin.qq.com/s/r4sNRsMipn2fZ0a0pFWMGw).
+- *2025/07/15* 机器之心: [ICML 2025｜多模态理解与生成最新进展：港科联合SnapResearch发布ThinkDiff，为扩散模型装上大脑](https://mp.weixin.qq.com/s/2A2NuLLcqQ8-bu8M-_-5uA).
 - *2025/01/16* 机器之心: [单张图像探索3D奇境：Wonderland让高质量3D场景生成更高效](https://mp.weixin.qq.com/s/ViSQcx3UNLjRb7goIRhQFg).
 - *2025/01/13* 机器之心: [同时提升摄像机控制效率、视频质量，可控视频生成架构AC3D来了](https://mp.weixin.qq.com/s/xdSdY_pBts8LMkilGnRmqQ).
 - *2023/08/03* Y Combinator Hacker News: [Magic123: One Image to High-Quality 3D Object Generation](https://news.ycombinator.com/item?id=36991434).
