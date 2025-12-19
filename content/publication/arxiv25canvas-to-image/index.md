@@ -77,6 +77,11 @@ url_video = "https://www.youtube.com/watch?v=5x3vyzQIMEQ"
   url  = "https://mp.weixin.qq.com/s/buHx__D3ziFfISa4fetptw"
   icon = "syncedtech.jpg"
   icon_pack = "img"
+[[links]]
+  name = "Media · 新智元"
+  url  = "https://mp.weixin.qq.com/s/rn0I1b9rwexWTVkH7n27Kw"
+  icon = "aiera.png"
+  icon_pack = "img"
 # Does this page contain LaTeX math? (true/false)
 math = true
 
