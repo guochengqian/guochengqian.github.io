@@ -1,6 +1,7 @@
 ---
+
 # Display name
-name: Guocheng G. Qian
+name: Gordon Qian
 namecn: 钱国成
 
 # # Username (this should match the folder name)
@@ -89,4 +90,5 @@ social:
 # user_groups:
 # - Researchers
 # - Visitors
+
 ---
