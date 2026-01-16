@@ -7,7 +7,7 @@ draft = false
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
 authors = [
 "Yusuf Dalva*", 
-"__**Guocheng Gordon Qian**__*<sup>†</sup>", 
+"__**Gordon Guocheng Qian**__*<sup>†</sup>", 
 "Maya Goldenberg", 
 "Tsai-Shien Chen",
 "Kfir Aberman",

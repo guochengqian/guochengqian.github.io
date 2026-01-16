@@ -6,7 +6,7 @@ draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
 authors = [
-    "Tsai-Shien Chen", "Aliaksandr Siarohin", "__**Guocheng Gordon Qian**__",
+    "Tsai-Shien Chen", "Aliaksandr Siarohin", "__**Gordon Guocheng Qian**__",
     "Kuan-Chieh Jackson Wang", "Egor Nemchinov", "Moayed Haji-Ali",
     "Riza Alp Guler", "Willi Menapace", "Ivan Skorokhodov", "Anil Kag",
     "Jun-Yan Zhu", "Sergey Tulyakov"
