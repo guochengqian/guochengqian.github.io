@@ -14,8 +14,8 @@
 {{ $avatar := ($person_page.Resources.ByType "image").GetMatch "*avatar*" }}
 
 <!-- About widget -->
-<div class="row" >
-  <div class="col-12 col-lg-4">
+<div class="row justify-content-center" >
+  <div class="col-12 col-lg-3">
     <div id="profile">
 
       {{ if site.Params.gravatar }}
@@ -82,7 +82,7 @@
 
     </div>
   </div>
-  <div class="col-12 col-lg-8" style="text-align: justify">
+  <div class="col-12 col-lg-6" style="text-align: justify">
 
     {{/* Only display widget title in explicit instances of about widget, not in author pages. */}}
     {{ if and $page.Params.widget $page.Title }}<h1>{{ $page.Title | markdownify | emojify }}</h1>{{ end }}

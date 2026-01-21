@@ -8,7 +8,7 @@ article {
 }
 
 .article-container {
-  max-width: 80%;
+  max-width: 90%;
   padding: 0 20px 0 20px;
   margin: 0 auto 0 auto;
 }
@@ -35,6 +35,7 @@ article {
   //max-width: 50%;
   width: 100%;
   height: auto;
+  border-radius: 8px;
 }
 
 .signature-banner {
@@ -349,18 +350,20 @@ ul.share li:hover i {
   position: relative;
   display: inline-block;
   width: 100%;
+  overflow: visible;
 }
 
 .publication-image-container-compact {
   position: relative;
   display: inline-block;
+  overflow: visible;
 }
 
 .venue-badge, .venue-badge-compact {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  background: rgba(30, 144, 255, 0.9);
+  top: -20px;
+  left: -60px;
+  background: rgba(30, 144, 255, 0.95);
   color: white;
   padding: 4px 8px;
   border-radius: 4px;
@@ -371,14 +374,14 @@ ul.share li:hover i {
   z-index: 10;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .venue-badge-compact {
   font-size: 0.6rem;
   padding: 2px 6px;
-  top: 6px;
-  left: 6px;
+  top: -8px;
+  left: -9px;
 }
 
 .venue-badge p, .venue-badge-compact p {

@@ -26,7 +26,7 @@ date_format = "Jan 2006"
   date_start = "2023-12-18"
   date_end = "" 
   description = ""
-  logo = "snapchat.png"
+  logo = "snapchat-logo-simple.svg"
 
 [[experience]]
   title = "Research Scientist Intern"
@@ -36,7 +36,7 @@ date_format = "Jan 2006"
   date_start = "2023-05-29"
   date_end = "2023-09-17"
   description = ""
-  logo = "snapchat.png"
+  logo = "snapchat-logo-simple.svg"
 
 
 [[experience]]
@@ -47,7 +47,7 @@ date_format = "Jan 2006"
   date_start = "2022-08-15"
   date_end = "2023-01-27"
   description = ""
-  logo = "meta.png"
+  logo = "meta-logo-simple.png"
 
 
 [[experience]]
@@ -58,7 +58,7 @@ date_format = "Jan 2006"
   date_start = "2021-12-01"
   date_end = "2022-05-31"
   description = ""
-  logo = "microsoft.png"
+  logo = "microsoft-logo-simple.svg"
 
 [[experience]]
   title = "Research Intern"
@@ -68,7 +68,7 @@ date_format = "Jan 2006"
   date_start = "2020-06-01"
   date_end = "2021-12-01"
   description = ""
-  logo = "megvii.png"
+  logo = "megvii-logo-simple.svg"
 
 [[experience]]
   title = "Computer Vision Research Intern"
@@ -78,5 +78,5 @@ date_format = "Jan 2006"
   date_start = "2018-07-01"
   date_end = "2019-05-01"
   description = ""
-  logo = "sensetime.jpg"
+  logo = "sensetime-logo-simple.png"
 +++

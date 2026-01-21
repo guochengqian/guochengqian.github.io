@@ -23,13 +23,28 @@
 
 <div class="card-simple">
   <div class="row">
-    {{ $resource := ($item.Resources.ByType "image").GetMatch "*featured*" }}
-    <div class="col-12 col-lg-4">
-      {{ with $resource }}
+    {{ $imageResource := ($item.Resources.ByType "image").GetMatch "*featured*" }}
+    {{ $videoResource := ($item.Resources.ByType "video").GetMatch "*featured*" }}
+    <div class="col-12 col-lg-3">
+      {{ if or $imageResource $videoResource }}
+      {{ $imgLink := $item.RelPermalink }}
+      {{ if $item.Params.url_project }}
+        {{ $imgLink = $item.Params.url_project }}
+      {{ else if $item.Params.url_preprint }}
+        {{ $imgLink = $item.Params.url_preprint }}
+      {{ end }}
       <div class="publication-image-container">
-        <a href="{{ $item.RelPermalink }}">
-            <img src="{{$item.RelPermalink}}{{$resource}}" class="article-banner" alt="">
-        </a>
+        {{ if $videoResource }}
+          <a href="{{ $imgLink }}" target="_blank" rel="noopener">
+            <video autoplay muted loop playsinline class="article-banner" style="width: 100%; height: auto;">
+              <source src="{{$item.RelPermalink}}{{$videoResource}}" type="video/mp4">
+            </video>
+          </a>
+        {{ else if $imageResource }}
+          <a href="{{ $imgLink }}" target="_blank" rel="noopener">
+            <img src="{{$item.RelPermalink}}{{$imageResource}}" class="article-banner" alt="">
+          </a>
+        {{ end }}
         {{ if $item.Params.publication_short }}
         <div class="venue-badge">
           {{ $item.Params.publication_short | replaceRE "\\*|'" "" | markdownify }}
@@ -39,9 +54,15 @@
       {{end}}
     </div>
 
-    <div class="col-12 col-lg-8">
+    <div class="col-12 col-lg-9">
       <h3 class="article-title mb-0 mt-0">
-        <a href="{{ $item.RelPermalink }}">{{ $item.Title }}</a>
+        {{ $link := $item.RelPermalink }}
+        {{ if $item.Params.url_project }}
+          {{ $link = $item.Params.url_project }}
+        {{ else if $item.Params.url_preprint }}
+          {{ $link = $item.Params.url_preprint }}
+        {{ end }}
+        <a href="{{ $link }}" target="_blank" rel="noopener">{{ $item.Title }}</a>
       </h3>
 
       {{ $slug := $item.File.ContentBaseName }}
@@ -84,16 +105,33 @@
       {{ end }}
 
       {{ with $summary }}
-      <div class="article-style">
-        <p>{{.}}</p>
+      <div class="article-style" style="margin-top: 4px; margin-bottom: 4px;">
+        <p style="margin: 0; font-size: 14px; letter-spacing: 0.03em; color: rgba(0,0,0,0.54); line-height: 1.5;">{{.}}</p>
       </div>
       {{ end }}
 
       {{ if $show_buttons }}
-      <div class="btn-links">
+      <div class="btn-links" style="margin-top: 12px;">
         {{ partial "page_links" (dict "page" $item "is_list" 1) }}
       </div>
       {{ end }}
     </div>
   </div>
 </div>
+
+<style>
+.card-simple {
+  margin-bottom: 1.5rem;
+}
+.card-simple .row {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+.card-simple .article-title {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+.card-simple .article-metadata {
+  margin-bottom: 6px;
+}
+</style>
