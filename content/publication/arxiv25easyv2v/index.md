@@ -1,15 +1,19 @@
 +++
 
-title = "Omni-Attribute: Open-vocabulary Attribute Encoder for Visual Concept Personalization"
-date = 2025-12-11T00:00:00
+title = "EasyV2V: A High-quality Instruction-based Video Editing Framework"
+date = 2025-12-16T00:00:00
 draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
 authors = [
-    "Tsai-Shien Chen", "Aliaksandr Siarohin", "__**Gordon Guocheng Qian**__",
-    "Kuan-Chieh Jackson Wang", "Egor Nemchinov", "Moayed Haji-Ali",
-    "Riza Alp Guler", "Willi Menapace", "Ivan Skorokhodov", "Anil Kag",
-    "Jun-Yan Zhu", "Sergey Tulyakov"
+"Jinjie Mai*", 
+"Chaoyang Wang", 
+"__**Gordon Guocheng Qian**__", 
+"Willi Menapace", 
+"Sergey Tulyakov", 
+"Bernard Ghanem", 
+"Peter Wonka", 
+"Ashkan Mirzaei*"
 ]
 
 # Publication type.
@@ -24,13 +28,12 @@ authors = [
 publication_types = ["3"]
 
 # Publication name and optional abbreviated version.
-publication = "arXiv preprint, 2025"
+publication ="arXiv preprint, 2025"
 publication_short = "*arXiv'25*"
 
 # Abstract and optional shortened version.
-abstract = "Visual concept personalization aims to transfer only specific image attributes, such as identity, expression, lighting, and style, into unseen contexts. However, existing methods rely on holistic embeddings from general-purpose image encoders, which entangle multiple visual factors and make it difficult to isolate a single attribute. This often leads to information leakage and incoherent synthesis. To address this limitation, we introduce Omni-Attribute, the first open-vocabulary image attribute encoder designed to learn high-fidelity, attribute-specific representations. Our approach jointly designs the data and model: (i) we curate semantically linked image pairs annotated with positive and negative attributes to explicitly teach the encoder what to preserve or suppress; and (ii) we adopt a dual-objective training paradigm that balances generative fidelity with contrastive disentanglement. The resulting embeddings prove effective for open-vocabulary attribute retrieval, personalization, and compositional generation, achieving state-of-the-art performance across multiple benchmarks."
-abstract_short = "Omni-Attribute can isolate a specific attribute, whether it is an abstract concept or not, from any image and merge those selected attributes from multiple images into a coherent generation."
-
+abstract = "EasyV2V presents a high-quality instruction-based video editing framework that enables intuitive and precise video manipulation through natural language instructions. Our approach combines state-of-the-art video generation models with advanced instruction understanding, allowing users to edit videos with unprecedented ease and quality. The framework supports a wide range of editing operations, from simple color adjustments to complex semantic modifications, all controlled through natural language commands."
+abstract_short = "EasyV2V: A high-quality instruction-based video editing framework that enables intuitive video manipulation through natural language instructions."
 # Is this a selected publication? (true/false)
 selected = true
 # Is this a featured publication? (true/false)
@@ -54,21 +57,22 @@ slides = ""
 
 # Tags (optional).
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
-tags = ["Generative Models", "Personalization"]
+tags = ["Video Editing", "Generative Models", "Instruction Following"]
 
 # Links (optional).
-url_preprint = "https://arxiv.org/abs/2512.10955"
+url_preprint = "https://arxiv.org/abs/2512.16920"
 #url_code = ""
 #url_dataset = ""
-url_project = "https://snap-research.github.io/omni-attribute/"
+url_project = "https://snap-research.github.io/easyv2v/"
 #url_slides = ""
-#url_video = ""
+url_video = "https://www.youtube.com/watch?v=CKPE3QJ_EQY"
 #url_poster = ""
 #url_source = ""
 
 # Custom links (optional).
 # Uncomment line below to enable. For multiple links, use the form [{...}, {...}, {...}].
 # url_custom = [{name = "Custom Link", url = "http://example.org"}]
+
 # Digital Object Identifier (DOI)
 doi = ""
 
@@ -82,7 +86,7 @@ math = true
 
 [image]  
   # Caption (optional)
-  # caption = "123"
+  # caption = "EasyV2V"
   
   # Focal point (optional)
   # Options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
@@ -91,3 +95,5 @@ math = true
   # preview_only = true
 
 +++
+
+

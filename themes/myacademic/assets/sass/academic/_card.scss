@@ -4,11 +4,18 @@
 
 .card-simple {
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,.04);
-  border: 1px solid rgba(0,0,0,.09);
-  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 16px;
   margin-top: 20px;
   padding: 15px 20px 15px 20px;
+  overflow: visible;
+  transition: all 0.2s ease;
+}
+
+.card-simple:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  transform: translateY(-2px);
 }
 
 .card-simple:first-of-type {
@@ -21,8 +28,12 @@
 
 .dark .card-simple {
   background: rgb(40, 42, 54);
-  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
   border: 1px solid rgb(68, 71, 90);
+}
+
+.dark .card-simple:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
 }
 
 .card {
