@@ -22,7 +22,7 @@
 {{ end }}
 
 <div class="card-simple">
-  <div class="row">
+  <div class="row align-items-center">
     {{ $imageResource := ($item.Resources.ByType "image").GetMatch "*featured*" }}
     {{ $videoResource := ($item.Resources.ByType "video").GetMatch "*featured*" }}
     <div class="col-12 col-lg-3">
