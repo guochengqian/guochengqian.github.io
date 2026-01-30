@@ -42,7 +42,7 @@ abstract_short = "LayerComposer enables Photoshop-like control for multi-subject
 # Is this a selected publication? (true/false)
 selected = true
 # Is this a featured publication? (true/false)
-featured = true
+featured = false 
 
 # Projects (optional).
 # Associate this publication with one or more of your projects.
