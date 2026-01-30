@@ -37,7 +37,7 @@ abstract_short = "Canvas-to-Image introduces a unified framework that consolidat
 # Is this a selected publication? (true/false)
 selected = true
 # Is this a featured publication? (true/false)
-featured = true
+featured = false 
 
 # Projects (optional).
 # Associate this publication with one or more of your projects.
