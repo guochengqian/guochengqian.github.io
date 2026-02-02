@@ -24,3 +24,23 @@
   for = "index.xml"
   [headers.values]
     Content-Type = "application/rss+xml"
+
+# Add canonical link header to help search engines
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Link = "<https://guochengqian.github.io:splat>; rel=\"canonical\""
+
+[[redirects]]
+  from = "/publication/iclr2023magic123/*"
+  to = "/publication/iclr2024magic123/:splat"
+  status = 301
+  force = true
+
+# Strip UTM and other tracking parameters to prevent duplicate content
+[[redirects]]
+  from = "/*"
+  to = "/:splat"
+  status = 301
+  force = false
+  query = {utm_source = ":utm_source", utm_medium = ":utm_medium", utm_campaign = ":utm_campaign", utm_term = ":utm_term", utm_content = ":utm_content", ref = ":ref", fbclid = ":fbclid", gclid = ":gclid", msclkid = ":msclkid"}
