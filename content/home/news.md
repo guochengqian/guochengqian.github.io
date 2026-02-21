@@ -46,6 +46,7 @@ subtitle = ""
  # CSS class.
  css_class = ""
 +++
+- *2026/02*: two papers accepted to CVPR 2026!
 - *2025/09*: Corresponding authored paper [SR-Training](https://snap-research.github.io/shortcut-rerouting/) accepted to NeurIPS 2025.
 - *2025/07*: ComposeMe is shipped to Snapchat AI Lens to make personalized generation follow expression prompts.  
 - *2025/07*: First-authored paper [ComposeMe](https://snap-research.github.io/composeme/) is accepted to Siggraph Asia 2025.

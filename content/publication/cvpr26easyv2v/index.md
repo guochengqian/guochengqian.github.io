@@ -25,11 +25,11 @@ authors = [
 # 4 = Report
 # 5 = Book
 # 6 = Book section
-publication_types = ["3"]
+publication_types = ["1"]
 
 # Publication name and optional abbreviated version.
-publication ="arXiv preprint, 2025"
-publication_short = "*arXiv'25*"
+publication ="CVPR, 2026"
+publication_short = "*CVPR'26*"
 
 # Abstract and optional shortened version.
 abstract = "EasyV2V presents a high-quality instruction-based video editing framework that enables intuitive and precise video manipulation through natural language instructions. Our approach combines state-of-the-art video generation models with advanced instruction understanding, allowing users to edit videos with unprecedented ease and quality. The framework supports a wide range of editing operations, from simple color adjustments to complex semantic modifications, all controlled through natural language commands."
