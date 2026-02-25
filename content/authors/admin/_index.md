@@ -12,7 +12,7 @@ namecn: 钱国成
 superuser: true
 
 # Role/position
-role: Research Scientist 
+role: Senior Research Scientist 
 
 # Organizations/Affiliations
 organizations:
@@ -29,7 +29,7 @@ address:
   country: United States
 
 # Short bio (displayed in user profile at end of posts)
-bio: Guocheng Qian (Gordon) is a Research Scientist at Snap Research specializing in generative modeling and personalization.. 
+bio: Guocheng Qian (Gordon) is a Senior Research Scientist at Snap Research specializing in generative modeling and personalization.. 
 
 education:
   courses:
