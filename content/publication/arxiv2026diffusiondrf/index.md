@@ -31,7 +31,7 @@ publication_short = "*arXiv'26*"
 
 # Abstract and optional shortened version.
 abstract = "Video diffusion alignment has been heavily relied on scalar rewards. These rewards are typically derived from learned reward models in human preference datasets, requiring additional training and extensive collection. Moreover, scalar rewards provide coarse, global supervision, offering limited prompt-generation mismatch credit assignment and making models prone to reward exploitation and unstable optimization. We propose Diffusion-DRF, a free, rich, and differentiable reward framework for video diffusion fine-tuning."
-abstract_short = "Diffusion-DRF uses a frozen VLM critic and rich differentiable feedback for stable video diffusion fine-tuning."
+abstract_short = "Diffusion-DRF uses a frozen VLM critic to provide free, rich, and differentiable feedback for stable video diffusion fine-tuning."
 # Is this a selected publication? (true/false)
 selected = true
 # Is this a featured publication? (true/false)
