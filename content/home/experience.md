@@ -52,7 +52,7 @@ date_format = "Jan 2006"
 
 [[experience]]
   title = "Remote Intern"
-  company = "Microsoft Research Aisa"
+  company = "Microsoft Research Asia"
   company_url = "https://www.microsoft.com/en-us/research/"
   location = "remote"
   date_start = "2021-12-01"

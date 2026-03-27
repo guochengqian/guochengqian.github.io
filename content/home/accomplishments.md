@@ -46,10 +46,11 @@ subtitle = ""
  # CSS class.
  css_class = ""
 +++
-- *2022/05* KAUST: CEMSE Dean's List Award (year 21/22), awarded to Top 20%.
-- *2021/12* KAUST: CEMSE Research Excellence Award (year 21/22), awarded to less than 12 students.
-- *2019/06* KAUST: KAUST Fellowship for MS and PhD Studies, fellowship covering full tuition support, monthly living allowance, housing, and medical coverage.
-- *2017/12* Xi'an Jiaotong University: Outstanding Undergraduate, highest undergraduate honor awarded to 10 selected undergraduates.
-- *2017/10* Ministry of Education, China: National First Class Scholarship, highest scholarship awarded to top 1% undergraduates.
+- *2022/05* KAUST: CEMSE Dean's List Award (year 21/22, top 20%).
+- *2021/12* KAUST: CEMSE Research Excellence Award (year 21/22, top 12/400)
+- *2019/06* KAUST: KAUST Fellowship for MS/PhD studies, providing full coverage of tuition, housing, medical insurance, and a monthly stipend.
+- *2017/12* Xi'an Jiaotong University: Outstanding Undergraduate (highest undergraduate honor, top 10/2000). 
+- *2017/12* Xi'an Jiaotong University: Excellent Student Cadre (top 3\%). 
+- *2017/10* Ministry of Education, China: National First-Class Scholarship (top 1% nationwide).
 
 
