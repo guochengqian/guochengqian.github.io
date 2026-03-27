@@ -49,7 +49,7 @@ subtitle = ""
 - *2026/02*: two papers accepted to CVPR 2026!
 - *2025/09*: Corresponding authored paper [SR-Training](https://snap-research.github.io/shortcut-rerouting/) accepted to NeurIPS 2025.
 - *2025/07*: ComposeMe is shipped to Snapchat AI Lens to make personalized generation follow expression prompts.  
-- *2025/07*: First-authored paper [ComposeMe](https://snap-research.github.io/composeme/) is accepted to Siggraph Asia 2025.
+- *2025/07*: First-authored paper [ComposeMe](https://snap-research.github.io/composeme/) is accepted to SIGGRAPH Asia 2025.
 - *2025/05*: [ThinkDiff](https://mizhenxing.github.io/ThinkDiff/) is accepted to ICML 2025! 
 - *2025/05*: Omni-ID is shipped to Snapchat production pipeline to support Look Like Me.
 - *2025/02*: 3 paper accepted to CVPR 2025 including one first-authored paper [Omni-ID](https://snap-research.github.io/Omni-ID/), and two mentored internship projects [WonderLand](https://snap-research.github.io/wonderland/) and [AC3D](https://snap-research.github.io/ac3d/).
