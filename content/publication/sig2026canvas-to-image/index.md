@@ -25,11 +25,11 @@ authors = [
 # 4 = Report
 # 5 = Book
 # 6 = Book section
-publication_types = ["3"]
+publication_types = ["1"]
 
 # Publication name and optional abbreviated version.
-publication ="arXiv preprint, 2025"
-publication_short = "*arXiv'25*"
+publication ="SIGGRAPH, 2026"
+publication_short = "*SIGGRAPH'26*"
 
 # Abstract and optional shortened version.
 abstract = "While modern diffusion models excel at generating high-quality and diverse images, they still struggle with high-fidelity compositional and multimodal control. We introduce Canvas-to-Image, a unified framework that consolidates these heterogeneous controls into a single canvas interface. Our key idea is to encode diverse control signals, including subject references, bounding boxes, and pose skeletons, into a single composite canvas image that the model can directly interpret for integrated visual-spatial reasoning."
@@ -37,7 +37,7 @@ abstract_short = "Canvas-to-Image introduces a unified framework that consolidat
 # Is this a selected publication? (true/false)
 selected = true
 # Is this a featured publication? (true/false)
-featured = false 
+featured = true 
 
 # Projects (optional).
 # Associate this publication with one or more of your projects.
