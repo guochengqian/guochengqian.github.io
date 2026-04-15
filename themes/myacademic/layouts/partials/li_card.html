@@ -40,7 +40,7 @@
             {{/* Show image placeholder first if available */}}
             <img src="{{$item.RelPermalink}}{{$imageResource}}" class="article-banner video-placeholder" alt="" style="display: block;">
             {{end}}
-            <video autoplay muted loop playsinline class="article-banner video-content" style="width: 100%; height: auto; {{ if $imageResource }}display: none;{{ end }}" onloadeddata="this.style.display='block'; var placeholder = this.previousElementSibling; if(placeholder && placeholder.classList.contains('video-placeholder')) placeholder.style.display='none';">
+            <video autoplay muted loop playsinline webkit-playsinline preload="metadata" class="article-banner video-content" style="width: 100%; height: auto; {{ if $imageResource }}display: none;{{ end }}">
               <source src="{{$item.RelPermalink}}{{$videoResource}}" type="video/mp4">
             </video>
           </a>
