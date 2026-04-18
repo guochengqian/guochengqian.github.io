@@ -44,7 +44,7 @@ subtitle = ""
  css_style = ""
  
  # CSS class.
- css_class = ""
+ css_class = "news-scroll"
 +++
 - *2026/03*: Corresponding authored [Canvas-to-Image](https://snap-research.github.io/canvas-to-image) accepted to SIGGRAPH 2026!
 - *2026/02*: Two papers accepted to CVPR 2026!

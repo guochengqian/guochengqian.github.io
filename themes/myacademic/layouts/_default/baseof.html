@@ -2,7 +2,11 @@
 <html lang="{{ site.LanguageCode | default "en-us" }}">
 
 {{ partial "site_head.html" . }}
-<body id="top" data-spy="scroll" data-offset="70" data-target="{{ if or .IsHome (eq .Type "widget_page") }}#navbar-main{{else}}#TableOfContents{{end}}" {{ if not (.Scratch.Get "light") }}class="dark"{{end}}>
+{{ $body_classes := slice (printf "theme-%s" (.Scratch.Get "theme_index" | default "minimal")) }}
+{{ if not (.Scratch.Get "light") }}
+  {{ $body_classes = $body_classes | append "dark" }}
+{{ end }}
+<body id="top" data-spy="scroll" data-offset="70" data-target="{{ if or .IsHome (eq .Type "widget_page") }}#navbar-main{{else}}#TableOfContents{{end}}" class="{{ delimit $body_classes " " }}">
 
   {{ partial "search" . }}
 
