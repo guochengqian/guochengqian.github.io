@@ -2,6 +2,7 @@
 
 {{/* Get name of site's Theme. Precedence: Params.toml > Default (Minimal) */}}
 {{- $theme_index := (site.Params.theme | lower | replaceRE "\\s" "_") | default "minimal" -}}
+{{- $scr.Set "theme_index" $theme_index -}}
 
 {{/* Get name of site's Font Set. Precedence: Params.toml > Theme > Default (Minimal) */}}
 {{- $font_index := (site.Params.font | lower | replaceRE "\\s" "_") | default ((index site.Data.themes $theme_index).font | lower | replaceRE "\\s" "_") | default $theme_index -}}
