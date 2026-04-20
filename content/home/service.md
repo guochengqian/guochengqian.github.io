@@ -49,4 +49,3 @@ subtitle = ""
 - Area Chair: ICLR 2026.
 - Reviewer: CVPR, ICCV, ECCV, ICLR, NeurIPS, SIGGRAPH, SIGGRAPH Asia.
 
-

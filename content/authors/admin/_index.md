@@ -29,7 +29,7 @@ address:
   country: United States
 
 # Short bio (displayed in user profile at end of posts)
-bio: Guocheng Qian (Gordon) is a Senior Research Scientist at Snap Research specializing in generative modeling and personalization.. 
+bio: Guocheng Qian (Gordon) is a Senior Research Scientist at Snap Inc. working on multimodal generation across image, video, and 3D.
 
 education:
   courses:
