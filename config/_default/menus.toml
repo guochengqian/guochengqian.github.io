@@ -9,8 +9,8 @@
   weight = 10
 
 [[main]]
-  name = "News"
-  url = "#news"
+  name = "Focus Areas"
+  url = "#focused-areas"
   weight = 20
 
 [[main]]
@@ -23,3 +23,7 @@
   url = "#experience"
   weight = 40
 
+[[main]]
+  name = "News"
+  url = "#news"
+  weight = 50
