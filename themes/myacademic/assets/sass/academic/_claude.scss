@@ -583,6 +583,165 @@ body.theme-claude .experience-summary p:last-child {
   margin-bottom: 0;
 }
 
+body.theme-claude .focused-areas-wrapper {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(95, 69, 39, 0.18) transparent;
+  margin: 0 -0.25rem;
+  padding: 0.2rem 0.25rem 0.45rem;
+}
+
+body.theme-claude .focused-areas-wrapper::-webkit-scrollbar {
+  height: 7px;
+}
+
+body.theme-claude .focused-areas-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body.theme-claude .focused-areas-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(95, 69, 39, 0.18);
+  border-radius: 999px;
+}
+
+body.theme-claude.dark .focused-areas-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(248, 239, 227, 0.16);
+}
+
+body.theme-claude .focused-areas-track {
+  display: flex;
+  gap: 1.15rem;
+  width: max-content;
+  align-items: stretch;
+}
+
+body.theme-claude .focus-area-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 250px;
+  width: 250px;
+  max-width: calc(100vw - 4.5rem);
+  min-height: 205px;
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 1.05rem 1.1rem 0.95rem;
+  background: linear-gradient(180deg, rgba(255, 250, 244, 0.98), rgba(243, 233, 220, 0.96));
+  border: 1px solid var(--claude-border);
+  border-radius: 24px;
+  box-shadow: 0 20px 54px rgba(92, 68, 41, 0.09);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+body.theme-claude .focus-area-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(183, 101, 49, 0.78), rgba(244, 204, 124, 0.82));
+}
+
+body.theme-claude.dark .focus-area-card {
+  background: linear-gradient(180deg, rgba(41, 34, 29, 0.98), rgba(29, 24, 21, 0.96));
+}
+
+body.theme-claude .focus-area-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 28px 72px rgba(92, 68, 41, 0.14);
+  border-color: var(--claude-border-strong);
+}
+
+body.theme-claude .focus-area-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.65rem;
+}
+
+body.theme-claude .focus-area-index {
+  flex: 0 0 auto;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--claude-accent);
+  padding-top: 0.18rem;
+}
+
+body.theme-claude .focus-area-title {
+  margin: 0;
+  flex: 1 1 auto;
+  font-family: $sta-font-body, sans-serif;
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1.14;
+  letter-spacing: -0.035em;
+  color: var(--claude-ink);
+}
+
+body.theme-claude .focus-area-summary {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.48;
+  color: var(--claude-muted-strong);
+}
+
+body.theme-claude .focus-area-links {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+  margin-top: auto;
+}
+
+body.theme-claude .focus-area-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.58rem 0.8rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(95, 69, 39, 0.08);
+  color: var(--claude-ink);
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+body.theme-claude.dark .focus-area-link {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+body.theme-claude .focus-area-link:hover {
+  transform: translateY(-1px);
+  border-color: rgba(183, 101, 49, 0.22);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--claude-accent);
+}
+
+body.theme-claude.dark .focus-area-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-claude .focus-area-link-name {
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+body.theme-claude .focus-area-link-label {
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: var(--claude-muted);
+}
+
 @media screen and (max-width: 991px) {
   body.theme-claude .home-section > .container {
     padding: 2.1rem 1.5rem;
@@ -619,6 +778,19 @@ body.theme-claude .experience-summary p:last-child {
 
   body.theme-claude .experience-company-name {
     font-size: 1.18rem;
+  }
+
+  body.theme-claude .focus-area-card {
+    flex-basis: 250px;
+    width: 250px;
+    max-width: calc(100vw - 3rem);
+    min-height: 195px;
+    padding: 0.95rem 0.95rem 0.9rem;
+    border-radius: 22px;
+  }
+
+  body.theme-claude .focus-area-title {
+    font-size: 1rem;
   }
 }
 
