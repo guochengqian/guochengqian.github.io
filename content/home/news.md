@@ -46,6 +46,7 @@ subtitle = ""
  # CSS class.
  css_class = "news-scroll"
 +++
+- *2026/05*: Recognized as an ICML 2026 Gold Reviewer.
 - *2026/03*: Corresponding authored [Canvas-to-Image](https://snap-research.github.io/canvas-to-image) accepted to SIGGRAPH 2026!
 - *2026/02*: Two papers accepted to CVPR 2026!
 - *2025/09*: Corresponding authored paper [SR-Training](https://snap-research.github.io/shortcut-rerouting/) accepted to NeurIPS 2025. SR-Training was shipped to product pipeline as a training technique. 

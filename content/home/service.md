@@ -5,10 +5,10 @@
 
 widget = "blank"  # See https://sourcethemes.com/academic/docs/page-builder/
 headless = false  # This file represents a page section.
-active = false  # Activate this widget? true/false
-weight = 105  # Order that this section will appear.
+active = true  # Activate this widget? true/false
+weight = 97  # Order that this section will appear.
 
-title = "Service"
+title = "Community Service"
 subtitle = ""
 
 [design]
@@ -46,6 +46,6 @@ subtitle = ""
  # CSS class.
  css_class = ""
 +++
-- Area Chair: ICLR 2026.
-- Reviewer: CVPR, ICCV, ECCV, ICLR, NeurIPS, SIGGRAPH, SIGGRAPH Asia.
+- Area Chair: ICLR, NeurIPS.
+- Gold Reviewer: ICML.
 
