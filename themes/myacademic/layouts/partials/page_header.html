@@ -19,9 +19,9 @@
 <div class="article-container pt-3">
   {{ $img_src := urls.Parse .Params.header.image }}
   {{ if $img_src.Scheme }}
-  <img src="{{ .Params.header.image }}" class="article-banner" alt="">
+  <img src="{{ .Params.header.image }}" class="article-banner" alt="{{ .Title }} header image">
   {{ else }}
-  <img src="{{ (printf "/img/%s" .Params.header.image) | relURL }}" class="article-banner" alt="">
+  <img src="{{ (printf "/img/%s" .Params.header.image) | relURL }}" class="article-banner" alt="{{ .Title }} header image">
   {{ end }}
 
   {{ with .Params.header.caption }}<span class="article-header-caption">{{ . | markdownify | emojify }}</span>{{ end }}
@@ -66,7 +66,7 @@
 {{/* Featured image */}}
 <div class="article-container pt-3 featured-image-wrapper mt-4 mb-4">
   <div style="position: relative">
-    <img src="{{ $image.RelPermalink }}" alt="" class="featured-image">
+    <img src="{{ $image.RelPermalink }}" alt="{{ .Title }} featured image" class="featured-image">
     {{ with $.Params.image.caption }}<span class="article-header-caption">{{ . | markdownify | emojify }}</span>{{ end }}
   </div>
 </div>

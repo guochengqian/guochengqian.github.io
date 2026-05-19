@@ -46,6 +46,6 @@ subtitle = ""
  # CSS class.
  css_class = ""
 +++
-- Area Chair: ICLR, NeurIPS.
+- Area Chair: [ICLR](https://iclr.cc/Conferences/2026/ProgramCommittee), NeurIPS.
 - Gold Reviewer: ICML.
 
