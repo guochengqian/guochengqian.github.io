@@ -2,7 +2,6 @@
 <html>
 
 <head>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <!-- Google tag (gtag.js) -->
@@ -24,8 +23,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600' rel='stylesheet'
         type='text/css'>
-    <link rel="stylesheet" href="/assets/css/Highlight-Clean.css">
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/Highlight-Clean.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/dragon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/dragon-32x32.png">
@@ -60,6 +59,97 @@
 </head>
 
 <body>
+
+    <style>
+        .project-links {
+            margin-top: 0.25rem;
+            margin-bottom: 2rem;
+        }
+        .project-link-item {
+            margin-bottom: 0.25rem;
+        }
+        .project-link-icon {
+            height: 64px;
+            width: auto;
+            display: inline-block;
+        }
+        .hero-gif {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 14px auto 0;
+        }
+        .example-generated-objects,
+        .example-generated-objects h2,
+        .example-generated-objects p {
+            text-align: center;
+        }
+        .example-generated-objects .examples-grid .row {
+            justify-content: center;
+        }
+        .example-generated-objects .examples-grid .col-sm-1 {
+            justify-content: center !important;
+            text-align: center;
+        }
+        .example-generated-objects .examples-grid img,
+        .example-generated-objects .examples-grid video,
+        .tradeoff-media img,
+        .tradeoff-media video,
+        .quantitative-results-media img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .tradeoff-media {
+            width: 100%;
+        }
+        .tradeoff-media img,
+        .tradeoff-media video {
+            margin-bottom: 16px;
+        }
+        .tradeoff-media > img,
+        .tradeoff-media > video {
+            width: 100% !important;
+            max-width: none !important;
+            min-width: 100%;
+            height: auto !important;
+            max-height: none !important;
+            display: block;
+            box-sizing: border-box;
+            object-fit: contain;
+        }
+        .footer .footer-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .footer .icon-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            min-height: 36px;
+            font-size: 18px;
+            text-decoration: none;
+        }
+        .footer .content {
+            text-align: center;
+        }
+        @media (max-width: 575px) {
+            .project-link-icon {
+                height: 52px;
+            }
+            .project-links {
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
 
     <div class="highlight-clean" style="padding-bottom: 10px;">
         <div class="container" style="max-width: 100%;">
@@ -138,17 +228,17 @@
         </div>
     </div>
 
-    <div class="container align-items-center">
-        <div class="row text-center mx-auto">
-            <div class="col-sm-6">
+    <div class="container align-items-center project-links">
+        <div class="row text-center mx-auto justify-content-center">
+            <div class="col-sm-4 col-md-3 project-link-item">
                 <a href="https://arxiv.org/abs/2306.17843" target="_blank" class="link-block w-inline-block">
-                    <img src="assets/images/arxiv_paper.png" alt="paper" class="img-fluid" style="height:100px" /></a>
+                    <img src="assets/images/arxiv_paper.png" alt="paper" class="img-fluid project-link-icon" /></a>
                 <br>
                 <div class="text-block-2"><strong class="bold-text-nerf_v2">Arxiv</strong></div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-4 col-md-3 project-link-item">
                 <a href="https://github.com/guochengqian/Magic123" target="_blank" class="link-block w-inline-block">
-                    <img src="assets/images/github.png" alt="github" class="img-fluid" style="height:100px" /></a>
+                    <img src="assets/images/github.png" alt="github" class="img-fluid project-link-icon" /></a>
                 <br>
                 <div class="text-block-2"><strong class="bold-text-nerf_v2">Code</strong></div>
             </div>
@@ -163,8 +253,7 @@
         <source data-src="https://dreamfusion-cdn.ajayj.com/sept28/banner_1x6_customhue_A.mp4" type="video/mp4" style="width: 100%; height: auto;"></source>
       </video>
     </div> -->
-    <video src="assets/videos/pull.mp4" autoplay loop playsinline muted
-        style="width: 100%; height: auto; margin: 0 auto;" type="video/mp4" style="width: 100%; height: auto;"></video>
+    <video src="assets/videos/pull.mp4" autoplay loop playsinline muted class="hero-gif" type="video/mp4"></video>
 
 
     <hr class="divider" />
@@ -211,8 +300,8 @@
 
 
     <hr class="divider" />
-    <div class="container" style="max-width: col-md-8;">
-        <div class="row">
+    <div class="container example-generated-objects" style="max-width: col-md-8;">
+        <div class="row text-center">
             <div class="col-sm-12">
                 <h2>Example generated objects</h2>
                 <p>Magic123 generates photo-realistic 3D objects from a single unposed image. </p>
@@ -225,7 +314,7 @@
             </div> -->
         </div>
 
-        <div class="container align-items-center">
+        <div class="container align-items-center examples-grid">
             <div class="row">
                 <!-- Row 0 -->
                 <div class="col-sm-1 d-flex align-items-center justify-content-start p-0">
@@ -396,7 +485,7 @@
             </div>
         </div>
         <div class="row justify-content-center" style="padding: 0; margin: 0;">
-            <div class="col-sm-8 text-center">
+            <div class="col-sm-8 text-center tradeoff-media">
                 <img src="assets/images/priors.jpeg" alt="Image description" class="img-fluid">
                 <div style="height: 30px;"></div>
 
@@ -457,7 +546,7 @@
             </div> -->
 
         <div class="row justify-content-center" style="padding: 0; margin: 0;">
-            <div class="col-sm-11 text-center">
+            <div class="col-sm-12 text-center quantitative-results-media">
                 <img src="assets/images/results.jpeg" alt="Image description" class="img-fluid">
             </div>
         </div>
@@ -468,12 +557,12 @@
 
     <footer class="footer">
         <div class="container">
-            <div class="content has-text-centered">
-                <a class="icon-link" href="./static/videos/nerfies_paper.pdf">
-                    <i class="fas fa-file-pdf"></i>
+            <div class="content has-text-centered footer-icons">
+                <a class="icon-link" href="https://arxiv.org/abs/2306.17843" aria-label="Magic123 paper">
+                    <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
                 </a>
-                <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
-                    <i class="fab fa-github"></i>
+                <a class="icon-link" href="https://github.com/guochengqian/Magic123" aria-label="Magic123 GitHub">
+                    <i class="fab fa-github" aria-hidden="true"></i>
                 </a>
             </div>
             <div class="columns is-centered">
@@ -501,18 +590,16 @@
 
 
 
-    <script src="https://polyfill.io/v3/polyfill.js?features=IntersectionObserver"></script>
-    <script src="/assets/js/yall.js"></script>
+    <script src="assets/js/yall.js"></script>
     <script>
         yall({
             observeChanges: true
         });
     </script>
-    <script src="/assets/js/scripts.js"></script>
+    <script src="assets/js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js">
     </script>
-    <script src="https://uploads-ssl.webflow.com/51e0d73d83d06baa7a00000f/js/webflow.fd002feec.js"></script>
     <!-- Import the component -->
 </body>
 
