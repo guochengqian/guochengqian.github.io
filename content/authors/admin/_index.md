@@ -77,7 +77,7 @@ social:
   link: https://x.com/guocheng_qian
 - icon: substack.svg
   icon_pack: img
-  link: https://substack.com/@voluntariuscaecus133921
+  link: https://substack.com/@gordonqian
 - icon: rednote.svg
   icon_pack: img
   link: https://www.xiaohongshu.com/user/profile/58894a2982ec39681b4a7842
