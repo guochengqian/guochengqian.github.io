@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Gemini-Omni Might Work — Gordon's Blog</title>
+  <meta name="description" content="Three plausible architectures for Google's latest video model, ranked — and why a Transfusion-style unified transformer is my top guess.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css">
+  <script src="../blog-theme.js"></script>
+</head>
+<body>
+<div class="page">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><img src="../img/avatar.jpg" alt="Gordon Guocheng Qian"> Gordon Guocheng Qian</a>
+    <nav class="site-nav">
+      <a href="/#about">About</a>
+      <a href="../index.html">Blog</a>
+      <a href="../rss.xml">RSS</a>
+    </nav>
+  </header>
+
+  <article>
+    <p class="article-tag">AI</p>
+    <h1>How Gemini-Omni Might Work</h1>
+    <p class="subtitle">This is my high-level speculation on how <strong>Gemini-Omni</strong>, Google&rsquo;s latest video editing/generation model, might be implemented.</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">June 18, 2026 &middot; 6 min read</div>
+      </div>
+    </div>
+
+    <p>Public information is not sufficient to identify the exact architecture, but I see three reasonable possibilities from high to low probability:</p>
+    <ol>
+      <li><strong>Transfusion / HunyuanImage-3.0-style single unified transformer</strong> for joint multimodal understanding and generation. <strong>Most likely for Gemini-Omni.</strong></li>
+      <li><strong>Qwen-Image-Edit-style encoder-decoder system</strong>: Gemini as a multimodal encoder, whose embeddings are then used as conditioning for a flow-matching model to render video. <strong>Most likely for Veo 3.</strong></li>
+      <li><strong>GLM-Image-style hybrid</strong>: autoregressive coarse visual tokens in discrete space + diffusion refinement in continuous space. Plausible for images, but <strong>less likely</strong> as the main dense video route this year.</li>
+    </ol>
+    <p>I believe the <strong>Transfusion-style unified model</strong> is the most likely architecture for Gemini-Omni.</p>
+
+    <hr>
+
+    <h2>Roadmap 1: Transfusion</h2>
+    <p><strong>This is the Transfusion-style roadmap, and my top choice for Gemini-Omni.</strong></p>
+    <p>The core idea is <strong>one shared transformer</strong> that handles both:</p>
+    <ul>
+      <li>Next-token prediction for text and discrete tokens</li>
+      <li>Flow matching for continuous image, video, and audio latents</li>
+    </ul>
+    <p><strong>Simplified training/inference flow:</strong></p>
+    <pre>Text / Image / Video / Audio Context
+          ↓
+Shared Multimodal Transformer
+          ↓
+Next-token prediction (discrete modality like text generation) + Flow matching (continuous modality like video/image/audio generation)
+          ↓
+Text, Images, Video, or Audio Output</pre>
+    <p>A <strong>blockwise causal mask</strong> is used: text regions (causal attention) follow standard next-token prediction, while visual/audio regions (full attention) are trained with flow-matching objectives.</p>
+    <figure>
+      <img src="transfusion.png" alt="Unified transformer with discrete token heads and continuous flow-matching heads">
+      <figcaption>Unified transformer with discrete token heads and continuous flow-matching heads.</figcaption>
+    </figure>
+    <p><strong>Why this is attractive:</strong></p>
+    <p>Most diffusion systems still use an encoder-decoder architecture, where the encoder is a text encoder that encodes a text prompt into embeddings, and the decoder is a DiT that iteratively denoises.</p>
+    <p>Previously, a tiny CLIP text encoder was used, as in Stable Diffusion. Such an encoder-decoder architecture made sense, as the encoder was tiny anyway.</p>
+    <p>Modern DiTs use heavier LLMs (like Mistral) or VLMs (like Qwen2.5-VL) as text encoders, as in FLUX 2.0 and Qwen-Image-Edit. This shift from simple CLIP to a larger-scale pretrained LLM makes sense, as it brings better prompt alignment and multimodal conditioning support (e.g., natively supporting reference images/videos).</p>
+    <p>The encoder can now be a massive multimodal model, such as Gemini 3.5 Flash with about 250B parameters and 45B active parameters. Using a huge model <em>only</em> as an embedding extractor feels wasteful when it already deeply understands the prompt, source video, audio, dialogue, and editing intent.</p>
+    <p>A unified Transfusion-like model removes the awkward split between &ldquo;the model that understands&rdquo; and &ldquo;the model that generates.&rdquo; It unifies the architecture (as the text encoder and DiT are both Transformers anyway) through unified losses, which not only leads to better prompt alignment but also enables joint multimodal understanding and generation, which is important for editing.</p>
+    <p>The word <strong>&ldquo;Omni&rdquo;</strong> in Gemini-Omni also strongly suggests this single model family that processes <em>and</em> generates across modalities, exactly what this roadmap delivers.</p>
+
+    <hr>
+
+    <h2>Roadmap 2: Gemini as Multimodal Encoder and DiT as Video Rendering Decoder</h2>
+    <p><strong>This follows the Qwen-Image-Edit pattern, applied to video.</strong></p>
+    <p>Gemini does not replace the video backbone. It acts as a multimodal encoder whose embeddings are then used as conditioning for the DiT to render a video for generation or editing.</p>
+    <p><strong>Architecture:</strong></p>
+    <pre>Text / Image / Video / Audio / Dialogue Context
+          ↓
+Gemini Multimodal Model
+          ↓
+Prompt rewriting + Dense multimodal embeddings
+          ↓
+Latent Video/Audio Diffusion Model
+          ↓
+Edited Video + Audio</pre>
+    <figure>
+      <img src="qwen-image.png" alt="Gemini conditioner feeding dense embeddings into a Veo-style generator">
+      <figcaption>Gemini conditioner feeding dense embeddings into a DiT renderer.</figcaption>
+    </figure>
+    <p><strong>Key advantages:</strong></p>
+    <ul>
+      <li>Keeps the video generator specialized for high visual quality</li>
+      <li>Makes it easier to upgrade understanding by improving Gemini</li>
+      <li>Reuses strong pretrained Gemini and Veo models</li>
+    </ul>
+    <p>This is likely the <strong>most likely architecture for Veo 3: Gemini understands intent, and DiT renders</strong>.</p>
+    <p><strong>Limitation:</strong> it remains a two-system pipeline rather than a true single &ldquo;Omni&rdquo; model.</p>
+
+    <hr>
+
+    <h2>Roadmap 3: Autoregressive Coarse Tokens + Diffusion Refinement</h2>
+    <p><strong>This is the GLM-Image-style hybrid.</strong></p>
+    <p>The model first autoregressively generates <strong>coarse visual tokens</strong>: layout, structure, composition, and low-resolution content. Then a diffusion model refines them into high-quality output.</p>
+    <p><strong>Pipeline:</strong></p>
+    <pre>Prompt / Multimodal Context
+          ↓
+Autoregressive Model → Coarse Discrete Visual Tokens
+          ↓
+Diffusion Refinement Model
+          ↓
+High-Quality Image or Video</pre>
+    <p>This works excellently for <strong>images</strong>. For <strong>dense video</strong>, however, token count explodes because video has space, time, motion, temporal consistency, and often audio. Even with compression and hierarchy, the cost is severe.</p>
+    <p>I see this roadmap as a future version for video generation, as the benefits are clear: being able to use all techniques from LLMs for video generation, such as KV caching, speculative decoding, CUDA Graph acceleration, and training infrastructure.</p>
+    <figure>
+      <img src="glm-image.png" alt="AR model produces coarse scene/video tokens, then diffusion refines them">
+      <figcaption>AR model produces coarse scene/video tokens, then diffusion refines them.</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>My Current Guess</h2>
+    <p><strong>Final ranking:</strong></p>
+    <ol>
+      <li><strong>Unified Transformer (Roadmap 1)</strong>: most likely for <strong>Gemini-Omni</strong></li>
+      <li><strong>Gemini-DiT (Roadmap 2)</strong>: most likely for <strong>Veo 3</strong></li>
+      <li><strong>AR + Diffusion Hybrid (Roadmap 3)</strong>: less likely for current video generation and possibly a roadmap for future video models</li>
+    </ol>
+    <p>The name <strong>Gemini-Omni</strong> points toward unification, and the field is clearly moving toward <strong>less glue, more shared modeling</strong> across modalities (text, image, video, audio, and action for world modeling in the coming months).</p>
+
+    <hr>
+
+    <h2>References</h2>
+    <ol>
+      <li>Google, &ldquo;Introducing Gemini Omni.&rdquo;</li>
+      <li>Google DeepMind, &ldquo;Veo 3 Technical Report.&rdquo;</li>
+      <li>Zhou et al., &ldquo;Transfusion&rdquo; (arXiv:2408.11039).</li>
+      <li>Zhipu AI, &ldquo;GLM-Image.&rdquo;</li>
+      <li>Qwen Team, &ldquo;Qwen-Image&rdquo; and &ldquo;Qwen-Image-Edit.&rdquo;</li>
+      <li>Tencent Hunyuan, &ldquo;HunyuanImage-3.0.&rdquo;</li>
+    </ol>
+
+    <hr>
+
+    <p>What do you think is the most likely path? Would love to hear your thoughts in the comments.</p>
+
+    <div class="author-card">
+      <img src="../img/avatar.jpg" alt="Gordon Guocheng Qian">
+      <div>
+        <div class="author-name">Gordon Guocheng Qian</div>
+        <p>Senior Research Scientist at Snap Inc. Writing about AI research, model scaling, agents, and markets.</p>
+        <div class="author-links">
+          <a href="/">Homepage</a>
+          <a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ">Google Scholar</a>
+          <a href="https://github.com/guochengqian">GitHub</a>
+          <a href="https://twitter.com/guocheng_qian">X</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="comments">
+      <h2 class="comments-title">Comments</h2>
+      <script src="https://utteranc.es/client.js" repo="guochengqian/guochengqian.github.io" issue-term="pathname" label="blog-comment" theme="github-light" crossorigin="anonymous" async></script>
+    </section>
+  </article>
+
+  <footer class="site-footer">&copy; 2026 Gordon Guocheng Qian &middot; <a href="../rss.xml">RSS</a> &middot; <a href="../index.html">All posts</a></footer>
+</div>
+</body>
+</html>

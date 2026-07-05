@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>On-Policy Distillation: The Frontier Lab Recipe for Merging Experts — Gordon's Blog</title>
+  <meta name="description" content="OPD is not just a loss function. It is how a thousand-person lab works in parallel on the same intelligence.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css">
+  <script src="../blog-theme.js"></script>
+</head>
+<body>
+<div class="page">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><img src="../img/avatar.jpg" alt="Gordon Guocheng Qian"> Gordon Guocheng Qian</a>
+    <nav class="site-nav">
+      <a href="/#about">About</a>
+      <a href="../index.html">Blog</a>
+      <a href="../rss.xml">RSS</a>
+    </nav>
+  </header>
+
+  <article>
+    <p class="article-tag">AI</p>
+    <h1>On-Policy Distillation: The Frontier Lab Recipe for Merging Experts</h1>
+    <p class="subtitle">OPD is not just a better technique for merging expert models. It is a way for a large AI lab to organize hundreds, or even thousands, of people to work around one shared giant model.</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">June 15, 2026 &middot; 9 min read</div>
+      </div>
+    </div>
+
+    <p>On-policy distillation (OPD) is not just a better technique for merging expert models. It is also a way for a large AI lab to organize hundreds, or even thousands, of people to work around one shared giant model like Gemini-3.5.</p>
+    <p>The simple version is this: different subteams can push different expert models independently, get credit for improving their own domain, and then use OPD to fold those expert behaviors back into a single model.</p>
+    <p>That is the part I find interesting. Not only the loss function. The production pattern.</p>
+    <p>Very roughly, modern LLM training has a few stages:</p>
+    <ol>
+      <li>Pretraining gives the model language, world knowledge, and basic reasoning.</li>
+      <li>SFT and RL-based post-training make it follow instructions, answer more helpfully, and behave more like a chatbot product that also knows to call tools.</li>
+      <li>Expert tuning pushes specific abilities further: math, coding, conversation, writing style, tool use, search, agents, safety, long context, and so on.</li>
+      <li>OPD folds those specialized models back into one model people can actually use.</li>
+    </ol>
+    <p>OPD is mostly about the last step: how to merge the behavior of many expert models into one shared model.</p>
+    <p>The term has recently become more visible because of the Thinking Machines Lab blog post on on-policy distillation [1]. Public technical reports from frontier labs, such as DeepSeek-V4 [2] and GLM-5 [3], also point toward this recipe. I would be careful about claiming that every lab uses exactly this recipe, or that a specific unreleased system uses OPD in this exact form. But as a way to think about frontier-model production, OPD feels very close to what the field is converging toward.</p>
+    <p>I see it at three levels.</p>
+
+    <hr>
+
+    <h2>1. The math is clean</h2>
+    <p>The core idea of OPD is not complicated.</p>
+    <p>Instead of training a student model on answers the teacher wrote in advance, you let the student try the problem first. Then the teacher looks at the states the student actually visits and says, token by token: would I have done that?</p>
+    <p>That is what makes it on-policy. The training trajectory is rolled out from the current student policy, not from a fixed dataset of teacher completions.</p>
+    <figure>
+      <img src="opd-illustration.png" alt="Off-policy and on-policy distillation illustration">
+      <figcaption>Off-policy vs. on-policy distillation: classic distillation trains on teacher-written trajectories, while OPD gives teacher feedback on states the student actually visits.</figcaption>
+    </figure>
+    <p>A common version uses per-token reverse KL:</p>
+    <pre><code>KL(pi_student || pi_teacher)
+= E_{x ~ pi_student} [ log pi_student(x_{t+1}|x_{1..t}) - log pi_teacher(x_{t+1}|x_{1..t}) ]</code></pre>
+    <p>In plain English:</p>
+    <ul>
+      <li>the student generates its own answer;</li>
+      <li>for each token it produced, we look at how confident the student was;</li>
+      <li>we ask the teacher, usually the expert model for that prompt or domain, how likely that same token was in the same context;</li>
+      <li>if the student confidently produced a token the teacher thinks is bad, the student gets penalized;</li>
+      <li>over time, the student learns to behave more like the teacher in the states the student itself tends to reach.</li>
+    </ul>
+    <p>This is different from ordinary off-policy distillation.</p>
+    <p>Classic distillation is more like copying the teacher&rsquo;s answer. That works until the student makes its own mistake. Once the student drifts into a state that never appeared in the teacher&rsquo;s trajectory, the supervision becomes much weaker.</p>
+    <p>OPD is more like having the teacher sit next to the student while the student works. If the student takes a wrong turn, the teacher gives feedback at the exact fork in the road.</p>
+    <p>That matters for reasoning. Many reasoning failures are not only wrong at the final answer. They go wrong at one small branching decision halfway through the chain. OPD can give dense feedback at those branching points instead of waiting until the end and saying &ldquo;wrong.&rdquo;</p>
+    <p>Before OPD, people already had other ways to combine abilities across models. The simplest family is model merging or weight averaging. Model Soups averages the weights of multiple fine-tuned models. TIES-Merging and DARE try to reduce interference between task deltas before merging.</p>
+
+    <hr>
+
+    <h2>2. It is cleaner than one giant mixed reward</h2>
+    <p>The second way to look at OPD is as a training strategy.</p>
+    <p>Suppose you want a final model that is great at math, strong at coding, natural in conversation, reliable with tools, useful as an agent, and safe.</p>
+    <p>One obvious approach is to train one model with one big mixed reward:</p>
+    <pre><code>Reward = math reward + coding reward + dialogue reward + agent reward + safety reward + ...</code></pre>
+    <p>This sounds reasonable. In practice, it gets ugly fast.</p>
+    <p>Each reward has a different scale. Some are sparse, some are dense. Some are easy to verify, some are subjective. Math often has a clean verifiable reward: the answer is right or wrong. Coding can run tests. But dialogue quality, writing style, helpfulness, safety boundaries, and agent behavior are much harder to score cleanly.</p>
+    <p>So the problem turns into messy multi-objective RL:</p>
+    <ul>
+      <li>one ability improves while another gets worse;</li>
+      <li>reward hacking becomes harder to diagnose;</li>
+      <li>training gets less stable;</li>
+      <li>credit assignment gets blurry;</li>
+      <li>teams argue about reward weights, data mixture, eval priority, and rollback criteria.</li>
+    </ul>
+    <p>OPD gives you a different decomposition.</p>
+    <p>Do not force one model to improve on everything at once. First train specialists.</p>
+    <p>Each expert can use the reward, data, benchmark, and training recipe that fits its domain.</p>
+    <p>Then OPD distills the behavior of those experts into one unified model.</p>
+    <p>This does not magically solve everything. Experts will still disagree. A math expert may prefer long chains of thought. A dialogue expert may prefer a short answer. A safety expert may refuse. An agent expert may try to execute. A coding expert may be deterministic. A creative writing expert may want more entropy.</p>
+    <p>But the problem changes shape. Instead of being only a reward-engineering mess, it becomes a behavior-arbitration problem. You can handle that with routing, domain conditioning, teacher selection, KL weighting, mixture data, preference models, and post-training policy choices.</p>
+    <p>OPD does not remove conflict. It makes the conflict easier to manage.</p>
+
+    <hr>
+
+    <h2>3. It is an organizational design pattern</h2>
+    <p>This is the part I care about most.</p>
+    <p>OPD is not just an algorithm. It is a way to organize a huge lab.</p>
+    <p>If a frontier AI lab has a thousand people, the hard question is not whether it has enough smart researchers. The hard question is how a thousand people&rsquo;s work can add up inside the same model.</p>
+    <p>If everyone touches the same base model, the same reward, and the same data mixture, coordination explodes. A math change may hurt dialogue. A coding change may break safety. An agent improvement may increase latency. A data tweak may quietly move five benchmarks at once.</p>
+    <p>Then the organization spends a scary amount of time on meetings, ablations, rollbacks, mixture debates, eval debates, and who-broke-what debugging.</p>
+    <p>OPD allows hundreds of people to work together in a more independent way. Each team can push its own expert model, measure progress on its own evals, and still contribute to the final shared model.</p>
+    <figure>
+      <img src="opd-org.png" alt="OPD as an organizational design pattern for frontier AI labs">
+      <figcaption>OPD as an organizational design pattern: many capability teams train specialized experts, then distill their behavior back into one general model.</figcaption>
+    </figure>
+    <p>One possible structure looks like this:</p>
+    <ul>
+      <li><strong>General knowledge team</strong>: pushes broad understanding, using benchmarks like MMLU.</li>
+      <li><strong>Math team</strong>: focuses on math. Since math has strong verifiers, it can push hard on AIME, MATH, Olympiad-style problems, proof tasks, and symbolic reasoning.</li>
+      <li><strong>Coding team</strong>: focuses on coding. Coding can use unit tests, compilers, benchmark suites, repo-level editing tasks, bug fixing, code review, and agentic coding. It can push LiveCodeBench, SWE-bench, Codeforces-style tasks, and repo-level agent benchmarks.</li>
+      <li><strong>Writing team</strong>: focuses on structure, voice, creative writing, summarization, rewriting, instruction following, and preference matching.</li>
+      <li><strong>Search/research team</strong>: focuses on query rewriting, retrieval, source selection, evidence grounding, citations, and multi-hop research.</li>
+      <li><strong>Function-calling team</strong>: focuses on tool calls, schema following, argument extraction, API selection, multi-call planning, tool-result interpretation, and error recovery.</li>
+      <li><strong>Dialogue team</strong>: focuses on human preference and conversational style.</li>
+      <li><strong>Agent team</strong>: focuses on long-horizon task completion.</li>
+      <li><strong>Safety team</strong>: focuses on refusal boundaries and policy compliance.</li>
+      <li><strong>Long-context team</strong>: focuses on retrieval, memory, and keeping track of far-away information.</li>
+      <li><strong>Final step</strong>: OPD distills these specialized experts back into one general model.</li>
+    </ul>
+    <p>Now the organization is divided by capability, not by one global reward soup.</p>
+    <p>Each team has one clean job: make its expert best in the world at that capability.</p>
+    <p>It does not need to constantly worry that its improvement will destroy every other ability, because the final integration is handled by the OPD/post-training pipeline.</p>
+    <p>That matters because frontier model training is no longer just a clever-loss-function problem. It is a large-scale engineering and organizational problem.</p>
+    <p>The bottleneck is not only GPUs. It is not only data. It is not only a clever new objective.</p>
+    <p>A real bottleneck is this:</p>
+    <p><strong>How do you let a thousand people work in parallel on the same intelligence?</strong></p>
+    <p>OPD is interesting because it turns &ldquo;train one universal model&rdquo; into &ldquo;train many verifiable experts, then distill them back into one model.&rdquo;</p>
+    <p>That feels a lot like modern software engineering.</p>
+    <p>You would not ask a thousand engineers to edit one giant function. You split the system into modules, define interfaces, write tests, run CI, and merge.</p>
+    <p>OPD may be the CI and merge system for frontier model training.</p>
+
+    <hr>
+
+    <h2>References / further reading</h2>
+    <ul>
+      <li>[1] Thinking Machines Lab, &ldquo;On-Policy Distillation&rdquo; (Kevin Lu et al., 2025). The clearest public explanation of OPD I have seen so far, with reverse KL, pseudocode, Qwen3 reasoning distillation reproduction, and compute-efficiency discussion. <a href="https://thinkingmachines.ai/blog/on-policy-distillation/">thinkingmachines.ai/blog/on-policy-distillation</a></li>
+      <li>[2] DeepSeek-AI, &ldquo;DeepSeek-V4.&rdquo; A relevant frontier-model reference for the direction of specialized post-training, expert-model integration, and deployable unified models.</li>
+      <li>[3] Zhipu AI, &ldquo;GLM-5.&rdquo; A frontier-model example relevant to the broader trend of specialized post-training, expert behavior transfer, and unified model production.</li>
+      <li>[4] Agarwal et al., &ldquo;On-Policy Distillation of Language Models: Learning from Self-Generated Mistakes,&rdquo; ICLR 2024. Introduces Generalized Knowledge Distillation (GKD). <a href="https://arxiv.org/abs/2306.13649">arxiv.org/abs/2306.13649</a></li>
+      <li>[5] Wortsman et al., &ldquo;Model Soups,&rdquo; ICML 2022. A classic reference for weight averaging / model soups. <a href="https://arxiv.org/abs/2203.05482">arxiv.org/abs/2203.05482</a></li>
+      <li>[6] Yadav et al., &ldquo;TIES-Merging: Resolving Interference When Merging Models,&rdquo; NeurIPS 2023. <a href="https://arxiv.org/abs/2306.01708">arxiv.org/abs/2306.01708</a></li>
+      <li>[7] OpenAI, &ldquo;Model Distillation in the API,&rdquo; 2024. A product-level signal that distillation is part of the mainstream model production stack. <a href="https://openai.com/index/api-model-distillation/">openai.com/index/api-model-distillation</a></li>
+    </ul>
+
+    <div class="author-card">
+      <img src="../img/avatar.jpg" alt="Gordon Guocheng Qian">
+      <div>
+        <div class="author-name">Gordon Guocheng Qian</div>
+        <p>Senior Research Scientist at Snap Inc. Writing about AI research, model scaling, agents, and markets.</p>
+        <div class="author-links">
+          <a href="/">Homepage</a>
+          <a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ">Google Scholar</a>
+          <a href="https://github.com/guochengqian">GitHub</a>
+          <a href="https://twitter.com/guocheng_qian">X</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="comments">
+      <h2 class="comments-title">Comments</h2>
+      <script src="https://utteranc.es/client.js" repo="guochengqian/guochengqian.github.io" issue-term="pathname" label="blog-comment" theme="github-light" crossorigin="anonymous" async></script>
+    </section>
+  </article>
+
+  <footer class="site-footer">&copy; 2026 Gordon Guocheng Qian &middot; <a href="../rss.xml">RSS</a> &middot; <a href="../index.html">All posts</a></footer>
+</div>
+</body>
+</html>

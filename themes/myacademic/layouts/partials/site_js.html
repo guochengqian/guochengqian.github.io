@@ -149,12 +149,6 @@
     {{ $js_bundle := slice $js_bundle_head $js_bundle | resources.Concat "js/academic.min.js" | fingerprint "md5" }}
     <script src="{{ $js_bundle.RelPermalink }}"></script>
 
-    <section class="tail-section">
-        <div class="container">
-        <!--<div class="watermark-footer" style="background-image:url('{{ $.Site.BaseURL }}/img/{{ .Site.Params.watermark }}');"></div>-->
-        <!-- <img src="/img/{{ .Site.Params.watermark }}" class="signature-banner"> -->
-        </div>
-    </section>
 
 
 
