@@ -129,7 +129,7 @@ def inline_nodes(node, slug, marks=None):
     return [n for n in out if n['text']]
 
 # ---------- image upload ----------
-def api(path, payload=None):
+def api(path, payload=None, method=None):
     req = urllib.request.Request(
         PUB + path,
         data=json.dumps(payload).encode() if payload is not None else None,
@@ -140,7 +140,7 @@ def api(path, payload=None):
             'Referer': PUB + '/publish/post',
             'Origin': PUB,
         },
-        method='POST' if payload is not None else 'GET')
+        method=method or ('POST' if payload is not None else 'GET'))
     with urllib.request.urlopen(req) as r:
         return json.loads(r.read().decode())
 
@@ -170,7 +170,7 @@ def image_block(fspath, caption_inline, dry):
     return block
 
 # ---------- block conversion ----------
-SKIP_CLASSES = {'byline', 'author-card', 'comments', 'chips'}
+SKIP_CLASSES = {'byline', 'author-card', 'comments', 'chips', 'email-post-end', 'email-post-btn'}
 
 def convert_blocks(parent, slug, dry, warnings):
     blocks = []
@@ -300,7 +300,7 @@ def build_post(slug, dry=True):
     doc = {'type': 'doc', 'attrs': {'schemaVersion': 'v1'}, 'content': blocks}
     return {'title': title, 'subtitle': subtitle, 'date': date, 'doc': doc, 'warnings': warnings}
 
-def create_draft(post):
+def draft_payload(post, slug, dry=False):
     payload = {
         'draft_title': post['title'],
         'draft_subtitle': post['subtitle'],
@@ -311,14 +311,35 @@ def create_draft(post):
         'draft_section_id': None,
         'section_chosen': False,
     }
-    return api('/api/v1/drafts', payload)
+    # a preview.* file next to the post becomes the Substack cover image
+    for ext in ('jpg', 'jpeg', 'png'):
+        p = BLOG / slug / f'preview.{ext}'
+        if p.exists():
+            payload['cover_image'] = f'local:{p}' if dry else upload_image(p)
+            break
+    return payload
+
+def create_draft(post, slug):
+    return api('/api/v1/drafts', draft_payload(post, slug))
+
+def update_draft(post, slug):
+    return api(f'/api/v1/drafts/{DRAFT_IDS[slug]}', draft_payload(post, slug), method='PUT')
+
+# slug -> existing Substack draft id (from the 2026-07-05 initial sync)
+DRAFT_IDS = {
+    'opd': 205424147, 'hermes-agent': 205424199, 'elorian-ai': 205424207,
+    'post-training-market': 205424220, 'gemini-omni-architecture': 205424225,
+    'research-labs-shutdown': 205424228, 'stock-inspiration-20260701': 205424233,
+    'agent-for-finance': 205424275, 'visual-generation-chatbot-accessory': 205424278,
+    'next-scaling-after-model-scaling': 205424280,
+}
 
 SLUGS = ['hermes-agent', 'elorian-ai', 'agent-for-finance', 'visual-generation-chatbot-accessory',
          'post-training-market', 'opd', 'gemini-omni-architecture', 'research-labs-shutdown',
          'next-scaling-after-model-scaling', 'stock-inspiration-20260701']  # oldest -> newest
 
 if __name__ == '__main__':
-    mode = sys.argv[1] if len(sys.argv) > 1 else 'dry'
+    mode = sys.argv[1] if len(sys.argv) > 1 else 'dry'  # dry | push | update
     targets = sys.argv[2:] or SLUGS
     for slug in targets:
         post = build_post(slug, dry=(mode == 'dry'))
@@ -326,9 +347,12 @@ if __name__ == '__main__':
         print(f"== {slug}\n   title: {post['title']}\n   subtitle: {post['subtitle'][:70]}...\n   date: {post['date']} | blocks: {len(post['doc']['content'])} | images: {n_img}")
         for w in post['warnings']:
             print('   WARN:', w)
-        if mode == 'push':
-            try:
-                res = create_draft(post)
-                print(f"   -> draft id {res.get('id')} : {PUB}/publish/post/{res.get('id')}")
-            except urllib.error.HTTPError as e:
-                print('   ERROR', e.code, e.read().decode()[:300])
+        try:
+            if mode == 'push':
+                res = create_draft(post, slug)
+                print(f"   -> created draft {res.get('id')} : {PUB}/publish/post/{res.get('id')}")
+            elif mode == 'update':
+                res = update_draft(post, slug)
+                print(f"   -> updated draft {res.get('id')} : {PUB}/publish/post/{res.get('id')}")
+        except urllib.error.HTTPError as e:
+            print('   ERROR', e.code, e.read().decode()[:300])
