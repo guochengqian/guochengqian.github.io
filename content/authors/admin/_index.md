@@ -75,9 +75,9 @@ social:
 - icon: x-twitter
   icon_pack: fab
   link: https://x.com/guocheng_qian
-# - icon: rednote.png
-#   icon_pack: img
-#   link: https://www.xiaohongshu.com/user/profile/58894a2982ec39681b4a7842
+- icon: rednote.svg
+  icon_pack: img
+  link: https://www.xiaohongshu.com/user/profile/58894a2982ec39681b4a7842
 # - icon: zhihu
 #   icon_pack: fab
 #   link: https://www.zhihu.com/people/GordonQian/

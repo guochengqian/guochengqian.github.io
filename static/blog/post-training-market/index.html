@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Post-Training Compute Demand Will Be More Than 10x Pretraining — Gordon's Blog</title>
+  <meta name="description" content="Two years ago pretraining used ~10x more compute than post-training. Six months ago the ratio was closer to 1:1. Now it may flip.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css">
+  <script src="../blog-theme.js"></script>
+</head>
+<body>
+<div class="page">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><img src="../img/avatar.jpg" alt="Gordon Guocheng Qian"> Gordon Guocheng Qian</a>
+    <nav class="site-nav">
+      <a href="/#about">About</a>
+      <a href="../index.html">Blog</a>
+      <a href="../rss.xml">RSS</a>
+    </nav>
+  </header>
+
+  <article>
+    <p class="article-tag">AI</p>
+    <h1>Post-Training Compute Demand Will Be More Than 10x Pretraining</h1>
+    <p class="subtitle">Two years ago, in frontier labs, pretraining probably used around 10 times more compute than post-training. Six months ago, the ratio was closer to 1:1. Now it may flip: post-training may use 10 times more compute than pretraining.</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">June 10, 2026 &middot; 7 min read</div>
+      </div>
+    </div>
+
+    <p>The Composer 2.5 chart sends a strong signal:</p>
+    <blockquote><p>Post-training compute demand will be much larger than pretraining demand, possibly by more than 10x. The corresponding market will be even larger.</p></blockquote>
+    <figure>
+      <img src="composer-2-computation.jpg" alt="Composer 2.5 computation cost comparison">
+      <figcaption>Composer 2.5 post-training / continued-training compute is already more than 11x the pretraining cost of Kimi K2.5.</figcaption>
+    </figure>
+    <p>Pretraining is still important. Without a strong base model, many downstream capabilities are impossible. But pretraining looks more like infrastructure: capital intensive, GPU intensive, slow, limited to a small set of players, and prone to becoming an arms race among a few giants.</p>
+    <p>The larger compute demand will show up in post-training first. The market will follow.</p>
+    <p>Users do not ultimately buy a base model. They buy a model that can write code, generate video, control a browser, understand an internal company repo, or execute a product workflow reliably.</p>
+    <p>Those capabilities usually do not come directly from pretraining. They come from post-training.</p>
+
+    <hr>
+
+    <h2>Composer 2.5 is a strong signal</h2>
+    <p>Composer 2.5 is not a new frontier base model trained from scratch. It starts from Moonshot&rsquo;s open Kimi K2.5 checkpoint, then uses continued training, RL, synthetic tasks, targeted textual feedback, on-policy distillation, and related methods to turn the model into a product model better suited for Cursor&rsquo;s coding-agent use case.</p>
+    <p>The result matters. On CursorBench 3.1, Composer 2.5 is already close to Claude Opus 4.7, while the average task is about 6x cheaper and 6x faster. In the public chart, Composer 2.5 sits in a very interesting place: it is not the most expensive frontier API, but its capability is already close to the strongest coding-agent tier.</p>
+    <p>The compute structure is even more interesting. Cursor&rsquo;s Composer 2.5 blog makes this explicit: Composer 2.5 does post-training on top of the open Kimi K2.5 checkpoint, but its post-training / continued-training compute is already more than 11x the cost of Kimi K2.5 pretraining. In other words, once a strong open base model exists, the investment required to turn it into a product-grade coding agent can be larger than the original pretraining run.</p>
+    <p>The implication is straightforward:</p>
+    <blockquote><p>If a company can take an open base model, combine it with its own data, RL environments, agent traces, synthetic tasks, and product feedback, then spend more compute than the original pretraining run to push it close to a frontier closed model while making it 6x cheaper and faster, post-training compute demand is not just a small tail attached to pretraining.</p></blockquote>
+
+    <hr>
+
+    <h2>Why would post-training compute demand be larger than pretraining?</h2>
+    <p>The goal of pretraining is to learn a general distribution over the world and language. It optimizes for scale, coverage, and generalization, using next-token prediction for SFT training.</p>
+    <p>Post-training has a different goal: usability.</p>
+    <p>Usability includes many things:</p>
+    <ul>
+      <li>whether the model knows when to call tools;</li>
+      <li>whether it can maintain a goal across a long task;</li>
+      <li>whether it can manage memory across turns and sessions;</li>
+      <li>whether it can understand and use long context reliably;</li>
+      <li>whether it can follow a product&rsquo;s interaction style;</li>
+      <li>whether it can reliably edit files in a real codebase;</li>
+      <li>whether it can make fewer mistakes in an industry-specific workflow;</li>
+      <li>whether it can reach good enough quality under fixed cost and latency budgets.</li>
+    </ul>
+    <p>Post-training for usability requires the model&rsquo;s own rollouts. The same prompt may be sampled multiple times. The trajectory may be long. It may involve multiple tool calls. All of this increases the computation cost of post-training.</p>
+
+    <hr>
+
+    <h2>Video generation and world models make this even clearer</h2>
+    <p>This logic is probably even stronger for video generation and world models.</p>
+    <p>We already have open video generation models at the 30B scale, and larger open models will come later. Once base video models become strong enough, the next differentiator will not only be &ldquo;who pretrained the bigger model.&rdquo; It will be who can post-train that model into a concrete use case.</p>
+    <p>The post-training space for video models is huge:</p>
+    <ul>
+      <li>advertising video: brand style, camera language, product consistency;</li>
+      <li>short dramas and film: character consistency, narrative coherence, shot planning;</li>
+      <li>games and virtual worlds: controllable motion, plausible physics, stable interaction;</li>
+      <li>robotics and autonomous driving: moving from video prediction to actionable world models;</li>
+      <li>creative tools: making the model understand director-style instructions instead of only generating beautiful but uncontrollable clips.</li>
+    </ul>
+    <p>All of this requires large amounts of preference data, trajectory data, failure cases, synthetic environments, human feedback, tool feedback, and product-loop feedback.</p>
+    <p>A general video base model can generate video that &ldquo;looks good.&rdquo; A truly commercial model needs to generate video that satisfies a specific task objective. That gap first appears as post-training compute demand, then turns into the corresponding market.</p>
+
+    <hr>
+
+    <h2>Post-training becomes the new application-layer moat</h2>
+    <p>People used to assume application companies had no moat because base model companies would eventually move downstream and eat everything.</p>
+    <p>If post-training is deep enough, that assumption is no longer obviously true.</p>
+    <p>Cursor shows why. If an application company has real users, high-frequency tasks, verifiable feedback, and its own agent environment, it can turn those assets into training assets. More users create more tasks and more failure cases. That makes post-training stronger. A stronger model improves the product, which brings in more users.</p>
+    <p>That is the application-layer data flywheel.</p>
+    <p>A base model company can provide a strong starting point, but it does not necessarily own the finest-grained feedback loop in every vertical domain.</p>
+
+    <hr>
+
+    <h2>My takeaway</h2>
+    <p>Pretraining sets the ceiling.</p>
+    <p>Post-training decides whether the model becomes a product.</p>
+    <p>As more strong base models become open, the scarcity of pretraining will decline slightly, while post-training compute demand will rise quickly. In coding, video generation, world models, agents, and enterprise workflows, post-training may consume far more compute, data, and engineering effort than pretraining. Compute demand expands first. The market follows.</p>
+    <blockquote><p>The largest share of future AI compute demand may not come from &ldquo;training one general brain.&rdquo; It may come from turning that general brain into millions of useful specialized systems. The market will move with that demand.</p></blockquote>
+
+    <div class="author-card">
+      <img src="../img/avatar.jpg" alt="Gordon Guocheng Qian">
+      <div>
+        <div class="author-name">Gordon Guocheng Qian</div>
+        <p>Senior Research Scientist at Snap Inc. Writing about AI research, model scaling, agents, and markets.</p>
+        <div class="author-links">
+          <a href="/">Homepage</a>
+          <a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ">Google Scholar</a>
+          <a href="https://github.com/guochengqian">GitHub</a>
+          <a href="https://twitter.com/guocheng_qian">X</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="comments">
+      <h2 class="comments-title">Comments</h2>
+      <script src="https://utteranc.es/client.js" repo="guochengqian/guochengqian.github.io" issue-term="pathname" label="blog-comment" theme="github-light" crossorigin="anonymous" async></script>
+    </section>
+  </article>
+
+  <footer class="site-footer">&copy; 2026 Gordon Guocheng Qian &middot; <a href="../rss.xml">RSS</a> &middot; <a href="../index.html">All posts</a></footer>
+</div>
+</body>
+</html>

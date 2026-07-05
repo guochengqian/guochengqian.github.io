@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Gordon's Blog</title>
+  <link>https://guochengqian.github.io/blog/</link>
+  <atom:link href="https://guochengqian.github.io/blog/rss.xml" rel="self" type="application/rss+xml"/>
+  <description>Essays on AI research, model scaling, agents, and markets by Gordon Guocheng Qian.</description>
+  <language>en-us</language>
+  <lastBuildDate>Wed, 01 Jul 2026 12:00:00 +0000</lastBuildDate>
+
+  <item>
+    <title>Priced In Is Not the Same as Exhausted</title>
+    <link>https://guochengqian.github.io/blog/stock-inspiration-20260701/</link>
+    <guid>https://guochengqian.github.io/blog/stock-inspiration-20260701/</guid>
+    <pubDate>Wed, 01 Jul 2026 12:00:00 +0000</pubDate>
+    <description>META's move reminded me why "it's already priced in" is often too lazy. Expectation, confirmation, and scale are different stages.</description>
+  </item>
+  <item>
+    <title>What Is the Next Scaling After Model Scaling?</title>
+    <link>https://guochengqian.github.io/blog/next-scaling-after-model-scaling/</link>
+    <guid>https://guochengqian.github.io/blog/next-scaling-after-model-scaling/</guid>
+    <pubDate>Mon, 22 Jun 2026 12:00:00 +0000</pubDate>
+    <description>Context scaling and agent scaling are the next product frontier — and both demand far more memory bandwidth. The HBM shortage is far from over.</description>
+  </item>
+  <item>
+    <title>Big Tech Research in Retreat: The Paper Era Is Ending</title>
+    <link>https://guochengqian.github.io/blog/research-labs-shutdown/</link>
+    <guid>https://guochengqian.github.io/blog/research-labs-shutdown/</guid>
+    <pubDate>Sat, 20 Jun 2026 12:00:00 +0000</pubDate>
+    <description>Research labs at the giants are shutting down, merging, and shrinking. This is the organizational reconstruction that follows AI industrialization.</description>
+  </item>
+  <item>
+    <title>How Gemini-Omni Might Work</title>
+    <link>https://guochengqian.github.io/blog/gemini-omni-architecture/</link>
+    <guid>https://guochengqian.github.io/blog/gemini-omni-architecture/</guid>
+    <pubDate>Thu, 18 Jun 2026 12:00:00 +0000</pubDate>
+    <description>Three plausible architectures for Google's latest video model, ranked — and why a Transfusion-style unified transformer is my top guess.</description>
+  </item>
+  <item>
+    <title>On-Policy Distillation: The Frontier Lab Recipe for Merging Experts</title>
+    <link>https://guochengqian.github.io/blog/opd/</link>
+    <guid>https://guochengqian.github.io/blog/opd/</guid>
+    <pubDate>Mon, 15 Jun 2026 12:00:00 +0000</pubDate>
+    <description>OPD is not just a loss function. It is how a thousand-person lab works in parallel on the same intelligence.</description>
+  </item>
+  <item>
+    <title>Post-Training Compute Demand Will Be More Than 10x Pretraining</title>
+    <link>https://guochengqian.github.io/blog/post-training-market/</link>
+    <guid>https://guochengqian.github.io/blog/post-training-market/</guid>
+    <pubDate>Wed, 10 Jun 2026 12:00:00 +0000</pubDate>
+    <description>Two years ago pretraining used ~10x more compute than post-training. Six months ago the ratio was closer to 1:1. Now it may flip.</description>
+  </item>
+  <item>
+    <title>Visual Generation Models Are Becoming Chatbot Accessories</title>
+    <link>https://guochengqian.github.io/blog/visual-generation-chatbot-accessory/</link>
+    <guid>https://guochengqian.github.io/blog/visual-generation-chatbot-accessory/</guid>
+    <pubDate>Wed, 03 Jun 2026 12:00:00 +0000</pubDate>
+    <description>Visual generation is moving from standalone apps into chatbots, agents, and multimodal operating systems.</description>
+  </item>
+  <item>
+    <title>Agent Stock Skills: +20% in a Month, and Next Week's AI Watchlist</title>
+    <link>https://guochengqian.github.io/blog/agent-for-finance/</link>
+    <guid>https://guochengqian.github.io/blog/agent-for-finance/</guid>
+    <pubDate>Sat, 30 May 2026 12:00:00 +0000</pubDate>
+    <description>When an agent has million-token context and tracks policy, news, and market data faster than any retail investor, it becomes a real research edge.</description>
+  </item>
+  <item>
+    <title>Silicon Valley Has No Secrets. It Has Heretics.</title>
+    <link>https://guochengqian.github.io/blog/elorian-ai/</link>
+    <guid>https://guochengqian.github.io/blog/elorian-ai/</guid>
+    <pubDate>Sun, 24 May 2026 12:00:00 +0000</pubDate>
+    <description>Notes from Andrew Dai's interview: 14 years inside Google's AI machine, why he left after Gemini, and Elorian's bet on visual reasoning.</description>
+  </item>
+  <item>
+    <title>How I Use Hermes Agent as My Always-On Research and Writing Assistant</title>
+    <link>https://guochengqian.github.io/blog/hermes-agent/</link>
+    <guid>https://guochengqian.github.io/blog/hermes-agent/</guid>
+    <pubDate>Mon, 18 May 2026 12:00:00 +0000</pubDate>
+    <description>My setup for an 8am daily briefing, 10pm summaries, paper writing, blogging, and remote work from my phone.</description>
+  </item>
+</channel>
+</rss>

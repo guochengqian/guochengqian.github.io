@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Silicon Valley Has No Secrets. It Has Heretics. — Gordon's Blog</title>
+  <meta name="description" content="Notes from Andrew Dai's May 2026 interview: 14 years inside Google's AI machine, why he left after Gemini, and Elorian's bet on visual reasoning.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css">
+  <script src="../blog-theme.js"></script>
+</head>
+<body>
+<div class="page">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><img src="../img/avatar.jpg" alt="Gordon Guocheng Qian"> Gordon Guocheng Qian</a>
+    <nav class="site-nav">
+      <a href="/#about">About</a>
+      <a href="../index.html">Blog</a>
+      <a href="../rss.xml">RSS</a>
+    </nav>
+  </header>
+
+  <article>
+    <p class="article-tag">AI</p>
+    <h1>Silicon Valley Has No Secrets. It Has Heretics.</h1>
+    <p class="subtitle">Notes from Andrew Dai&rsquo;s May 2026 interview.</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">May 24, 2026 &middot; 14 min read</div>
+      </div>
+    </div>
+
+    <figure>
+      <img src="visual_reasoning_hero.png" alt="Conceptual illustration of language and visual reasoning merging into a spatial world model.">
+      <figcaption>Language reasoning meets visual reasoning.</figcaption>
+    </figure>
+    <p><strong>YouTube source:</strong> <a href="https://www.youtube.com/watch?v=cqW_VWYbIcU">Google AI&rsquo;s 14 years, Gemini&rsquo;s comeback, and visual understanding models: an interview with former DeepMind core scientist Andrew Dai</a></p>
+    <p><strong>Transcript in Chinese:</strong> <a href="https://finance.sina.com.cn/wm/2026-05-20/doc-inhyqyvz8353820.shtml">Sina Finance repost</a> / <a href="https://www.huxiu.com/article/4859876.html">Huxiu repost</a></p>
+    <p><strong>Andrew Dai Google Scholar:</strong> <a href="https://scholar.google.com/citations?user=2r2NuDAAAAAJ&amp;hl=en">scholar.google.com/citations?user=2r2NuDAAAAAJ</a></p>
+    <figure>
+      <img src="andrew_dai_google_scholar.png" alt="Andrew Dai Google Scholar profile.">
+      <figcaption>Andrew Dai Google Scholar profile.</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>Who is Andrew Dai?</h2>
+    <p>Andrew Dai is the founder of Elorian AI and a former core scientist inside Google&rsquo;s AI ecosystem. He moved to Silicon Valley in 2012 to join Google Brain and stayed at Google for nearly 14 years. In that time, his work passed through an unusually large slice of modern AI history: sequence learning, language-model pretraining, text generation, adversarial training, RL after pretraining, MoE, PaLM, Flan, Gemini, multimodality, long context, and the unglamorous but decisive craft of data.</p>
+    <p>His collaborators include Quoc Le, Ian Goodfellow, Liam Fedus, Noam Shazeer, and Jeff Dean. His career reads almost like a chronology of Google&rsquo;s large-model era: Google Brain, Google Health, GLaM, PaLM, Flan, Gemini, and then Elorian.</p>
+    <p>So this is not someone rage-quitting from the sidelines. He was inside the machine.</p>
+    <p>After Gemini, he left to start Elorian AI, a new lab focused on language + visual reasoning. Elorian announced a $55 million round at a $300 million valuation, with backers including Menlo Ventures, Altimeter Capital, Nvidia, and Jeff Dean as an individual investor.</p>
+    <figure>
+      <img src="elorian_ai_huxiu.png" alt="Elorian AI team page showing Andrew Dai.">
+      <figcaption>Elorian AI team page, via the Huxiu transcript.</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>The thesis</h2>
+    <p>Andrew Dai did not leave Google because Google was bad at AI. Google&rsquo;s record points in the opposite direction. It invented the Transformer, built much of the infrastructure modern AI still runs on, and housed two of the strongest AI cultures in the world: Google Brain and DeepMind.</p>
+    <p>The more interesting lesson is that being early is not enough. You can have the research insight, the talent, the infrastructure, the data, and the compute, and still miss the moment when an idea becomes a product category.</p>
+    <p>In AI, timing is a technical variable. Move too slowly and an excellent model becomes a catch-up model. Spread ownership too widely and a sharp research direction becomes a negotiation. That is the deeper story behind this interview: not that Google lacked intelligence, but that big labs pay taxes that small labs sometimes avoid.</p>
+
+    <hr>
+
+    <h2>The pre-GPT moment Google missed</h2>
+    <p>One of the strangest details in Andrew&rsquo;s story is how close Google came to the GPT recipe before GPT became the center of the industry.</p>
+    <p>In 2015, Andrew Dai and Quoc Le worked on semi-supervised sequence learning. The accidental discovery was simple and enormous: train a language model first, then fine-tune it on supervised downstream tasks. In hindsight, this looks like the pretraining + fine-tuning pattern that later became one of the foundations of large language models.</p>
+    <p>When the Transformer arrived in 2017, Andrew immediately saw that it should be combined with that pretraining idea. He suggested trying it. But Google did not turn that combination into its defining product. OpenAI did.</p>
+    <p>This is the first recurring pattern in the interview: the idea was not hidden. The ingredients were visible. But the organization did not concentrate belief, compute, and product urgency around the direction early enough.</p>
+
+    <hr>
+
+    <h2>Google&rsquo;s real bottleneck was not IQ</h2>
+    <p>Google Brain and DeepMind were both extraordinary labs, but they were not the same institution in spirit. Brain was closer to Google&rsquo;s product surface. DeepMind kept more of the independent research-lab identity it had before the acquisition. That difference mattered.</p>
+    <p>When teams from both sides needed to collaborate, the technical question could quickly become an organizational question. Who leads? Who owns the model? Who owns the data? Which roadmap wins? Which team gets credit?</p>
+    <p>That sounds like corporate trivia until you are racing a frontier model. Then it becomes a tax on speed. The model does not care which org chart produced the data. The benchmark does not care who got the promotion packet. The market definitely does not care.</p>
+    <p>But internally, ownership matters. Score matters. Visibility matters. And when everyone needs a score, even good ideas pay an organizational toll before they move.</p>
+    <blockquote><p>Sometimes the bottleneck is not architecture, compute, or talent.<br>Sometimes the bottleneck is who gets credit.</p></blockquote>
+
+    <hr>
+
+    <h2>Data, MoE, PaLM, Flan, Gemini</h2>
+    <p>Andrew&rsquo;s career also complicates the simplistic story that AI progress is just architecture plus compute. Again and again, the interview returns to data.</p>
+    <p>After GPT-3, Google Brain felt pressure to prove it could build a better model. Andrew moved back from Google Health because he believed the problem was not only model size; it was data. That work led into GLaM, a mixture-of-experts model that combined MoE with pretraining and fine-tuning. The goal was not just to make a giant model, but to make inference cheaper by activating only part of the model at a time.</p>
+    <p>The same theme shows up later in Gemini. Gemini 1.0 was rushed and used a dense architecture. Gemini 1.5 finally brought MoE into the Gemini line. Gemini 2.0&rsquo;s gains came heavily from data: better filtering, better synthetic data, and better selection. Gemini 3 continued that data-side innovation and briefly put Google back in front.</p>
+    <p>The synthetic-data detail is especially important. Synthetic data is not magic extra food for the model. Used badly, it poisons the model with its own artifacts. If the synthetic corpus overuses a word like &ldquo;delve,&rdquo; the trained model learns to overuse &ldquo;delve.&rdquo; If the synthetic data contains bad math, the model&rsquo;s math gets worse. Used well, Andrew&rsquo;s comparison was blunt: it can help produce something as strong as GPT-5. Used poorly, it teaches the model a fake distribution and then makes that fake distribution feel natural.</p>
+    <p>That is why Andrew&rsquo;s departure after Gemini matters. He did not leave because the project had obviously failed. He left after Google had recovered momentum. The problem was different: in a project with thousands of people and huge pretraining runs, radical data changes become risky. The bigger the run, the harder it is to try something truly aggressive.</p>
+    <p>Gemini 3 made another jump through data-method innovation, but that was also the moment the ceiling became visible. When thousands of people are attached to a project and the pretraining run burns enormous GPU time, the organization naturally becomes conservative. You can improve the recipe, but you cannot easily gamble the whole kitchen.</p>
+
+    <hr>
+
+    <h2>Research taste is underrated</h2>
+    <p>Top researchers are not separated only by technical execution. At the frontier, everyone is smart. Everyone can read the papers. Everyone knows the obvious scaling arguments. These days, everyone can also spin up coding agents and implement ideas faster than before.</p>
+    <p>The scarce thing is research taste: knowing which direction deserves years, which idea is too early, which idea looks silly now but inevitable later, when to keep pushing, and when to quit.</p>
+    <p>The Noam Shazeer anecdote is a good example of that kind of taste. Andrew describes discussing a Transformer architecture change with Noam and asking whether adding a connection would help. Noam did not need to run the model. He could look at the code and say no, because the gradient would move from one path to another. That is not just literature knowledge. It is an internal simulator for how models train.</p>
+    <p>Andrew traces much of his taste to Geoffrey Hinton&rsquo;s influence: build AI by paying attention to how brains actually learn. A newborn model knows nothing. It learns from data. A human child learns the world through sight and touch before language. That does not prove Elorian&rsquo;s thesis, but it explains why the thesis feels natural to him.</p>
+    <p>The value of ideas also changes when execution becomes easier. Coding agents make experiments cheaper to implement. That makes genuinely creative researchers more valuable, not less. If everyone can try a mediocre idea quickly, the scarce resource becomes the idea worth trying.</p>
+
+    <hr>
+
+    <h2>The three bets on AGI: LLM, World Model, and Elorian&rsquo;s Bet</h2>
+    <p>The interview also clarifies why visual reasoning is not simply &ldquo;world models with more video.&rdquo; Andrew divides the field into three broad intuitions.</p>
+    <p>The first camp believes language-model reasoning will keep scaling. Longer chains of thought, stronger coding models, and recursive self-improvement eventually lead to AGI. This is where much of the frontier-lab pressure currently sits because coding is commercially valuable and strategically urgent.</p>
+    <p>The second camp believes world models are the key. This camp often comes from computer vision. The intuition is that humans and animals are intelligent because they understand the visual and physical world. But visual world models alone do not naturally connect to the human-made conceptual systems that matter in science, engineering, law, mathematics, and medicine.</p>
+    <p>Elorian&rsquo;s bet is the middle route: language reasoning plus visual reasoning. Not just text. Not just pixels. A system that can reason about physical reality while also using the abstractions humans invented to explain and redesign that reality.</p>
+    <figure>
+      <img src="elorian_gear_example.svg" alt="Visual reasoning example asking where to place a gear to make a gearbox work.">
+      <figcaption>A visual reasoning task is not just captioning; the model has to infer spatial constraints and choose an action.</figcaption>
+    </figure>
+    <p>That is why &ldquo;visual AGI&rdquo; is a cleaner phrase than AGI here. The benchmark is not metaphysical. It is mundane: can a model handle the basic visual tasks humans handle without thinking? Use a steering wheel. Tie shoes. Build Lego. Assemble Ikea furniture. Understand a moving scene. Track objects. Interpret affordances. If a model can do those things robustly, AGI starts to look much less far away.</p>
+
+    <hr>
+
+    <h2>Why now?</h2>
+    <p>Andrew&rsquo;s timing is also a bet on where the large labs are looking. OpenAI, DeepMind, Anthropic, and others are under intense pressure to win coding because coding models are a market, a benchmark, and a possible path to recursive self-improvement. Nobody wants to be second if coding becomes the self-improvement loop.</p>
+    <p>That creates space. If the biggest labs are pulled toward coding, a focused team can spend its entire attention on multimodal visual reasoning. Elorian wants to be that focused team.</p>
+    <p>It is still a risky bet. World models may need their own Transformer moment. Specialist multimodal reasoning may not beat generalist models fast enough. The market may reward coding agents before it rewards visual reasoning agents. But the bet is coherent: if the next intelligence gap is grounded visual reasoning, a lab designed around that gap has a chance to matter.</p>
+
+    <hr>
+
+    <h2>My takeaway</h2>
+    <p>The line I keep coming back to is this:</p>
+    <blockquote><p>Silicon Valley has no secrets. Scientists talk. But it does have scientists who believe in different futures.</p></blockquote>
+    <p>The ideas circulate. The papers circulate. The talent circulates. Everyone knows roughly what everyone else is trying.</p>
+    <p>But not everyone believes the same thing.</p>
+    <p>Some believe scaling language models gets us there. Some believe intelligence needs world models. Some believe the missing piece is the fusion of language reasoning and visual reasoning.</p>
+    <p>Andrew Dai left one of the strongest AI labs in the world because he believes the next important path may not be just text reasoning.</p>
+    <p>My own guess is that Elorian is aiming at something closer to MLLM-Omni: text and video tokens in, text and video tokens out, with reasoning tokens in both text and video space. That is different from most current VLMs, where text/video go in but text comes out, and also different from video generators, where text/video go in and video comes out. The missing piece is a model that can reason in both modalities, not merely translate one modality into the other.</p>
+    <blockquote><p>Qwen-like VLM: text/video in, text out.<br>Gemini-Omni or Veo-like generation: text/video in, video out.<br>Elorian-style guess: text/video in, text/video out, with reasoning tokens in both text and video.</p></blockquote>
+    <p><em>Why Elorian is not just a bigger Qwen:</em> Qwen-VL, Gemini, GPT-4-class models, and Claude-style systems can already take text and visual inputs, but most of the useful output is still text. What Elorian seems to believe is that visual reasoning should not be a side feature attached to a text model. My personal guess is that they are building toward text/visual in, text/visual out, with chain-of-thought reasoning tokens in both text and visual space. The whole stack, from data and pretraining to architecture, RL, post-training, inference, and vision encoders, would then have to point at multimodal reasoning.</p>
+    <p>A generalist model has to be good at everything: chat, code, math, translation, OCR, document understanding, browsing, tool use, image understanding, and video understanding. A specialist model can throw away some of that burden. If &ldquo;who won World War II?&rdquo; does not help multimodal reasoning, you can reduce that kind of data and spend more budget on images, video, spatial layouts, physical dynamics, and visual problem solving.</p>
+    <p><em>Video generation alone is not visual reasoning.</em> A video model can paint plausible motion without understanding the constraints behind it. Visual reasoning means tracking objects through time, inferring hidden state, respecting physical constraints, and choosing the next action. The difference is not whether pixels come out; it is whether the model can use those pixels as part of a reasoning process.</p>
+    <p>Architecturally, my guess looks something like this: a decoder-only Transformer as the causal backbone, a RAE-like visual representation space for video, and a single multimodal token stream where text tokens, video tokens, and reasoning tokens all coexist. RAE here means something like a representation autoencoder: a compressed visual latent space rich enough to reason over, not just pixels to decode. The chain of thought would not have to be purely textual. It could contain text reasoning tokens and latent video reasoning tokens before the model emits both written instructions and generated video steps.</p>
+    <figure>
+      <img src="mllm_omni_architecture.png" alt="Speculative multimodal architecture diagram showing text and video inputs, text and video reasoning tokens, and text and video outputs.">
+      <figcaption>Speculative architecture: not Elorian&rsquo;s disclosed design, but my guess for what &ldquo;text/video in, text/video out&rdquo; visual reasoning could require.</figcaption>
+    </figure>
+    <p>So the deeper product will not look like &ldquo;Qwen, but larger.&rdquo; It will look more like an omni multimodal model where text and video are both input, both output, and both part of the reasoning trace. The model will not only describe a scene or generate a clip. It will reason through visual states, revise them, and connect them back to language.</p>
+    <p>A concrete example: give the model a picture of a LEGO car, or a goal page like <a href="https://www.wikihow.com/Build-a-LEGO-Car">this LEGO car guide</a>. A normal VLM can describe the image or summarize the instructions. A visual-reasoning model should do more: infer the parts, understand the assembly order, generate a step-by-step build video, and add synchronized text instructions. The same kind of capability applies to tying shoes, using a steering wheel, building Lego, or assembling Ikea furniture. These are basic human visual tasks, but they require spatial reasoning, temporal reasoning, object permanence, and action planning.</p>
+    <p>That is why the &ldquo;text/video in, text/video out&rdquo; idea matters. The output should not be only an answer. It should be an executable visual explanation: a sequence of states the model can reason through, correct, and explain.</p>
+    <p>That is the sense in which &ldquo;heretic&rdquo; feels useful here. Not as an insult, and not as theater, but as a way to describe someone willing to depart from the dominant belief system before consensus gives permission.</p>
+    <p>Maybe Andrew is right. Maybe he is early. Maybe he is wrong. Maybe the generalist models will swallow the specialist path. But that is what makes the bet worth watching: not a secret, but a conviction that diverges from the room.</p>
+
+    <hr>
+
+    <h2>Key Conversation Notes</h2>
+    <p><em>Paraphrased in English, organized by topic rather than as a line-by-line transcript.</em></p>
+
+    <h3>1. Elorian&rsquo;s team and ambition</h3>
+    <ul>
+      <li>Elorian has a small research-heavy team, roughly in the mid-teens, with plans to grow toward 50 to 70 people over the next two years.</li>
+      <li>The company is building a specialist lab around multimodal visual reasoning, not a generic chatbot.</li>
+      <li>The commercial plan is to offer an API that helps companies solve visual problems, while the long-term research goal is visual AGI.</li>
+    </ul>
+
+    <h3>2. Andrew&rsquo;s path into Google</h3>
+    <ul>
+      <li>Andrew was born in China, grew up in the UK, studied at Cambridge, earned a PhD in Edinburgh, and moved to Silicon Valley in 2012 to join Google Brain.</li>
+      <li>He originally expected to stay in Silicon Valley for a few years and then start a company. He stayed at Google for nearly 14 years.</li>
+      <li>His first Google work included product-facing systems such as Google Now, where he learned end-to-end engineering and product constraints before returning to deeper AI research.</li>
+    </ul>
+
+    <h3>3. Google Brain, DeepMind, and two research cultures</h3>
+    <ul>
+      <li>Hinton&rsquo;s arrival made deep learning more central to Google&rsquo;s identity.</li>
+      <li>DeepMind entered Google with a much more independent research-lab structure, while Google Brain was closer to product deployment.</li>
+      <li>Collaboration between Brain and DeepMind was possible, but ownership and credit assignment made cross-lab work harder than outsiders might assume.</li>
+    </ul>
+
+    <h3>4. Semi-supervised sequence learning and the missed GPT recipe</h3>
+    <ul>
+      <li>Andrew and Quoc Le&rsquo;s 2015 work discovered the pattern of language-model pretraining followed by supervised fine-tuning.</li>
+      <li>When the Transformer appeared in 2017, Andrew saw that it could combine naturally with that pretraining recipe.</li>
+      <li>Google did not push that combination into the defining product path. OpenAI, especially Alec Radford&rsquo;s GPT work, did.</li>
+      <li>Google only fully updated its belief after GPT-3 showed that scaling language models could produce startling capabilities.</li>
+    </ul>
+
+    <h3>5. Google Health, MaskGAN, RL, and early post-training ideas</h3>
+    <ul>
+      <li>Andrew moved into Google Health when Google wanted to bring AI into medical products.</li>
+      <li>His health work involved using medical records to predict future illness, medication needs, and hospital costs.</li>
+      <li>MaskGAN, with Liam Fedus and Ian Goodfellow, explored infilling and using RL after pretraining, an idea that later became much more central to language-model training.</li>
+    </ul>
+
+    <h3>6. MoE, GLaM, PaLM, Flan, and data</h3>
+    <ul>
+      <li>After GPT-3, Google Brain felt pressure to build a stronger model.</li>
+      <li>Andrew believed the gap was not only model size but data quality.</li>
+      <li>GLaM used a mixture-of-experts approach to make large models more efficient by activating only part of the model per request.</li>
+      <li>PaLM and Flan were part of Google&rsquo;s push back toward frontier LLMs, but timing mattered: a strong model released late can become invisible in the market narrative.</li>
+    </ul>
+
+    <h3>7. Gemini&rsquo;s comeback and why Andrew left</h3>
+    <ul>
+      <li>After ChatGPT, Google entered emergency mode and merged Brain and DeepMind into the Gemini effort.</li>
+      <li>The joint leadership structure made coordination difficult at first, and the early Gemini work was slowed by organizational complexity.</li>
+      <li>Noam Shazeer&rsquo;s return helped Gemini 2.5, and Andrew describes Shazeer as someone with unusually strong model intuition.</li>
+      <li>Gemini&rsquo;s later gains came heavily from data: higher-quality filtering, synthetic data, and data-method innovation.</li>
+      <li>Synthetic data was a central theme: used well, Andrew compared it to the kind of ingredient that can help produce a GPT-5-level model; used badly, it teaches artifacts, repeated phrases, and even wrong math.</li>
+      <li>Andrew gave the example of synthetic data overusing words like &ldquo;delve,&rdquo; which can make the trained model overuse the same word.</li>
+      <li>Andrew left because a massive Google project could not easily try the bolder, riskier data changes he wanted to pursue.</li>
+      <li>Gemini 3 continued to improve through data methods, but the project&rsquo;s scale made radical experiments harder: thousands of people, huge GPU runs, and too much downside if an aggressive new recipe failed.</li>
+      <li>Noam Shazeer&rsquo;s model intuition came through in an architecture anecdote: he could look at a proposed Transformer connection and predict how the gradient would move without running the experiment.</li>
+    </ul>
+
+    <h3>8. Elorian&rsquo;s technical route</h3>
+    <ul>
+      <li>Elorian is taking a full-stack approach: data, architecture, RL, post-training, inference, and vision encoders all optimized around multimodal reasoning.</li>
+      <li>The company is closer to a specialist lab than a generalist model company.</li>
+      <li>The core claim is that a specialist model can beat a generalist model inside the domain it is designed for.</li>
+      <li>The specialist logic is to remove or reduce data that does not help multimodal reasoning, then spend more capacity on images, video, spatial layouts, and visual problem solving.</li>
+      <li>Andrew compared this to Anthropic&rsquo;s focus on coding: the whole stack can be stronger when every component points at the same target.</li>
+    </ul>
+
+    <h3>9. Video generation alone is not visual reasoning</h3>
+    <ul>
+      <li>Sora, Veo, and other visual generation systems can produce beautiful motion, but beautiful motion does not by itself prove visual reasoning.</li>
+      <li>Understanding means the model grasps what is happening, not just what looks plausible.</li>
+      <li>Reasoning means the model can use structure, constraints, and relationships to decide what follows, what is impossible, or what action should be taken.</li>
+      <li>The key test is whether pixels become part of the reasoning process, not merely the output format.</li>
+    </ul>
+
+    <h3>10. Language models, world models, and the middle path</h3>
+    <ul>
+      <li>The language-model camp believes longer and stronger chains of thought will eventually lead to AGI.</li>
+      <li>Andrew is skeptical that scaling language-only chains of thought is enough, because current models still hallucinate on simple visual tasks such as counting cups on a table.</li>
+      <li>The world-model camp believes visual and physical prediction are central to intelligence.</li>
+      <li>The world-model camp often comes from computer vision. Andrew connects it to researchers such as Fei-Fei Li and Yann LeCun, and to an academic culture that prizes novelty.</li>
+      <li>Andrew thinks vision alone is not enough because human knowledge systems such as mathematics, physics, chemistry, and law are conceptual and language-mediated.</li>
+      <li>Elorian&rsquo;s path is to combine visual reasoning with language reasoning.</li>
+      <li>My guess: the target is closer to MLLM-Omni, with text/video tokens in, text/video tokens out, and reasoning tokens in both text and video space.</li>
+    </ul>
+
+    <h3>11. Visual AGI</h3>
+    <ul>
+      <li>Andrew prefers the phrase visual AGI because the definition is more concrete than AGI.</li>
+      <li>A visually intelligent system should handle basic human visual tasks: using objects, tying shoes, assembling furniture, tracking motion, understanding affordances, and interpreting scenes.</li>
+      <li>A concrete product example would be a model that sees a LEGO car goal image and generates both a step-by-step assembly video and synchronized written instructions.</li>
+      <li>Current models still fail too often on these everyday visual tasks.</li>
+    </ul>
+
+    <h3>12. Research taste, talent, and the neolab window</h3>
+    <ul>
+      <li>Andrew argues that the most important research resource is time. Compute matters, but time spent on the wrong direction does not come back.</li>
+      <li>His research taste was shaped partly by Hinton&rsquo;s belief that AI should learn in ways that rhyme with human cognition.</li>
+      <li>Jeff Dean served as an important model of hands-on technical depth.</li>
+      <li>Creative researchers become more valuable as coding agents make implementation easier.</li>
+      <li>The current neolab startup window may last another year or two, but it will not stay open forever.</li>
+    </ul>
+
+    <div class="author-card">
+      <img src="../img/avatar.jpg" alt="Gordon Guocheng Qian">
+      <div>
+        <div class="author-name">Gordon Guocheng Qian</div>
+        <p>Senior Research Scientist at Snap Inc. Writing about AI research, model scaling, agents, and markets.</p>
+        <div class="author-links">
+          <a href="/">Homepage</a>
+          <a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ">Google Scholar</a>
+          <a href="https://github.com/guochengqian">GitHub</a>
+          <a href="https://twitter.com/guocheng_qian">X</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="comments">
+      <h2 class="comments-title">Comments</h2>
+      <script src="https://utteranc.es/client.js" repo="guochengqian/guochengqian.github.io" issue-term="pathname" label="blog-comment" theme="github-light" crossorigin="anonymous" async></script>
+    </section>
+  </article>
+
+  <footer class="site-footer">&copy; 2026 Gordon Guocheng Qian &middot; <a href="../rss.xml">RSS</a> &middot; <a href="../index.html">All posts</a></footer>
+</div>
+</body>
+</html>

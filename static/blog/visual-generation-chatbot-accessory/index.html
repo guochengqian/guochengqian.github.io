@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visual Generation Models Are Becoming Chatbot Accessories — Gordon's Blog</title>
+  <meta name="description" content="Why visual generation is moving from standalone apps into chatbots, agents, and multimodal model systems.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css">
+  <script src="../blog-theme.js"></script>
+</head>
+<body>
+<div class="page">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><img src="../img/avatar.jpg" alt="Gordon Guocheng Qian"> Gordon Guocheng Qian</a>
+    <nav class="site-nav">
+      <a href="/#about">About</a>
+      <a href="../index.html">Blog</a>
+      <a href="../rss.xml">RSS</a>
+    </nav>
+  </header>
+
+  <article>
+    <p class="article-tag">AI</p>
+    <h1>Visual Generation Models Are Becoming Chatbot Accessories</h1>
+    <p class="subtitle">For a while, image and video generation looked like a standalone platform category. Stable Diffusion, Midjourney, Runway, Pika, and Luma each tried to make &ldquo;generate visual content&rdquo; its own destination. That destination is now being redefined. Visual generation is becoming less like an independent app and more like a rendering capability inside chatbots, agents, and multimodal operating systems.</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">June 3, 2026 &middot; 8 min read</div>
+      </div>
+    </div>
+
+    <p>A few signals make the shift hard to ignore.</p>
+    <ul>
+      <li>Jiaming Song, formerly Luma AI&rsquo;s chief scientist, now describes himself as a former Luma AI researcher. One researcher&rsquo;s move does not determine the fate of a company or a field, but it is a useful industry signal: the narrative around pure visual-generation companies is being pulled into a larger multimodal-platform narrative.</li>
+      <li>As of June 2026, ChatGPT Plus is still priced at roughly $20/month and lists image generation among its expanded features. For many users, a frontier image model is no longer a separate tool to buy, learn, and open. It is a button inside the chat window.</li>
+      <li>The architectures themselves are moving closer to LLMs and MLLMs: from CLIP encoder plus diffusion renderer, to LLM/VLM-conditioned diffusion or flow models, to native multimodal autoregression and hybrid autoregressive-plus-diffusion decoders.</li>
+    </ul>
+    <blockquote><p>Visual generation is not disappearing. It is being absorbed into larger model systems. It is moving from &ldquo;the main character of an app&rdquo; to &ldquo;the visual output layer of a chatbot or agent.&rdquo;</p></blockquote>
+
+    <hr>
+
+    <h2>1. The standalone visual-generation entry point is narrowing</h2>
+    <p>The first wave of visual-generation products had a simple form: open a website or app, type a prompt, receive an image or video. The entry point itself was the product. Midjourney became a generation community inside Discord. Runway became a video-creation platform. Luma built around 3D and video imagination. If the model was strong enough, the product had a reason to exist as a destination.</p>
+    <p>But the platform layer of generative AI changed quickly. ChatGPT, Gemini, Claude, Grok, and other general-purpose chat interfaces captured more daily usage, stronger user habits, cleaner payment relationships, and more context. Users are no longer only asking for an image. They are writing a proposal, editing copy, making slides, searching for references, generating an image, and then revising that image inside the same conversation.</p>
+    <p>In that workflow, visual generation is not less valuable. It is more valuable. But its <strong>distribution position</strong> has changed. Users do not necessarily want to open a new tool for every visual task. The more natural action is to stay in the chatbot and say: &ldquo;Turn this idea into an image.&rdquo;</p>
+    <p>That is the uncomfortable position for independent visual-generation companies. They may still have strong models, excellent researchers, and beautiful demos. But if the user entry point is owned by a general LLM product, the visual model risks becoming a backend capability rather than the front door users visit every day.</p>
+
+    <hr>
+
+    <h2>2. ChatGPT turned frontier image generation into a subscription feature</h2>
+    <p>The shock of image generation inside ChatGPT is not only that the quality is strong. The deeper shock is its <strong>pricing and distribution</strong>.</p>
+    <p>Previously, a strong image model could charge as a separate product: by credits, by number of images, by seconds of generated video, or by creator subscription. Users were willing to pay separately for better generation quality because the capability was scarce and the entry point was clear.</p>
+    <p>Once a frontier-level image model is bundled into a ChatGPT Plus-style subscription, however, the user&rsquo;s price anchor changes. Image generation is no longer perceived as a separate procurement item. It becomes &ldquo;something I can use because I already pay for ChatGPT.&rdquo; Even if the backend inference cost is real, the perceived marginal price approaches zero.</p>
+    <p>That compresses the room for many independent visual products. Not because they are bad, but because users will ask a harsher question:</p>
+    <blockquote><p>If ChatGPT already gives me a strong, convenient image model that understands my context, why should I pay for another standalone entry point?</p></blockquote>
+    <p>Independent products can still win. They can build deeper professional workflows, finer control, stronger video tools, better collaboration, and interfaces designed for designers, filmmakers, advertisers, game studios, and e-commerce teams. But &ldquo;we have a better image model&rdquo; will become a weaker moat by itself.</p>
+
+    <hr>
+
+    <h2>3. The architecture is also moving toward LLMs</h2>
+    <p>The deeper shift is happening at the model-architecture level.</p>
+    <p>The early Stable Diffusion paradigm can be summarized as: <strong>CLIP &rarr; Diffusion</strong>. A CLIP text encoder turns the prompt into embeddings. A diffusion model denoises in latent space. A decoder renders the final image. It is a highly successful system, but conceptually it is still a composition of a text-understanding module and an image-rendering module.</p>
+    <p>Later systems such as FLUX.2, Qwen-Image-2.0, and HunyuanImage-2.1 move closer to: <strong>LLM/VLM &rarr; Diffusion or flow</strong>. The text encoder is no longer just CLIP-like. It behaves more like a stronger language or multimodal understanding module. It can process longer, more complex, and more structured instructions before handing the conditioning signal to a visual backbone for rendering.</p>
+    <figure>
+      <img src="visual-generation-model-evolution.svg" alt="A diagram showing visual generation model evolution from Stable Diffusion's CLIP to diffusion pipeline, to LLM or VLM conditioned diffusion and flow systems, to native multimodal autoregression, and then to hybrid autoregressive plus diffusion decoders.">
+      <figcaption>A rough evolution path for visual generation models: from CLIP-conditioned diffusion, to LLM/VLM-conditioned diffusion or flow models, to native multimodal autoregressive systems, and finally toward hybrid autoregressive-plus-diffusion decoders.</figcaption>
+    </figure>
+    <p>With systems in the direction of HunyuanImage 3.0, the story moves another step forward. The model is no longer merely using a language or vision-language encoder to condition a separate renderer. Text understanding, multimodal modeling, and visual generation are pushed into a more unified autoregressive framework. That is the larger architectural signal: image generation is moving into the same family of systems that already handle language, reasoning, and multimodal context.</p>
+    <p>GLM-Image points to another endpoint: a hybrid autoregressive-plus-diffusion design. An autoregressive stage generates compact visual tokens, and a diffusion decoder then renders detail. Diffusion does not necessarily vanish, but its role changes. It becomes a decoder, renderer, or refinement module rather than the sole backbone of the visual-generation system.</p>
+    <blockquote><p><strong>In one sentence:</strong> visual generation is moving from &ldquo;a diffusion model with a text encoder&rdquo; toward &ldquo;a multimodal model system with a visual rendering head.&rdquo;</p></blockquote>
+
+    <hr>
+
+    <h2>4. Why chatbots win: they own the context</h2>
+    <p>Image and video generation are rarely isolated tasks. Users do not usually need &ldquo;one image&rdquo; in the abstract. They need to:</p>
+    <ul>
+      <li>turn product copy into an ad image;</li>
+      <li>turn an essay into a cover and supporting visuals;</li>
+      <li>turn a storyboard into a short video;</li>
+      <li>turn meeting notes into slides;</li>
+      <li>merge brand guidelines, character design, prior revisions, and user preferences into a new visual asset.</li>
+    </ul>
+    <p>The core of these tasks is not one-shot prompt-to-image. It is context, memory, planning, tool use, revision, and multi-turn iteration. Chatbots are naturally positioned for this because the conversation already contains the user&rsquo;s goals, text, preferences, constraints, and feedback. The visual model is the final step: rendering an intent that has already been understood.</p>
+    <p>That means the future competition may not be about who can generate the prettiest single image. It may be about who can generate, revise, explain, and deliver visual content most naturally inside a complete task chain. This is the challenge for standalone visual-generation products. If they do not own the context, they only own rendering. Rendering alone will be commoditized by the platform layer.</p>
+
+    <hr>
+
+    <h2>5. Visual generation will not die, but standalone visual models will be repriced</h2>
+    <p>I do not think visual-generation models will become unimportant. Quite the opposite: visual output will be one of the most important interfaces for AI products. Every agent will need to see images, draw images, edit images, make videos, generate UI, create advertising assets, and produce 3D content.</p>
+    <p>What will change is the value distribution between model companies and product companies.</p>
+    <p>If a visual model only turns a prompt into an image, it will increasingly look like an API, a rendering layer, or a replaceable tool. The high-value positions will be:</p>
+    <ul>
+      <li><strong>Chatbot and agent platforms that own the user entry point</strong>: they control context, payment relationships, and default workflows.</li>
+      <li><strong>Vertical products with professional workflows</strong>: film, advertising, e-commerce, games, design, simulation, and creative production.</li>
+      <li><strong>Applications with data flywheels and distribution</strong>: model outputs directly enter real user tasks and improve from feedback.</li>
+      <li><strong>Architectures deeply integrated with LLMs</strong>: not isolated diffusion renderers, but components of multimodal systems.</li>
+    </ul>
+    <p>This is why the visual-generation market increasingly looks like a subsystem of the LLM market. Not because images and videos are less important, but because they are too important to live only inside a separate app. They must become part of the general intelligence interface: language, tools, memory, search, planning, and then visual expression.</p>
+
+    <hr>
+
+    <h2>Conclusion: visual generation becomes the eyes and hands of larger model systems</h2>
+    <p>In the previous phase, visual-generation models wanted to become the new Photoshop, the new camera, or the new video studio.</p>
+    <p>The more likely future is that they become visual capabilities inside chatbots, agents, and multimodal operating systems. Users will not say, &ldquo;I need to open an image generator.&rdquo; They will simply tell an AI: &ldquo;Make this idea real.&rdquo;</p>
+    <p>This also changes the research agenda. Improving FID, aesthetic scores, and prompt following is not enough. The more important questions are: Can the model understand complex context? Can it share representations with LLMs? Can it support multi-turn editing? Can it maintain consistency across a task chain? Can visual generation become part of an agentic workflow?</p>
+    <p>Visual generation is not leaving the stage. It is moving deeper into the system, becoming the visual output layer that every general AI product needs.</p>
+    <blockquote><p>The best visual-generation model may no longer be an app you open. It may become the hand you casually use while talking to an AI.</p></blockquote>
+
+    <div class="note-fine">
+      <p><strong>Sources and caveats.</strong> Sources checked June 3, 2026. The architecture summaries are intentionally high-level and compress several different model families into a market narrative.</p>
+      <ul>
+        <li><a href="https://tsong.me/">Jiaming Song personal site</a></li>
+        <li><a href="https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus">OpenAI Help Center: ChatGPT Plus</a></li>
+        <li><a href="https://docs.bfl.ai/flux_2/flux2_overview">Black Forest Labs: FLUX.2 overview</a></li>
+        <li><a href="https://arxiv.org/abs/2605.10730">Qwen-Image-2.0 Technical Report</a></li>
+        <li><a href="https://github.com/Tencent-Hunyuan/HunyuanImage-2.1">Tencent HunyuanImage-2.1 repository</a></li>
+        <li><a href="https://arxiv.org/abs/2509.23951">HunyuanImage 3.0 Technical Report</a></li>
+        <li><a href="https://github.com/zai-org/GLM-Image">GLM-Image repository</a></li>
+      </ul>
+    </div>
+
+    <div class="author-card">
+      <img src="../img/avatar.jpg" alt="Gordon Guocheng Qian">
+      <div>
+        <div class="author-name">Gordon Guocheng Qian</div>
+        <p>Senior Research Scientist at Snap Inc. Writing about AI research, model scaling, agents, and markets.</p>
+        <div class="author-links">
+          <a href="/">Homepage</a>
+          <a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ">Google Scholar</a>
+          <a href="https://github.com/guochengqian">GitHub</a>
+          <a href="https://twitter.com/guocheng_qian">X</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="comments">
+      <h2 class="comments-title">Comments</h2>
+      <script src="https://utteranc.es/client.js" repo="guochengqian/guochengqian.github.io" issue-term="pathname" label="blog-comment" theme="github-light" crossorigin="anonymous" async></script>
+    </section>
+  </article>
+
+  <footer class="site-footer">&copy; 2026 Gordon Guocheng Qian &middot; <a href="../rss.xml">RSS</a> &middot; <a href="../index.html">All posts</a></footer>
+</div>
+</body>
+</html>
