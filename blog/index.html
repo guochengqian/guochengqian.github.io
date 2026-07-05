@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gordon Qian's Blog</title>
+  <meta name="description" content="Essays on AI research, scaling, agents, and markets by Gordon Guocheng Qian.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="alternate" type="application/rss+xml" title="Gordon's Blog" href="rss.xml">
+  <link rel="stylesheet" href="blog.css">
+  <script src="blog-theme.js"></script>
+</head>
+<body>
+<div class="page">
+  <header class="site-header">
+    <a class="brand" href="index.html"><img src="img/avatar.jpg" alt="Gordon Guocheng Qian"> Gordon Guocheng Qian</a>
+    <nav class="site-nav">
+      <a href="/#about">About</a>
+      <a href="index.html">Blog</a>
+      <a href="rss.xml">RSS</a>
+    </nav>
+  </header>
+
+  <section class="blog-hero">
+    <h1>Gordon Qian&rsquo;s Blog</h1>
+    <p>Essays on AI research, agents, and markets &mdash; from a research scientist&rsquo;s point of view.</p>
+    <div class="hero-actions">
+      <a class="primary" href="rss.xml">Subscribe via RSS</a>
+      <a href="/#about">About me</a>
+    <div class="hero-socials">
+      <a href="mailto:gordonqian2017@gmail.com" aria-label="Email" title="Email"><svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg></a>
+      <a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ" target="_blank" rel="noopener" aria-label="Google Scholar" title="Google Scholar"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg></a>
+      <a href="https://github.com/guochengqian" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 496 512" fill="currentColor" aria-hidden="true"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></a>
+      <a href="https://www.linkedin.com/in/guochengqian/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 448 512" fill="currentColor" aria-hidden="true"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg></a>
+      <a href="https://x.com/guocheng_qian" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X (Twitter)"><svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a>
+      <a href="https://www.xiaohongshu.com/user/profile/58894a2982ec39681b4a7842" target="_blank" rel="noopener" aria-label="RedNote (Xiaohongshu)" title="RedNote (Xiaohongshu)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.405 9.879c.002.016.01.02.07.019h.725a.797.797 0 0 0 .78-.972.794.794 0 0 0-.884-.618.795.795 0 0 0-.692.794c0 .101-.002.666.001.777zm-11.509 4.808c-.203.001-1.353.004-1.685.003a2.528 2.528 0 0 1-.766-.126.025.025 0 0 0-.03.014L7.7 16.127a.025.025 0 0 0 .01.032c.111.06.336.124.495.124.66.01 1.32.002 1.981 0 .01 0 .02-.006.023-.015l.712-1.545a.025.025 0 0 0-.024-.036zM.477 9.91c-.071 0-.076.002-.076.01a.834.834 0 0 0-.01.08c-.027.397-.038.495-.234 3.06-.012.24-.034.389-.135.607-.026.057-.033.042.003.112.046.092.681 1.523.787 1.74.008.015.011.02.017.02.008 0 .033-.026.047-.044.147-.187.268-.391.371-.606.306-.635.44-1.325.486-1.706.014-.11.021-.22.03-.33l.204-2.616.022-.293c.003-.029 0-.033-.03-.034zm7.203 3.757a1.427 1.427 0 0 1-.135-.607c-.004-.084-.031-.39-.235-3.06a.443.443 0 0 0-.01-.082c-.004-.011-.052-.008-.076-.008h-1.48c-.03.001-.034.005-.03.034l.021.293c.076.982.153 1.964.233 2.946.05.4.186 1.085.487 1.706.103.215.223.419.37.606.015.018.037.051.048.049.02-.003.742-1.642.804-1.765.036-.07.03-.055.003-.112zm3.861-.913h-.872a.126.126 0 0 1-.116-.178l1.178-2.625a.025.025 0 0 0-.023-.035l-1.318-.003a.148.148 0 0 1-.135-.21l.876-1.954a.025.025 0 0 0-.023-.035h-1.56c-.01 0-.02.006-.024.015l-.926 2.068c-.085.169-.314.634-.399.938a.534.534 0 0 0-.02.191.46.46 0 0 0 .23.378.981.981 0 0 0 .46.119h.59c.041 0-.688 1.482-.834 1.972a.53.53 0 0 0-.023.172.465.465 0 0 0 .23.398c.15.092.342.12.475.12l1.66-.001c.01 0 .02-.006.023-.015l.575-1.28a.025.025 0 0 0-.024-.035zm-6.93-4.937H3.1a.032.032 0 0 0-.034.033c0 1.048-.01 2.795-.01 6.829 0 .288-.269.262-.28.262h-.74c-.04.001-.044.004-.04.047.001.037.465 1.064.555 1.263.01.02.03.033.051.033.157.003.767.009.938-.014.153-.02.3-.06.438-.132.3-.156.49-.419.595-.765.052-.172.075-.353.075-.533.002-2.33 0-4.66-.007-6.991a.032.032 0 0 0-.032-.032zm11.784 6.896c0-.014-.01-.021-.024-.022h-1.465c-.048-.001-.049-.002-.05-.049v-4.66c0-.072-.005-.07.07-.07h.863c.08 0 .075.004.075-.074V8.393c0-.082.006-.076-.08-.076h-3.5c-.064 0-.075-.006-.075.073v1.445c0 .083-.006.077.08.077h.854c.075 0 .07-.004.07.07v4.624c0 .095.008.084-.085.084-.37 0-1.11-.002-1.304 0-.048.001-.06.03-.06.03l-.697 1.519s-.014.025-.008.036c.006.01.013.008.058.008 1.748.003 3.495.002 5.243.002.03-.001.034-.006.035-.033v-1.539zm4.177-3.43c0 .013-.007.023-.02.024-.346.006-.692.004-1.037.004-.014-.002-.022-.01-.022-.024-.005-.434-.007-.869-.01-1.303 0-.072-.006-.071.07-.07l.733-.003c.041 0 .081.002.12.015.093.025.16.107.165.204.006.431.002 1.153.001 1.153zm2.67.244a1.953 1.953 0 0 0-.883-.222h-.18c-.04-.001-.04-.003-.042-.04V10.21c0-.132-.007-.263-.025-.394a1.823 1.823 0 0 0-.153-.53 1.533 1.533 0 0 0-.677-.71 2.167 2.167 0 0 0-1-.258c-.153-.003-.567 0-.72 0-.07 0-.068.004-.068-.065V7.76c0-.031-.01-.041-.046-.039H17.93s-.016 0-.023.007c-.006.006-.008.012-.008.023v.546c-.008.036-.057.015-.082.022h-.95c-.022.002-.028.008-.03.032v1.481c0 .09-.004.082.082.082h.913c.082 0 .072.128.072.128V11.19s.003.117-.06.117h-1.482c-.068 0-.06.082-.06.082v1.445s-.01.068.064.068h1.457c.082 0 .076-.006.076.079v3.225c0 .088-.007.081.082.081h1.43c.09 0 .082.007.082-.08v-3.27c0-.029.006-.035.033-.035l2.323-.003c.098 0 .191.02.28.061a.46.46 0 0 1 .274.407c.008.395.003.79.003 1.185 0 .259-.107.367-.33.367h-1.218c-.023.002-.029.008-.028.033.184.437.374.871.57 1.303a.045.045 0 0 0 .04.026c.17.005.34.002.51.003.15-.002.517.004.666-.01a2.03 2.03 0 0 0 .408-.075c.59-.18.975-.698.976-1.313v-1.981c0-.128-.01-.254-.034-.38 0 .078-.029-.641-.724-.998z"/></svg></a>
+    </div>
+    </div>
+  </section>
+
+  <ul class="post-list">
+    <li class="post-item">
+      <a class="post-thumb" href="stock-inspiration-20260701/index.html" tabindex="-1" aria-hidden="true"><img src="stock-inspiration-20260701/preview.png" alt=""></a>
+      <div class="post-body"><p class="post-meta"><span class="tag">Markets</span> &middot; July 1, 2026</p>
+      <h2><a href="stock-inspiration-20260701/index.html">Priced In Is Not the Same as Exhausted</a></h2>
+      <p class="post-dek">META&rsquo;s move reminded me why &ldquo;it&rsquo;s already priced in&rdquo; is often too lazy. Expectation, confirmation, and scale are different stages.</p>
+      <span class="post-read">5 min read</span></div>
+    </li>
+    <li class="post-item">
+      <a class="post-thumb" href="next-scaling-after-model-scaling/index.html" tabindex="-1" aria-hidden="true"><img src="next-scaling-after-model-scaling/preview.png" alt=""></a>
+      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 22, 2026</p>
+      <h2><a href="next-scaling-after-model-scaling/index.html">What Is the Next Scaling After Model Scaling?</a></h2>
+      <p class="post-dek">Context scaling and agent scaling are the next product frontier &mdash; and both demand far more memory bandwidth. The HBM shortage is far from over.</p>
+      <span class="post-read">9 min read</span></div>
+    </li>
+    <li class="post-item">
+      <a class="post-thumb" href="research-labs-shutdown/index.html" tabindex="-1" aria-hidden="true"><img src="research-labs-shutdown/preview.png" alt=""></a>
+      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 20, 2026</p>
+      <h2><a href="research-labs-shutdown/index.html">Big Tech Research in Retreat: The Paper Era Is Ending</a></h2>
+      <p class="post-dek">Research labs at the giants are shutting down, merging, and shrinking. This is not one company&rsquo;s problem &mdash; it is the organizational reconstruction that follows AI industrialization.</p>
+      <span class="post-read">4 min read</span></div>
+    </li>
+    <li class="post-item">
+      <a class="post-thumb" href="gemini-omni-architecture/index.html" tabindex="-1" aria-hidden="true"><img src="gemini-omni-architecture/transfusion.png" alt=""></a>
+      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 18, 2026</p>
+      <h2><a href="gemini-omni-architecture/index.html">How Gemini-Omni Might Work</a></h2>
+      <p class="post-dek">Three plausible architectures for Google&rsquo;s latest video model, ranked &mdash; and why a Transfusion-style unified transformer is my top guess.</p>
+      <span class="post-read">6 min read</span></div>
+    </li>
+    <li class="post-item">
+      <a class="post-thumb" href="opd/index.html" tabindex="-1" aria-hidden="true"><img src="opd/opd-illustration.png" alt=""></a>
+      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 15, 2026</p>
+      <h2><a href="opd/index.html">On-Policy Distillation: The Frontier Lab Recipe for Merging Experts</a></h2>
+      <p class="post-dek">OPD is not just a loss function. It is how a thousand-person lab works in parallel on the same intelligence.</p>
+      <span class="post-read">9 min read</span></div>
+    </li>
+    <li class="post-item">
+      <a class="post-thumb" href="post-training-market/index.html" tabindex="-1" aria-hidden="true"><img src="post-training-market/composer-2-computation.jpg" alt=""></a>
+      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 10, 2026</p>
+      <h2><a href="post-training-market/index.html">Post-Training Compute Demand Will Be More Than 10x Pretraining</a></h2>
+      <p class="post-dek">Two years ago pretraining used ~10x more compute than post-training. Six months ago the ratio was closer to 1:1. Now it may flip.</p>
+      <span class="post-read">7 min read</span></div>
+    </li>
+    <li class="post-item">
+      <a class="post-thumb" href="visual-generation-chatbot-accessory/index.html" tabindex="-1" aria-hidden="true"><img src="visual-generation-chatbot-accessory/visual-generation-model-evolution.svg" alt=""></a>
+      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 3, 2026</p>
+      <h2><a href="visual-generation-chatbot-accessory/index.html">Visual Generation Models Are Becoming Chatbot Accessories</a></h2>
+      <p class="post-dek">Visual generation is moving from standalone apps into chatbots, agents, and multimodal operating systems.</p>
+      <span class="post-read">8 min read</span></div>
+    </li>
+    <li class="post-item">
+      <a class="post-thumb" href="agent-for-finance/index.html" tabindex="-1" aria-hidden="true"><img src="agent-for-finance/core_basket_returns.png" alt=""></a>
+      <div class="post-body"><p class="post-meta"><span class="tag">Markets</span> &middot; May 30, 2026</p>
+      <h2><a href="agent-for-finance/index.html">Agent Stock Skills: +20% in a Month, and Next Week&rsquo;s AI Watchlist</a></h2>
+      <p class="post-dek">When an agent has million-token context and tracks policy, news, and market data faster than any retail investor, it becomes a real research edge.</p>
+      <span class="post-read">7 min read</span></div>
+    </li>
+    <li class="post-item">
+      <a class="post-thumb" href="elorian-ai/index.html" tabindex="-1" aria-hidden="true"><img src="elorian-ai/visual_reasoning_hero.png" alt=""></a>
+      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; May 24, 2026</p>
+      <h2><a href="elorian-ai/index.html">Silicon Valley Has No Secrets. It Has Heretics.</a></h2>
+      <p class="post-dek">Notes from Andrew Dai&rsquo;s interview: 14 years inside Google&rsquo;s AI machine, why he left after Gemini, and Elorian&rsquo;s bet on visual reasoning.</p>
+      <span class="post-read">14 min read</span></div>
+    </li>
+    <li class="post-item">
+      <a class="post-thumb" href="hermes-agent/index.html" tabindex="-1" aria-hidden="true"><img src="hermes-agent/preview.png" alt=""></a>
+      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; May 18, 2026</p>
+      <h2><a href="hermes-agent/index.html">How I Use Hermes Agent as My Always-On Research and Writing Assistant</a></h2>
+      <p class="post-dek">My setup for an 8am daily briefing, 10pm summaries, paper writing, blogging, and remote work from my phone.</p>
+      <span class="post-read">7 min read</span></div>
+    </li>
+  </ul>
+
+  <footer class="site-footer">&copy; 2026 Gordon Guocheng Qian &middot; <a href="rss.xml">RSS</a> &middot; <a href="/">guochengqian.github.io</a></footer>
+</div>
+</body>
+</html>

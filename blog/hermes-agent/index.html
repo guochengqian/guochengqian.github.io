@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Use Hermes Agent as My Always-On Research and Writing Assistant — Gordon's Blog</title>
+  <meta name="description" content="My setup for an 8am daily briefing, 10pm daily and weekly summaries, paper writing, blogging, and remote work from my phone.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css">
+  <script src="../blog-theme.js"></script>
+</head>
+<body>
+<div class="page">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><img src="../img/avatar.jpg" alt="Gordon Guocheng Qian"> Gordon Guocheng Qian</a>
+    <nav class="site-nav">
+      <a href="/#about">About</a>
+      <a href="../index.html">Blog</a>
+      <a href="../rss.xml">RSS</a>
+    </nav>
+  </header>
+
+  <article>
+    <p class="article-tag">AI</p>
+    <h1>How I Use Hermes Agent as My Always-On Research and Writing Assistant</h1>
+    <p class="subtitle">My setup for an 8am daily briefing, 10pm daily and weekly summaries, paper writing, blogging, and remote work from my phone.</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">May 18, 2026 &middot; 7 min read</div>
+      </div>
+    </div>
+
+    <p>I have been using <strong>Hermes Agent</strong> as a personal AI operating layer around my research, writing, and daily workflow.</p>
+    <p>The important part is not that it can chat. Many tools can chat. The useful part is that Hermes can run as a persistent agent with memory, tools, scheduled jobs, file access, web access, and messaging-platform delivery. That turns it from a chatbot into something closer to a personal research assistant that can work in the background and report back when needed.</p>
+    <p>My current setup has three main loops:</p>
+    <ol>
+      <li>An <strong>8am daily briefing</strong> for research, market watch, and todos.</li>
+      <li>A <strong>10pm daily summary</strong> of what I worked on and what should carry over.</li>
+      <li>A <strong>weekly summary</strong> that turns the week into a higher-level work log.</li>
+    </ol>
+
+    <hr>
+
+    <h2>The basic setup</h2>
+    <p>Hermes runs locally on my Mac and connects to my tools through a terminal-first workflow. The rough architecture is:</p>
+    <pre>Mac / local filesystem
+        ↓
+Hermes Agent CLI + tool system
+        ↓
+Web search, file editing, terminal commands, memory, session search, cron jobs
+        ↓
+Feishu/Lark delivery to my phone</pre>
+    <p>I use the terminal version for deep work, especially paper editing and repo-level tasks. I also connect Hermes to Feishu/Lark so that scheduled briefings and summaries can be delivered directly to my phone.</p>
+    <p>The setup is intentionally boring: local files stay local, scheduled jobs run through Hermes cron, and messages arrive through a normal chat app. That is what makes it practical.</p>
+
+    <h3>Scheduled jobs</h3>
+    <p>The recurring automation is handled with Hermes cron jobs. Conceptually, it looks like this:</p>
+    <pre>8:00am  daily briefing
+10:00pm daily work summary
+10:00pm weekly summary / weekly reflection checkpoint</pre>
+    <p>The 8am job uses web and research tools. The 10pm jobs use session search and memory-aware summarization, so Hermes can look back over the actual work I did rather than asking me to reconstruct the day manually.</p>
+    <p>In practice, the cron prompts matter more than the schedule itself. The prompts specify what kind of information I care about, how compact the output should be, and which work categories must not be missed.</p>
+
+    <hr>
+
+    <h2>8am: daily briefing</h2>
+    <p>Every morning, I want a short but useful overview before I start the day.</p>
+    <p>My daily briefing combines several things:</p>
+    <ul>
+      <li><strong>Top AI reads</strong>: papers, technical reports, model releases, and important blog posts.</li>
+      <li><strong>Research relevance</strong>: why a paper or release matters for video generation, VLMs, diffusion/flow models, multimodal agents, or 3D generation.</li>
+      <li><strong>Market watch</strong>: high-level movement in AI-related companies and sectors I care about.</li>
+      <li><strong>Todos</strong>: a small list of concrete things I should consider doing today.</li>
+    </ul>
+    <p>The key is that the briefing is not a generic news digest. It is tuned to my research taste. For example, an ordinary AI newsletter may mention a new model release. Hermes tries to answer the more useful question: <em>does this change what I should read, write, test, or think about?</em></p>
+    <p>I also like the paper section to include direct source links, especially arXiv abstract links. That makes the briefing actionable: I can open the paper immediately from my phone and decide whether it deserves deeper reading later.</p>
+
+    <hr>
+
+    <h2>10pm: daily and weekly summaries</h2>
+    <p>The 10pm summary is the opposite of the 8am briefing. In the morning, Hermes looks outward. At night, it looks backward.</p>
+    <p>The daily summary answers:</p>
+    <ul>
+      <li>What did I actually work on today?</li>
+      <li>Which paper edits, manuscript changes, code changes, or blog drafts mattered?</li>
+      <li>What decisions did I make?</li>
+      <li>What should continue tomorrow?</li>
+    </ul>
+    <p>This is useful because a lot of research work is fragmented. A day might include one paper section rewrite, one figure polish, one related-work search, one code experiment, and one blog draft. Without a summary, the day feels scattered. With a summary, the work becomes a trace.</p>
+    <p>The weekly summary is a higher-level version of the same idea. It compresses daily activity into themes: papers advanced, submissions prepared, experiments debugged, writing completed, and pending follow-ups.</p>
+    <blockquote><p>The goal is not journaling for its own sake. The goal is continuity. Hermes helps turn many small interactions into a persistent work memory.</p></blockquote>
+
+    <hr>
+
+    <h2>Paper writing and polishing</h2>
+    <p>The most valuable use case for me is paper writing.</p>
+    <p>Hermes can work directly with local paper repositories. That means it can inspect LaTeX files, edit sections, polish paragraphs, check consistency, and run build or search commands when needed.</p>
+    <p>I use it for several kinds of paper work:</p>
+    <ul>
+      <li><strong>Grammar and clarity polishing</strong>: clean up language without changing the technical meaning.</li>
+      <li><strong>Related work organization</strong>: compare papers, group citations, and improve narrative flow.</li>
+      <li><strong>Method-section rewriting</strong>: make the structure clearer while preserving technical claims.</li>
+      <li><strong>Abstract and introduction iteration</strong>: sharpen the motivation, contribution, and positioning.</li>
+      <li><strong>Submission preparation</strong>: check files, captions, references, and paper-specific TODOs.</li>
+    </ul>
+    <p>The important thing is that Hermes remembers my preferences. For example, when I ask for a grammar polish, I usually do not want it to rewrite the whole argument. I want it to fix grammar, typos, and awkward phrasing while preserving my intent.</p>
+    <p>This is where persistent memory and skills become useful. Over time, Hermes learns the difference between &ldquo;rewrite this section&rdquo; and &ldquo;lightly polish this paragraph.&rdquo;</p>
+
+    <hr>
+
+    <h2>Blogging and technical writing</h2>
+    <p>I also use Hermes for blog writing.</p>
+    <p>My blogging workflow is usually:</p>
+    <ol>
+      <li>I write rough notes or a thesis.</li>
+      <li>Hermes turns them into a structured draft.</li>
+      <li>I ask for grammar polishing or stronger flow.</li>
+      <li>Hermes creates a clean local HTML or Markdown version.</li>
+      <li>I manually review the final version before posting.</li>
+    </ol>
+    <p>This is useful for speculative technical posts, where the goal is not just correctness but also positioning: what is the thesis, what is the ranking of possibilities, what evidence is public, and where should the claims be hedged?</p>
+    <p>Hermes is especially good at helping me keep a blog post in the right mode. Some posts should be precise and technical. Some should be conversational. Some should be formatted for X or LinkedIn. Some should remain as a clean standalone HTML file.</p>
+
+    <hr>
+
+    <h2>Remote work from my phone</h2>
+    <p>The mobile workflow is what makes the system feel different from a normal terminal agent.</p>
+    <p>Because Hermes can deliver through Feishu/Lark, I can interact with it from my phone. That means I can:</p>
+    <ul>
+      <li>receive the 8am briefing without opening my laptop;</li>
+      <li>check the 10pm summary while away from my desk;</li>
+      <li>send a quick instruction when I remember something on the go;</li>
+      <li>ask it to inspect or prepare local work before I return to my computer;</li>
+      <li>use my phone as a lightweight command center for research and writing tasks.</li>
+    </ul>
+    <p>This does not replace deep work on a laptop. It removes friction around it. If I have an idea while walking, commuting, or between meetings, I can send it to Hermes. If a scheduled summary reminds me of a missing TODO, I can reply immediately. The agent becomes a bridge between mobile moments and desktop execution.</p>
+    <p>The practical result is that my research workflow is less tied to one physical context. The Mac still does the heavy lifting, but the phone becomes a remote interface to the same assistant.</p>
+
+    <hr>
+
+    <h2>Why this matters</h2>
+    <p>The biggest benefit is continuity.</p>
+    <p>Research and writing are not single-turn tasks. They unfold across days: reading papers, forming opinions, rewriting sections, updating claims, preparing submissions, and remembering what changed yesterday.</p>
+    <p>Hermes helps connect those fragments. The daily briefing brings new information in. The nightly summary compresses the day. The weekly summary turns scattered progress into a higher-level record. The writing workflows keep paper and blog drafts moving. The mobile interface keeps the loop alive even when I am not at my desk.</p>
+    <p>That is why I think of Hermes less as a chatbot and more as an always-on research and writing assistant.</p>
+
+    <div class="author-card">
+      <img src="../img/avatar.jpg" alt="Gordon Guocheng Qian">
+      <div>
+        <div class="author-name">Gordon Guocheng Qian</div>
+        <p>Senior Research Scientist at Snap Inc. Writing about AI research, model scaling, agents, and markets.</p>
+        <div class="author-links">
+          <a href="/">Homepage</a>
+          <a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ">Google Scholar</a>
+          <a href="https://github.com/guochengqian">GitHub</a>
+          <a href="https://twitter.com/guocheng_qian">X</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="comments">
+      <h2 class="comments-title">Comments</h2>
+      <script src="https://utteranc.es/client.js" repo="guochengqian/guochengqian.github.io" issue-term="pathname" label="blog-comment" theme="github-light" crossorigin="anonymous" async></script>
+    </section>
+  </article>
+
+  <footer class="site-footer">&copy; 2026 Gordon Guocheng Qian &middot; <a href="../rss.xml">RSS</a> &middot; <a href="../index.html">All posts</a></footer>
+</div>
+</body>
+</html>
