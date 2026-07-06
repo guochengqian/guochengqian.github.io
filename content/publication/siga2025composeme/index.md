@@ -6,13 +6,13 @@ draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
 authors = [
-"__**Guocheng Gordon Qian**__", 
-"Daniil Ostashev", 
-"Egor Nemchinov", 
-"Avihay Assouline", 
-"Sergey Tulyakov", 
-"Kuan-Chieh Jackson Wang", 
-"Kfir Aberman", 
+"__**Gordon Guocheng Qian**__",
+"Daniil Ostashev",
+"Egor Nemchinov",
+"Avihay Assouline",
+"Sergey Tulyakov",
+"Kuan-Chieh Jackson Wang",
+"Kfir Aberman",
 ]
 
 # Publication type.

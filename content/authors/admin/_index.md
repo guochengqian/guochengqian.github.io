@@ -1,7 +1,7 @@
 ---
 
 # Display name
-name: Gordon (Guocheng) Qian
+name: Gordon Guocheng Qian
 namecn: 钱国成
 
 # # Username (this should match the folder name)
@@ -29,7 +29,7 @@ address:
   country: United States
 
 # Short bio (displayed in user profile at end of posts)
-bio: Guocheng Qian (Gordon) is a Senior Research Scientist at Snap Inc. working on generative models across image, video, and 3D.
+bio: Gordon Guocheng Qian is a Senior Research Scientist at Snap Inc. working on generative models across image, video, and 3D.
 
 education:
   courses:

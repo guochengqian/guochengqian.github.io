@@ -6,9 +6,9 @@ draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
 authors = [
-"Anujraaj Goyal", 
-"__**Guocheng Gordon Qian**__<sup>†</sup>", 
-"Huseyin Coskun", 
+"Anujraaj Goyal",
+"__**Gordon Guocheng Qian**__<sup>†</sup>",
+"Huseyin Coskun",
 "Aarush Gupta",
 "Himmy Tam",
 "Daniil Ostashev",
@@ -98,4 +98,3 @@ math = true
   # preview_only = true
 
 +++
-
