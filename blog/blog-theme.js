@@ -53,6 +53,21 @@
     apply(isDark());
   });
 
+  // "Send to my email" forms: compose a mail to the address the reader typed,
+  // containing the post title and link — no third-party service involved.
+  document.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (!form.classList || !form.classList.contains('subscribe-form')) return;
+    e.preventDefault();
+    var email = (form.querySelector('input[type="email"]') || {}).value || '';
+    if (!email) return;
+    var title = form.getAttribute('data-title') || document.title;
+    var url = form.getAttribute('data-url') || location.href;
+    location.href = 'mailto:' + encodeURIComponent(email) +
+      '?subject=' + encodeURIComponent(title) +
+      '&body=' + encodeURIComponent(title + '\n' + url + '\n');
+  });
+
   // Follow system/time changes as long as the user hasn't picked manually.
   function reapplyIfAuto() {
     if (stored() === null) apply(isDark());

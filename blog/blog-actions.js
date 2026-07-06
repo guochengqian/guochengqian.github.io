@@ -37,7 +37,7 @@
     bar.appendChild(commentBtn);
 
     var pop = el('div', 'ab-popover');
-    pop.innerHTML = '<form class="subscribe-form" action="https://gordonqian.substack.com/subscribe" method="get" target="_blank" rel="noopener">' +
+    pop.innerHTML = '<form class="subscribe-form">' +
       '<input type="email" name="email" required placeholder="Type your email…">' +
       '<button type="submit">Send</button></form>';
     bar.appendChild(pop);

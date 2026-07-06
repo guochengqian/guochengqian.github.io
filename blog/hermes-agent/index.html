@@ -33,7 +33,7 @@
         <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
         <div class="byline-sub">May 18, 2026 &middot; 7 min read</div>
       </div>
-      <form class="subscribe-form subscribe-compact byline-subscribe" action="https://gordonqian.substack.com/subscribe" method="get" target="_blank" rel="noopener"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="How I Use Hermes Agent as My Always-On Research and Writing Assistant" data-url="https://guochengqian.github.io/blog/hermes-agent/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form>
     </div>
 
     <p>I have been using <strong>Hermes Agent</strong> as a personal AI operating layer around my research, writing, and daily workflow.</p>
@@ -48,7 +48,7 @@
     <hr>
 
     <h2>The basic setup</h2>
-    <p>Hermes runs locally on my Mac and connects to my tools through a terminal-first workflow. The rough architecture is:</p>
+    <p>Hermes runs locally on my Mac mini and connects to my tools through a terminal-first workflow. Because the agent lives on the machine that holds my local repositories, paper drafts, notes, and blog files, a phone message can become real work on the filesystem rather than just another chat reply. The rough architecture is:</p>
     <pre>Mac / local filesystem
         ↓
 Hermes Agent CLI + tool system
@@ -139,8 +139,16 @@ Feishu/Lark delivery to my phone</pre>
       <li>ask it to inspect or prepare local work before I return to my computer;</li>
       <li>use my phone as a lightweight command center for research and writing tasks.</li>
     </ul>
+    <figure>
+      <img src="phone-remote-agent.png" alt="Phone interface controlling Hermes Agent on a Mac mini with access to local files">
+      <figcaption>From my phone, I can ask Hermes to inspect a local repo, summarize recent work, polish a paper section, prepare a blog draft, run a quick terminal check, or leave a report for when I return to the Mac mini.</figcaption>
+    </figure>
     <p>This does not replace deep work on a laptop. It removes friction around it. If I have an idea while walking, commuting, or between meetings, I can send it to Hermes. If a scheduled summary reminds me of a missing TODO, I can reply immediately. The agent becomes a bridge between mobile moments and desktop execution.</p>
     <p>The practical result is that my research workflow is less tied to one physical context. The Mac still does the heavy lifting, but the phone becomes a remote interface to the same assistant.</p>
+    <figure>
+      <img src="fsd-agent-productivity.png" alt="Supervised FSD commute with a phone connected to a remote AI agent on a Mac mini">
+      <figcaption>In the supervised-driving version of the same loop, FSD lowers commute friction while Hermes keeps work moving in the background. FSD + Agent = productivity: travel time becomes a lightweight control surface for research, writing, and file-based tasks.</figcaption>
+    </figure>
 
     <hr>
 
@@ -151,8 +159,8 @@ Feishu/Lark delivery to my phone</pre>
     <p>That is why I think of Hermes less as a chatbot and more as an always-on research and writing assistant.</p>
 
     <div class="subscribe-box">
-      <p>Enjoyed this post? Get new posts sent to your email.</p>
-      <form class="subscribe-form" action="https://gordonqian.substack.com/subscribe" method="get" target="_blank" rel="noopener"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form>
+      <p>Enjoyed this post? Send it to your email to read later.</p>
+      <form class="subscribe-form" data-title="How I Use Hermes Agent as My Always-On Research and Writing Assistant" data-url="https://guochengqian.github.io/blog/hermes-agent/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form>
     </div>
 
     <div class="author-card">
