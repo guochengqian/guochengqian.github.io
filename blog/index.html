@@ -9,20 +9,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
   <link rel="alternate" type="application/rss+xml" title="Gordon's Blog" href="rss.xml">
-  <link rel="stylesheet" href="blog.css?v=202607051752">
+  <link rel="stylesheet" href="blog.css?v=202607052200">
   <script src="blog-theme.js?v=202607051748"></script>
+  <script src="blog-layout.js?v=202607051900" defer></script>
 </head>
 <body>
 <div class="page">
-  <header class="site-header">
-    <a class="brand" href="./"><img src="img/avatar.jpg" alt="Gordon Guocheng Qian"> Gordon Guocheng Qian</a>
-    <nav class="site-nav">
-      <a href="/">About</a>
-      <a href="./">Blog</a>
-      <a href="rss.xml">RSS</a>
-    </nav>
-  </header>
-
   <section class="blog-hero">
     <h1>Gordon Qian&rsquo;s Blog</h1>
     <p>Essays on AI research, agents, and markets &mdash; from a research scientist&rsquo;s point of view.</p>
@@ -41,80 +33,8 @@
     </div>
   </section>
 
-  <ul class="post-list">
-    <li class="post-item">
-      <a class="post-thumb" href="stock-inspiration-20260701/" tabindex="-1" aria-hidden="true"><img src="stock-inspiration-20260701/preview.png" alt=""></a>
-      <div class="post-body"><p class="post-meta"><span class="tag">Markets</span> &middot; July 1, 2026</p>
-      <h2><a href="stock-inspiration-20260701/">Priced In Is Not the Same as Exhausted</a></h2>
-      <p class="post-dek">META&rsquo;s move reminded me why &ldquo;it&rsquo;s already priced in&rdquo; is often too lazy. Expectation, confirmation, and scale are different stages.</p>
-      <span class="post-read">5 min read</span> <form class="subscribe-form subscribe-compact" data-title="Priced In Is Not the Same as Exhausted" data-url="https://guochengqian.github.io/blog/stock-inspiration-20260701/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form></div>
-    </li>
-    <li class="post-item">
-      <a class="post-thumb" href="next-scaling-after-model-scaling/" tabindex="-1" aria-hidden="true"><img src="next-scaling-after-model-scaling/preview.png" alt=""></a>
-      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 22, 2026</p>
-      <h2><a href="next-scaling-after-model-scaling/">What Is the Next Scaling After Model Scaling?</a></h2>
-      <p class="post-dek">Context scaling and agent scaling are the next product frontier &mdash; and both demand far more memory bandwidth. The HBM shortage is far from over.</p>
-      <span class="post-read">9 min read</span> <form class="subscribe-form subscribe-compact" data-title="What Is the Next Scaling After Model Scaling?" data-url="https://guochengqian.github.io/blog/next-scaling-after-model-scaling/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form></div>
-    </li>
-    <li class="post-item">
-      <a class="post-thumb" href="research-labs-shutdown/" tabindex="-1" aria-hidden="true"><img src="research-labs-shutdown/preview.png" alt=""></a>
-      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 20, 2026</p>
-      <h2><a href="research-labs-shutdown/">Big Tech Research in Retreat: The Paper Era Is Ending</a></h2>
-      <p class="post-dek">Research labs at the giants are shutting down, merging, and shrinking. This is not one company&rsquo;s problem &mdash; it is the organizational reconstruction that follows AI industrialization.</p>
-      <span class="post-read">4 min read</span> <form class="subscribe-form subscribe-compact" data-title="Big Tech Research in Retreat: The Paper Era Is Ending" data-url="https://guochengqian.github.io/blog/research-labs-shutdown/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form></div>
-    </li>
-    <li class="post-item">
-      <a class="post-thumb" href="gemini-omni-architecture/" tabindex="-1" aria-hidden="true"><img src="gemini-omni-architecture/transfusion.png" alt=""></a>
-      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 18, 2026</p>
-      <h2><a href="gemini-omni-architecture/">How Gemini-Omni Might Work</a></h2>
-      <p class="post-dek">Three plausible architectures for Google&rsquo;s latest video model, ranked &mdash; and why a Transfusion-style unified transformer is my top guess.</p>
-      <span class="post-read">6 min read</span> <form class="subscribe-form subscribe-compact" data-title="How Gemini-Omni Might Work" data-url="https://guochengqian.github.io/blog/gemini-omni-architecture/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form></div>
-    </li>
-    <li class="post-item">
-      <a class="post-thumb" href="opd/" tabindex="-1" aria-hidden="true"><img src="opd/opd-illustration.png" alt=""></a>
-      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 15, 2026</p>
-      <h2><a href="opd/">On-Policy Distillation: The Frontier Lab Recipe for Merging Experts</a></h2>
-      <p class="post-dek">OPD is not just a loss function. It is how a thousand-person lab works in parallel on the same intelligence.</p>
-      <span class="post-read">9 min read</span> <form class="subscribe-form subscribe-compact" data-title="On-Policy Distillation: The Frontier Lab Recipe for Merging Experts" data-url="https://guochengqian.github.io/blog/opd/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form></div>
-    </li>
-    <li class="post-item">
-      <a class="post-thumb" href="post-training-market/" tabindex="-1" aria-hidden="true"><img src="post-training-market/preview.jpg" alt=""></a>
-      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 10, 2026</p>
-      <h2><a href="post-training-market/">Post-training is demanding 10x pretraining&rsquo;s Computing</a></h2>
-      <p class="post-dek">Two years ago pretraining used ~10x more compute than post-training. Six months ago the ratio was closer to 1:1. Now it may flip.</p>
-      <span class="post-read">7 min read</span> <form class="subscribe-form subscribe-compact" data-title="Post-training is demanding 10x pretraining’s Computing" data-url="https://guochengqian.github.io/blog/post-training-market/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form></div>
-    </li>
-    <li class="post-item">
-      <a class="post-thumb" href="visual-generation-chatbot-accessory/" tabindex="-1" aria-hidden="true"><img src="visual-generation-chatbot-accessory/preview.png" alt=""></a>
-      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; June 3, 2026</p>
-      <h2><a href="visual-generation-chatbot-accessory/">Visual Generation Models Are Becoming Chatbot Accessories</a></h2>
-      <p class="post-dek">Visual generation is moving from standalone apps into chatbots, agents, and multimodal operating systems.</p>
-      <span class="post-read">8 min read</span> <form class="subscribe-form subscribe-compact" data-title="Visual Generation Models Are Becoming Chatbot Accessories" data-url="https://guochengqian.github.io/blog/visual-generation-chatbot-accessory/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form></div>
-    </li>
-    <li class="post-item">
-      <a class="post-thumb" href="agent-for-finance/" tabindex="-1" aria-hidden="true"><img src="agent-for-finance/core_basket_returns.png" alt=""></a>
-      <div class="post-body"><p class="post-meta"><span class="tag">Markets</span> &middot; May 30, 2026</p>
-      <h2><a href="agent-for-finance/">Agent Stock Skills: +20% in a Month, and Next Week&rsquo;s AI Watchlist</a></h2>
-      <p class="post-dek">When an agent has million-token context and tracks policy, news, and market data faster than any retail investor, it becomes a real research edge.</p>
-      <span class="post-read">7 min read</span> <form class="subscribe-form subscribe-compact" data-title="Agent Stock Skills: +20% in a Month, and Next Week’s AI Watchlist" data-url="https://guochengqian.github.io/blog/agent-for-finance/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form></div>
-    </li>
-    <li class="post-item">
-      <a class="post-thumb" href="elorian-ai/" tabindex="-1" aria-hidden="true"><img src="elorian-ai/visual_reasoning_hero.png" alt=""></a>
-      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; May 24, 2026</p>
-      <h2><a href="elorian-ai/">Silicon Valley Has No Secrets. It Has Heretics.</a></h2>
-      <p class="post-dek">Notes from Andrew Dai&rsquo;s interview: 14 years inside Google&rsquo;s AI machine, why he left after Gemini, and Elorian&rsquo;s bet on visual reasoning.</p>
-      <span class="post-read">14 min read</span> <form class="subscribe-form subscribe-compact" data-title="Silicon Valley Has No Secrets. It Has Heretics." data-url="https://guochengqian.github.io/blog/elorian-ai/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form></div>
-    </li>
-    <li class="post-item">
-      <a class="post-thumb" href="hermes-agent/" tabindex="-1" aria-hidden="true"><img src="hermes-agent/preview.png" alt=""></a>
-      <div class="post-body"><p class="post-meta"><span class="tag">AI</span> &middot; May 18, 2026</p>
-      <h2><a href="hermes-agent/">How I Use Hermes Agent as My Always-On Research and Writing Assistant</a></h2>
-      <p class="post-dek">My setup for an 8am daily briefing, 10pm summaries, paper writing, blogging, and remote work from my phone.</p>
-      <span class="post-read">7 min read</span> <form class="subscribe-form subscribe-compact" data-title="How I Use Hermes Agent as My Always-On Research and Writing Assistant" data-url="https://guochengqian.github.io/blog/hermes-agent/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form></div>
-    </li>
-  </ul>
+  <ul class="post-list"></ul>
 
-  <footer class="site-footer">&copy; 2026 Gordon Guocheng Qian &middot; <a href="rss.xml">RSS</a> &middot; <a href="/">guochengqian.github.io</a></footer>
 </div>
 </body>
 </html>
