@@ -6,8 +6,15 @@
   <atom:link href="https://guochengqian.github.io/blog/rss.xml" rel="self" type="application/rss+xml"/>
   <description>Essays on AI research, model scaling, agents, and markets by Gordon Guocheng Qian.</description>
   <language>en-us</language>
-  <lastBuildDate>Wed, 01 Jul 2026 12:00:00 +0000</lastBuildDate>
+  <lastBuildDate>Sun, 05 Jul 2026 12:00:00 +0000</lastBuildDate>
 
+  <item>
+    <title>I Host This Blog with Claude</title>
+    <link>https://guochengqian.github.io/blog/claude-hosted-blog/</link>
+    <guid>https://guochengqian.github.io/blog/claude-hosted-blog/</guid>
+    <pubDate>Sun, 05 Jul 2026 12:00:00 +0000</pubDate>
+    <description>A clean, free blog on GitHub Pages — likes, comments, email, and sharing to X, WeChat, Rednote, and Zhihu — built entirely by talking to an agent.</description>
+  </item>
   <item>
     <title>Priced In Is Not the Same as Exhausted</title>
     <link>https://guochengqian.github.io/blog/stock-inspiration-20260701/</link>
