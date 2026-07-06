@@ -170,7 +170,8 @@ def image_block(fspath, caption_inline, dry):
     return block
 
 # ---------- block conversion ----------
-SKIP_CLASSES = {'byline', 'author-card', 'comments', 'chips', 'email-post-end', 'email-post-btn'}
+SKIP_CLASSES = {'byline', 'author-card', 'comments', 'chips', 'email-post-end', 'email-post-btn',
+                'subscribe-form', 'subscribe-box'}
 
 def convert_blocks(parent, slug, dry, warnings):
     blocks = []
