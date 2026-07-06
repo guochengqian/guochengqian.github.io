@@ -157,6 +157,8 @@
           '<a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ">Google Scholar</a>' +
           '<a href="https://github.com/guochengqian">GitHub</a>' +
           '<a href="https://twitter.com/guocheng_qian">X</a>' +
+          '<a href="https://www.linkedin.com/in/guochengqian/">LinkedIn</a>' +
+          '<a href="https://www.xiaohongshu.com/user/profile/58894a2982ec39681b4a7842">Rednote 小红书</a>' +
         '</div>' +
       '</div>'));
 
