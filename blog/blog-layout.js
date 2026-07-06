@@ -54,7 +54,11 @@
     { slug: 'stock-inspiration-20260701',
       title: 'Priced In Is Not the Same as Exhausted',
       date: 'July 1, 2026', read: '5 min read', tag: 'Markets', image: 'preview.png',
-      dek: 'META’s move reminded me why “it’s already priced in” is often too lazy. Expectation, confirmation, and scale are different stages.' }
+      dek: 'META’s move reminded me why “it’s already priced in” is often too lazy. Expectation, confirmation, and scale are different stages.' },
+    { slug: 'claude-hosted-blog',
+      title: 'I Host This Blog with Claude',
+      date: 'July 5, 2026', read: '3 min read', tag: 'AI', image: 'preview.png',
+      dek: 'A clean, free blog on GitHub Pages — likes, comments, email, and sharing to X, WeChat, Rednote, and Zhihu — built entirely by talking to an agent.' }
   ];
 
   var ACTIONS_VERSION = '202607060100'; // blog-actions.js cache-buster, managed here only.
