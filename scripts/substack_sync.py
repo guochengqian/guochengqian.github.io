@@ -5,7 +5,10 @@ from html.parser import HTMLParser
 from PIL import Image
 
 BLOG = pathlib.Path('/Users/gqian/Documents/codefiles/guochengqian.github.io/static/blog')
-SCRATCH = pathlib.Path(__file__).parent
+# Substack-only artifacts (rasterized SVGs, pre-rendered chart/table PNGs,
+# upload cache) — derived files the website itself never references.
+SCRATCH = pathlib.Path(__file__).parent / 'substack-cache'
+SCRATCH.mkdir(exist_ok=True)
 SITE = 'https://guochengqian.github.io/blog'
 PUB = 'https://gordonqian.substack.com'
 USER_ID = 400777877
@@ -278,6 +281,24 @@ def convert_figure(fig, slug, dry, warnings):
     return {'type': 'paragraph'}
 
 # ---------- per post ----------
+# Substack subscribe widget, inserted after the intro paragraph and again at
+# the end of every post (matches the placement Gordon uses in the editor).
+# Keeping this in the sync keeps `update` mode from wiping manually-added ones.
+SUBSCRIBE_WIDGET = {
+    'type': 'subscribeWidget',
+    'attrs': {'url': '%%checkout_url%%', 'text': 'Subscribe', 'language': 'en'},
+    'content': [{'type': 'ctaCaption', 'content': [{'type': 'text', 'text':
+        'Thanks for reading! Subscribe for free to receive new posts and support my work.'}]}],
+}
+
+def insert_subscribe_widgets(blocks):
+    import copy
+    for i, b in enumerate(blocks):
+        if b['type'] == 'paragraph' and any(n.get('text', '').strip() for n in b.get('content', [])):
+            blocks.insert(i + 1, copy.deepcopy(SUBSCRIBE_WIDGET))
+            break
+    blocks.append(copy.deepcopy(SUBSCRIBE_WIDGET))
+
 def build_post(slug, dry=True):
     html = (BLOG / slug / 'index.html').read_text()
     root = parse(html)
@@ -292,6 +313,7 @@ def build_post(slug, dry=True):
     date = byline.text().split('·')[0].strip() if byline else ''
     warnings = []
     blocks = convert_blocks(art, slug, dry, warnings)
+    insert_subscribe_widgets(blocks)
     blocks.append({'type': 'horizontal_rule'})
     blocks.append({'type': 'paragraph', 'content': [
         {'type': 'text', 'text': 'Originally published on '},
@@ -326,10 +348,12 @@ def create_draft(post, slug):
 def update_draft(post, slug):
     return api(f'/api/v1/drafts/{DRAFT_IDS[slug]}', draft_payload(post, slug), method='PUT')
 
-# slug -> existing Substack draft id (from the 2026-07-05 initial sync)
+# slug -> existing Substack post id. Most are from the 2026-07-05 initial
+# sync; opd and post-training-market point at the posts Gordon published
+# manually in May 2026 (the synced duplicates were deleted).
 DRAFT_IDS = {
-    'opd': 205424147, 'hermes-agent': 205424199, 'elorian-ai': 205424207,
-    'post-training-market': 205424220, 'gemini-omni-architecture': 205424225,
+    'opd': 199884675, 'hermes-agent': 205424199, 'elorian-ai': 205424207,
+    'post-training-market': 199263879, 'gemini-omni-architecture': 205424225,
     'research-labs-shutdown': 205424228, 'stock-inspiration-20260701': 205424233,
     'agent-for-finance': 205424275, 'visual-generation-chatbot-accessory': 205424278,
     'next-scaling-after-model-scaling': 205424280,
