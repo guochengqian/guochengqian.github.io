@@ -10,18 +10,70 @@ https://github.com/WenjieDu/Google_Scholar_Badge_Generator/tree/main
 from __future__ import annotations
 
 import csv
+import ctypes.util
 import os
 from pathlib import Path
 
 import gsbg  # Google Scholar Badge Generator
 import requests  # type: ignore
-import cairosvg  # type: ignore
+
+
+def _prefer_homebrew_cairo() -> None:
+    """
+    Help cairocffi find Homebrew's Cairo dylib on macOS.
+
+    Apple's Command Line Tools Python does not always search /opt/homebrew/lib
+    or /usr/local/lib via ctypes.util.find_library().
+    """
+    original_find_library = ctypes.util.find_library
+    cairo_paths = (
+        Path("/opt/homebrew/lib/libcairo.2.dylib"),
+        Path("/usr/local/lib/libcairo.2.dylib"),
+    )
+
+    def find_library(name: str) -> str | None:
+        if name in {"cairo", "cairo-2", "libcairo-2"}:
+            for path in cairo_paths:
+                if path.exists():
+                    return str(path)
+        return original_find_library(name)
+
+    ctypes.util.find_library = find_library
+
+
+_original_find_library = ctypes.util.find_library
+_prefer_homebrew_cairo()
+try:
+    import cairosvg  # type: ignore
+except Exception:
+    cairosvg = None
+finally:
+    ctypes.util.find_library = _original_find_library
 
 ROOT = Path(__file__).resolve().parent
 # Source-of-truth CSV exposed on the website for download.
 CSV_PATH = ROOT / "static" / "files" / "publications.csv"
 # Directory in the website where we cache rendered badge PNGs.
 BADGE_DIR = ROOT / "static" / "img" / "pub"
+
+# Scholar links for publications that are missing this field in the CSV.
+GOOGLE_SCHOLAR_LINKS_BY_SLUG = {
+    "pami2021deepgcns": (
+        "https://scholar.google.com/citations?view_op=view_citation&hl=en"
+        "&user=DUDaxg4AAAAJ&pagesize=100"
+        "&citation_for_view=DUDaxg4AAAAJ:9yKSN-GCB0IC"
+    ),
+}
+
+
+def svg_to_png(svg_bytes: bytes, output_height: int = 512) -> bytes:
+    """Render SVG bytes to PNG with CairoSVG."""
+    if cairosvg is None:
+        raise RuntimeError(
+            "Cannot render SVG badges: CairoSVG cannot load native Cairo. "
+            "Install it with `brew install cairo` on macOS."
+        )
+    return cairosvg.svg2png(bytestring=svg_bytes, output_height=output_height)
 
 
 def github_stars_badge(repo: str) -> str:
@@ -106,6 +158,7 @@ def main() -> None:
 
             github_repo = (row.get("github_repo") or "").strip()
             scholar_link = (row.get("google_scholar_link") or "").strip()
+            scholar_link = scholar_link or GOOGLE_SCHOLAR_LINKS_BY_SLUG.get(slug, "")
             prev_cites = row.get("google_scholar_cites") or ""
             prev_stars = row.get("github_stars") or ""
 
@@ -139,7 +192,7 @@ def main() -> None:
                 resp.raise_for_status()
                 local_name = f"{slug}_cites.png"
                 svg_bytes = resp.content
-                png_bytes = cairosvg.svg2png(bytestring=svg_bytes, output_height=512)
+                png_bytes = svg_to_png(svg_bytes, output_height=512)
                 (BADGE_DIR / local_name).write_bytes(png_bytes)
                 badge_local = f"/img/pub/{local_name}"
                 
@@ -152,7 +205,7 @@ def main() -> None:
                 resp.raise_for_status()
                 local_name_flat = f"{slug}_cites_flat.png"
                 svg_bytes = resp.content
-                png_bytes = cairosvg.svg2png(bytestring=svg_bytes, output_height=512)
+                png_bytes = svg_to_png(svg_bytes, output_height=512)
                 (BADGE_DIR / local_name_flat).write_bytes(png_bytes)
                 badge_local_flat = f"/img/pub/{local_name_flat}"
 
@@ -170,7 +223,7 @@ def main() -> None:
                 resp.raise_for_status()
                 local_name = f"{slug}_stars.png"
                 svg_bytes = resp.content
-                png_bytes = cairosvg.svg2png(bytestring=svg_bytes, output_height=512)
+                png_bytes = svg_to_png(svg_bytes, output_height=512)
                 (BADGE_DIR / local_name).write_bytes(png_bytes)
                 stars_local = f"/img/pub/{local_name}"
                 
@@ -183,7 +236,7 @@ def main() -> None:
                 resp.raise_for_status()
                 local_name_flat = f"{slug}_stars_flat.png"
                 svg_bytes = resp.content
-                png_bytes = cairosvg.svg2png(bytestring=svg_bytes, output_height=512)
+                png_bytes = svg_to_png(svg_bytes, output_height=512)
                 (BADGE_DIR / local_name_flat).write_bytes(png_bytes)
                 stars_local_flat = f"/img/pub/{local_name_flat}"
 
@@ -191,6 +244,7 @@ def main() -> None:
             # Update row fields.
             row["github_stars"] = str(stars_count or "")
             row["github_stars_badge"] = stars_url
+            row["google_scholar_link"] = scholar_link
             row["google_scholar_cites"] = str(cites_value or "")
             row["google_scholar_badge_url"] = badge_url
             row["google_scholar_badge_local"] = badge_local
@@ -208,12 +262,10 @@ def main() -> None:
             rows.append(row)
 
     with CSV_PATH.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
 
 if __name__ == "__main__":
     main()
-
-
