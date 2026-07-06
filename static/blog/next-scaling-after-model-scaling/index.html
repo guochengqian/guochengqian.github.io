@@ -8,9 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../blog.css?v=202607051752">
+  <link rel="stylesheet" href="../blog.css?v=202607052200">
   <script src="../blog-theme.js?v=202607051748"></script>
-  <script src="../blog-actions.js?v=202607051748" defer></script>
+  <script src="../blog-layout.js?v=202607051900" defer></script>
   <style>
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     .token-chart { margin: 30px 0; padding: 20px 18px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); }
@@ -22,15 +22,6 @@
 </head>
 <body>
 <div class="page">
-  <header class="site-header">
-    <a class="brand" href="../"><img src="../img/avatar.jpg" alt="Gordon Guocheng Qian"> Gordon Guocheng Qian</a>
-    <nav class="site-nav">
-      <a href="/">About</a>
-      <a href="../">Blog</a>
-      <a href="../rss.xml">RSS</a>
-    </nav>
-  </header>
-
   <article>
     <p class="article-tag">AI</p>
     <h1>What Is the Next Scaling After Model Scaling?</h1>
@@ -41,8 +32,13 @@
         <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
         <div class="byline-sub">June 22, 2026 &middot; 9 min read</div>
       </div>
-      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="What Is the Next Scaling After Model Scaling?" data-url="https://guochengqian.github.io/blog/next-scaling-after-model-scaling/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="What Is the Next Scaling After Model Scaling?" data-url="https://guochengqian.github.io/blog/next-scaling-after-model-scaling/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
     </div>
+
+    <figure>
+      <img src="preview.png" alt="Many parallel AI agents with long context streams feeding into stacked memory modules">
+      <figcaption>After model scaling, the next pressure points are context length, agent count, and the memory bandwidth needed to keep those systems alive.</figcaption>
+    </figure>
 
     <p>For most daily users, the baseline knowledge and reasoning in products like ChatGPT and Claude already feels good enough for many everyday jobs: answering questions, writing code, summarizing documents, planning trips, drafting emails, and explaining concepts. Once that capability becomes normal, the user&rsquo;s unmet need shifts from &ldquo;know more&rdquo; to &ldquo;do more for me.&rdquo; Haters will say we just need more parameters. XD</p>
 
@@ -121,35 +117,11 @@
 
     <div class="subscribe-box">
       <p>Enjoyed this post? Send it to your email to read later.</p>
-      <form class="subscribe-form" data-title="What Is the Next Scaling After Model Scaling?" data-url="https://guochengqian.github.io/blog/next-scaling-after-model-scaling/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Send to my email</button></form>
+      <form class="subscribe-form" data-title="What Is the Next Scaling After Model Scaling?" data-url="https://guochengqian.github.io/blog/next-scaling-after-model-scaling/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
     </div>
 
-    <nav class="post-nav" aria-label="More posts">
-      <a class="post-nav-card" href="../research-labs-shutdown/"><span class="post-nav-label">&larr; Previous post</span><span class="post-nav-title">Big Tech Research in Retreat: The Paper Era Is Ending</span><img src="../research-labs-shutdown/preview.png" alt="" loading="lazy"></a>
-      <a class="post-nav-card" href="../stock-inspiration-20260701/"><span class="post-nav-label">Next post &rarr;</span><span class="post-nav-title">Priced In Is Not the Same as Exhausted</span><img src="../stock-inspiration-20260701/preview.png" alt="" loading="lazy"></a>
-    </nav>
-
-    <div class="author-card">
-      <img src="../img/avatar.jpg" alt="Gordon Guocheng Qian">
-      <div>
-        <div class="author-name">Gordon Guocheng Qian</div>
-        <p>Senior Research Scientist at Snap Inc. Writing about AI research, model scaling, agents, and markets.</p>
-        <div class="author-links">
-          <a href="/">Homepage</a>
-          <a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ">Google Scholar</a>
-          <a href="https://github.com/guochengqian">GitHub</a>
-          <a href="https://twitter.com/guocheng_qian">X</a>
-        </div>
-      </div>
-    </div>
-
-    <section class="comments">
-      <h2 class="comments-title">Comments</h2>
-      <script src="https://utteranc.es/client.js" repo="guochengqian/blog-comments" issue-term="blog/next-scaling-after-model-scaling/" label="blog-comments" theme="github-light" crossorigin="anonymous" async></script>
-    </section>
   </article>
 
-  <footer class="site-footer">&copy; 2026 Gordon Guocheng Qian &middot; <a href="../rss.xml">RSS</a> &middot; <a href="../">All posts</a></footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
