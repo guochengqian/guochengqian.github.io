@@ -151,7 +151,7 @@
       '<img src="../img/avatar.jpg" alt="Gordon Guocheng Qian">' +
       '<div>' +
         '<div class="author-name">Gordon Guocheng Qian</div>' +
-        '<p>Senior Research Scientist at Snap Inc. Writing about AI research, model scaling, agents, and markets.</p>' +
+        '<p>Senior Research Scientist at Snap Inc. Writing about GenAI research, agents, and AI markets.</p>' +
         '<div class="author-links">' +
           '<a href="/">Homepage</a>' +
           '<a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ">Google Scholar</a>' +
