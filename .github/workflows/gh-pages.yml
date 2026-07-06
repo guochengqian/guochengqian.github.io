@@ -29,6 +29,11 @@ jobs:
       - name: Build
         run: hugo --minify
 
+      # static/posts holds social-share kits (post drafts + screenshots);
+      # keep them in the repo but never publish them on the site.
+      - name: Exclude share-kit posts from site
+        run: rm -rf ./public/posts
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4.1.0
         # If you're changing the branch from main, 
