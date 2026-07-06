@@ -48,6 +48,10 @@
     var prevBtn = el('button', 'ab-btn ab-icon', ARROW_L);
     var topBtn = el('button', 'ab-btn ab-icon', ARROW_U);
     var nextBtn = el('button', 'ab-btn ab-icon', ARROW_R);
+    likeBtn.title = 'Like';
+    emailBtn.title = 'Email this blog';
+    commentBtn.title = 'Jump to comments';
+    shareBtn.title = 'Share';
     bar.appendChild(likeBtn);
     bar.appendChild(el('span', 'ab-sep'));
     bar.appendChild(emailBtn);
@@ -88,11 +92,14 @@
 
     // --- share menu ---
     var pageUrl = (document.querySelector('meta[property="og:url"]') || {}).content || location.href;
-    var pageTitle = document.title;
-    function copyUrl() {
-      if (navigator.clipboard) { navigator.clipboard.writeText(pageUrl).catch(function () {}); return; }
+    var h1 = document.querySelector('article h1');
+    var pageTitle = (h1 ? h1.textContent : document.title).trim();
+    var shareText = pageTitle + ' — Gordon Qian’s Blog';
+    var shareMsg = shareText + '\n' + pageUrl;
+    function copyShare() {
+      if (navigator.clipboard) { navigator.clipboard.writeText(shareMsg).catch(function () {}); return; }
       var ta = document.createElement('textarea');
-      ta.value = pageUrl; document.body.appendChild(ta); ta.select();
+      ta.value = shareMsg; document.body.appendChild(ta); ta.select();
       try { document.execCommand('copy'); } catch (e) {}
       ta.remove();
     }
@@ -104,11 +111,11 @@
       return a;
     }
     function menuCopy(label, site) {
-      /* No share-intent URL for this platform: copy the link, then open it. */
+      /* No share-intent URL for this platform: copy the message, then open it. */
       var b = el('button', 'ab-menu-item', label);
       b.addEventListener('click', function () {
-        copyUrl();
-        b.textContent = 'Link copied — paste to share';
+        copyShare();
+        b.textContent = 'Copied — paste to share';
         setTimeout(function () {
           b.innerHTML = label;
           if (site) window.open(site, '_blank', 'noopener');
@@ -120,36 +127,52 @@
     }
     var copyItem = el('button', 'ab-menu-item', 'Copy link');
     copyItem.addEventListener('click', function () {
-      copyUrl();
+      copyShare();
       copyItem.textContent = 'Copied ✓';
       setTimeout(function () { copyItem.textContent = 'Copy link'; menu.classList.remove('is-open'); }, 900);
     });
     menu.appendChild(copyItem);
-    menuLink('Substack Notes', 'https://substack.com/notes?action=compose&message=' + encodeURIComponent(pageTitle + ' ' + pageUrl));
-    menuLink('X / Twitter', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(pageTitle) + '&url=' + encodeURIComponent(pageUrl));
+    menuLink('Substack Notes', 'https://substack.com/notes?action=compose&message=' + encodeURIComponent(shareMsg));
+    menuLink('X / Twitter', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(pageUrl));
     menuLink('Facebook', 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(pageUrl));
     menuLink('LinkedIn', 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(pageUrl));
-    menuLink('Email', 'mailto:?subject=' + encodeURIComponent(pageTitle) + '&body=' + encodeURIComponent(pageTitle + '\n' + pageUrl));
+    menuLink('Email', 'mailto:?subject=' + encodeURIComponent(pageTitle) + '&body=' + encodeURIComponent(shareMsg));
+    /* WeChat: copy the message and show a QR code to scan in the app. */
+    var WECHAT_LABEL = 'WeChat 微信';
+    var wechatItem = el('button', 'ab-menu-item', WECHAT_LABEL);
+    wechatItem.addEventListener('click', function () {
+      copyShare();
+      if (wechatItem.querySelector('img')) return;
+      wechatItem.innerHTML =
+        '<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=8&data=' +
+        encodeURIComponent(pageUrl) + '" alt="QR code for this post" width="150" height="150">' +
+        '<span class="ab-qr-note">Copied — scan with WeChat</span>';
+    });
+    menu.appendChild(wechatItem);
     menuCopy('Rednote 小红书', 'https://www.xiaohongshu.com/');
     menuCopy('Zhihu 知乎', 'https://www.zhihu.com/');
     bar.appendChild(menu);
+    function resetWechat() { if (wechatItem.querySelector('img')) wechatItem.innerHTML = WECHAT_LABEL; }
+
+    function closeMenu() { menu.classList.remove('is-open'); resetWechat(); }
 
     shareBtn.addEventListener('click', function (e) {
       e.stopPropagation();
       pop.classList.remove('is-open');
-      menu.classList.toggle('is-open');
+      if (menu.classList.contains('is-open')) closeMenu();
+      else menu.classList.add('is-open');
     });
 
     // --- email popover ---
     emailBtn.addEventListener('click', function (e) {
       e.stopPropagation();
-      menu.classList.remove('is-open');
+      closeMenu();
       pop.classList.toggle('is-open');
       if (pop.classList.contains('is-open')) pop.querySelector('input').focus();
     });
     document.addEventListener('click', function (e) {
       if (!pop.contains(e.target) && e.target !== emailBtn) pop.classList.remove('is-open');
-      if (!menu.contains(e.target) && e.target !== shareBtn && !shareBtn.contains(e.target)) menu.classList.remove('is-open');
+      if (!menu.contains(e.target) && e.target !== shareBtn && !shareBtn.contains(e.target)) closeMenu();
     });
 
     // --- comment ---
