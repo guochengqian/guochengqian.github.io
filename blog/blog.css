@@ -423,6 +423,70 @@ article tr:last-child td { border-bottom: 0; }
 }
 .site-footer a { color: var(--muted); }
 
+/* ---------- Floating action bar (posts) ---------- */
+.action-bar {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  background: rgba(250, 246, 238, 0.92);
+  border: 1px solid rgba(95, 69, 39, 0.16);
+  border-radius: 999px;
+  box-shadow: 0 10px 34px rgba(92, 68, 41, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: var(--sans);
+}
+html.dark .action-bar {
+  background: rgba(40, 34, 29, 0.92);
+  border-color: rgba(245, 233, 215, 0.14);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.4);
+}
+.ab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.ab-btn:hover { color: var(--sub-accent); background: rgba(183, 101, 49, 0.08); }
+.ab-btn.is-liked { color: var(--sub-accent); }
+.ab-btn.is-liked svg { color: var(--sub-accent); }
+.ab-count { font-variant-numeric: tabular-nums; color: var(--faint); font-size: 12.5px; }
+.ab-btn.is-liked .ab-count { color: var(--sub-accent); }
+.ab-sep { width: 1px; height: 18px; background: rgba(95, 69, 39, 0.15); }
+html.dark .ab-sep { background: rgba(245, 233, 215, 0.14); }
+.ab-pulse svg { animation: ab-pop 0.4s ease; }
+@keyframes ab-pop { 40% { transform: scale(1.45); } 100% { transform: scale(1); } }
+.ab-popover {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px;
+  background: var(--sub-box-bg);
+  border: 1px solid var(--sub-box-border);
+  border-radius: 16px;
+  box-shadow: 0 16px 44px rgba(92, 68, 41, 0.2);
+  width: min(340px, calc(100vw - 40px));
+}
+html.dark .ab-popover { box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45); }
+.ab-popover.is-open { display: block; }
+.ab-popover .subscribe-form { max-width: none; }
+
 /* ---------- Dark-mode overrides for hardcoded colors ---------- */
 html.dark .hero-actions a.primary { background: var(--text); border-color: var(--text); color: var(--bg); }
 html.dark .hero-actions a.primary:hover { background: #fff; border-color: #fff; }
