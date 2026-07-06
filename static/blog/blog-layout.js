@@ -57,7 +57,7 @@
       dek: 'META’s move reminded me why “it’s already priced in” is often too lazy. Expectation, confirmation, and scale are different stages.' }
   ];
 
-  var ACTIONS_VERSION = '202607052300'; // blog-actions.js cache-buster, managed here only.
+  var ACTIONS_VERSION = '202607060100'; // blog-actions.js cache-buster, managed here only.
   var SITE_URL = 'https://guochengqian.github.io/blog/';
 
   /* Slug: prefer <body data-blog-slug="...">, else derive from the path

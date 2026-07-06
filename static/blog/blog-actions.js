@@ -137,24 +137,12 @@
     menuLink('Facebook', 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(pageUrl));
     menuLink('LinkedIn', 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(pageUrl));
     menuLink('Email', 'mailto:?subject=' + encodeURIComponent(pageTitle) + '&body=' + encodeURIComponent(shareMsg));
-    /* WeChat: copy the message and show a QR code to scan in the app. */
-    var WECHAT_LABEL = 'WeChat 微信';
-    var wechatItem = el('button', 'ab-menu-item', WECHAT_LABEL);
-    wechatItem.addEventListener('click', function () {
-      copyShare();
-      if (wechatItem.querySelector('img')) return;
-      wechatItem.innerHTML =
-        '<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=8&data=' +
-        encodeURIComponent(pageUrl) + '" alt="QR code for this post" width="150" height="150">' +
-        '<span class="ab-qr-note">Copied — scan with WeChat</span>';
-    });
-    menu.appendChild(wechatItem);
+    menuCopy('WeChat 微信', null);
     menuCopy('Rednote 小红书', 'https://www.xiaohongshu.com/');
     menuCopy('Zhihu 知乎', 'https://www.zhihu.com/');
     bar.appendChild(menu);
-    function resetWechat() { if (wechatItem.querySelector('img')) wechatItem.innerHTML = WECHAT_LABEL; }
 
-    function closeMenu() { menu.classList.remove('is-open'); resetWechat(); }
+    function closeMenu() { menu.classList.remove('is-open'); }
 
     shareBtn.addEventListener('click', function (e) {
       e.stopPropagation();
