@@ -215,6 +215,13 @@ html.dark {
   white-space: nowrap;
 }
 .subscribe-form button:hover { background: var(--sub-accent-hover); border-color: var(--sub-accent-hover); }
+.subscribe-form button.is-sent,
+.subscribe-form button.is-sent:hover {
+  background: var(--sub-accent);
+  border-color: var(--sub-accent);
+  opacity: 0.72;
+  cursor: default;
+}
 .subscribe-compact { max-width: 360px; margin-top: 10px; }
 .subscribe-compact input { padding: 7px 13px; font-size: 13px; }
 .subscribe-compact button { padding: 7px 14px; font-size: 13px; }
