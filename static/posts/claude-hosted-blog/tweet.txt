@@ -1,0 +1,6 @@
+I host my blog with Claude — for $0
+
+No Medium. No WordPress. No servers. I told Claude Code what I wanted, one sentence at a time — it wrote code, tested itself, deployed, and watched the deploy turn green.
+
+Likes, comments, sharing, Substack mirror:
+https://guochengqian.github.io/blog
