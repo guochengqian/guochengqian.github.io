@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../blog.css?v=202607060100">
   <script src="../blog-theme.js?v=202607051748"></script>
-  <script src="../blog-layout.js?v=202607060200" defer></script>
+  <script src="../blog-layout.js?v=202607060300" defer></script>
 </head>
 <body>
 <div class="page">
@@ -22,7 +22,7 @@
       <img src="../img/avatar.jpg" alt="">
       <div>
         <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
-        <div class="byline-sub">July 5, 2026 &middot; 3 min read</div>
+        <div class="byline-sub">July 5, 2026 &middot; 2 min read</div>
       </div>
       <form class="subscribe-form subscribe-compact byline-subscribe" data-title="I Host This Blog with Claude" data-url="https://guochengqian.github.io/blog/claude-hosted-blog/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
     </div>
@@ -32,7 +32,6 @@
       <figcaption>The entire blog &mdash; layout, comments, sharing, syncing &mdash; came out of a conversation.</figcaption>
     </figure>
 
-    <p>This blog looks like a product, but there is no product behind it. No Medium, no WordPress, no paid platform. It is a folder of static HTML on GitHub Pages, and I built almost none of it by hand.</p>
     <p>I described what I wanted to Claude Code, and it built the blog underneath me while I kept writing.</p>
 
     <hr>
@@ -44,7 +43,6 @@
       <li><strong>Likes.</strong> A floating action bar with a like counter backed by a free hit-counter API. No accounts, no database.</li>
       <li><strong>Sharing.</strong> One Share menu covering X, Facebook, LinkedIn, Substack Notes, email &mdash; and, because much of my audience is Chinese, WeChat, Rednote (小红书), and Zhihu, which have no share URLs, so the menu copies a ready-to-paste message instead.</li>
       <li><strong>Email a post.</strong> Readers type their address and get the post link composed in their own mail client &mdash; no mailing-list service involved.</li>
-      <li><strong>Substack mirror.</strong> A sync script converts each post&rsquo;s HTML into Substack&rsquo;s editor format and pushes it as a draft, cover image and figures included. I only click &ldquo;schedule.&rdquo;</li>
     </ul>
 
     <hr>
@@ -54,7 +52,6 @@
     <p>Claude wrote the code, rendered the page in a headless browser to check its own work, took screenshots at phone width, committed, pushed, and then watched the GitHub Pages deployment until the live site served the new version. When a deploy failed on GitHub&rsquo;s side, it noticed and retriggered the build.</p>
     <blockquote><p>The interesting part is not that an agent can write a blog theme. It is that the whole loop &mdash; build, verify, ship, monitor &mdash; fits inside a conversation.</p></blockquote>
     <p>Total cost of running this: zero. GitHub Pages hosts it, GitHub issues store the comments, and the like counter is a free public API.</p>
-    <p>If you have been putting off a personal blog because platforms feel heavy and static-site generators feel fiddly, this is a genuinely pleasant third path: describe the blog you want, and edit prose &mdash; not config files.</p>
 
     <div class="subscribe-box">
       <p>Enjoyed this post? Send it to your email to read later.</p>
