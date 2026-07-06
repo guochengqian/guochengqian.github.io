@@ -581,13 +581,21 @@ html.dark .ab-menu { box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45); }
 .ab-menu-item img { display: block; margin: 4px auto 6px; border-radius: 8px; background: #fff; }
 .ab-qr-note { display: block; font-size: 12px; color: var(--faint); text-align: center; }
 
-/* Compact icon-only action bar on small screens */
+/* Icon-only action bar on small screens: full-width and larger touch targets */
 @media (max-width: 560px) {
-  .action-bar { gap: 0; padding: 5px 6px; bottom: 12px; max-width: calc(100vw - 16px); }
-  .ab-btn { padding: 8px 9px; gap: 4px; }
+  .action-bar {
+    gap: 0;
+    padding: 8px 12px;
+    bottom: 14px;
+    width: min(92vw, 440px);
+    justify-content: space-between;
+  }
+  .ab-btn { padding: 10px; gap: 4px; }
+  .ab-btn svg { width: 20px; height: 20px; }
   .ab-btn span:not(.ab-count) { display: none; }
   .ab-btn .ab-hint { display: none; }
-  .ab-sep { height: 16px; }
+  .ab-count { font-size: 13.5px; }
+  .ab-sep { height: 18px; }
   .ab-popover, .ab-menu { max-width: calc(100vw - 24px); }
 }
 
