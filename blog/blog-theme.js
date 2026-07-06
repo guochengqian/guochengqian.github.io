@@ -63,9 +63,22 @@
     if (!email) return;
     var title = form.getAttribute('data-title') || document.title;
     var url = form.getAttribute('data-url') || location.href;
-    location.href = 'mailto:' + encodeURIComponent(email) +
+    // Open the mail draft via a temporary link so the page neither
+    // navigates nor scrolls; the typed email stays in the box.
+    var a = document.createElement('a');
+    a.href = 'mailto:' + encodeURIComponent(email) +
       '?subject=' + encodeURIComponent(title) +
       '&body=' + encodeURIComponent(title + '\n' + url + '\n');
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    var btn = form.querySelector('button[type="submit"]');
+    if (btn) {
+      btn.textContent = 'Email sent';
+      btn.disabled = true;
+      btn.classList.add('is-sent');
+    }
   });
 
   // Follow system/time changes as long as the user hasn't picked manually.

@@ -71,9 +71,6 @@
     document.addEventListener('click', function (e) {
       if (!pop.contains(e.target) && e.target !== emailBtn) pop.classList.remove('is-open');
     });
-    pop.querySelector('form').addEventListener('submit', function () {
-      setTimeout(function () { pop.classList.remove('is-open'); }, 300);
-    });
 
     // --- comment ---
     commentBtn.addEventListener('click', function () {
