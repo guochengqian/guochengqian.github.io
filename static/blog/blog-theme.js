@@ -53,7 +53,7 @@
     apply(isDark());
   });
 
-  // "Send to my email" forms: compose a mail to the address the reader typed,
+  // "Email this blog" forms: compose a mail to the address the reader typed,
   // containing the post title and link — no third-party service involved.
   document.addEventListener('submit', function (e) {
     var form = e.target;
