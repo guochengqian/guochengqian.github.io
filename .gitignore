@@ -22,3 +22,4 @@ test/go.sum
 public/
 # Substack sync cache (derived: rasterized SVGs, rendered charts, upload-url cache)
 scripts/substack-cache/
+.fuse_hidden*
