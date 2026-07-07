@@ -6,8 +6,15 @@
   <atom:link href="https://guochengqian.github.io/blog/rss.xml" rel="self" type="application/rss+xml"/>
   <description>Essays on AI research, model scaling, agents, and markets by Gordon Guocheng Qian.</description>
   <language>en-us</language>
-  <lastBuildDate>Sun, 05 Jul 2026 12:00:00 +0000</lastBuildDate>
+  <lastBuildDate>Mon, 06 Jul 2026 12:00:00 +0000</lastBuildDate>
 
+  <item>
+    <title>My Mac Couldn&#8217;t Type My Name</title>
+    <link>https://guochengqian.github.io/blog/squirrel-rime/</link>
+    <guid>https://guochengqian.github.io/blog/squirrel-rime/</guid>
+    <pubDate>Mon, 06 Jul 2026 12:00:00 +0000</pubDate>
+    <description>Apple&#8217;s built-in Chinese input never learns your words. Squirrel (Rime) remembers your name, your phrases, even your emoji — and an agent can configure all of it for you.</description>
+  </item>
   <item>
     <title>I Host This Blog with Claude</title>
     <link>https://guochengqian.github.io/blog/claude-hosted-blog/</link>
