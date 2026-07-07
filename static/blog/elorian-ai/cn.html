@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>硅谷没有秘密，只有异端者。 — Gordon's Blog</title>
+  <meta name="description" content="Andrew Dai 2026 年 5 月访谈笔记：在 Google AI 机器内部的 14 年、Gemini 之后为何离开，以及 Elorian 对视觉推理的押注。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css?v=202607070100">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607070030" defer></script>
+</head>
+<body data-blog-slug="elorian-ai">
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
+    <p class="article-tag">AI</p>
+    <h1>硅谷没有秘密，只有异端者。</h1>
+    <p class="subtitle">Andrew Dai 2026 年 5 月访谈笔记。</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">2026 年 5 月 24 日 &middot; 阅读约 14 分钟</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="硅谷没有秘密，只有异端者。" data-url="https://guochengqian.github.io/blog/elorian-ai/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+    <figure>
+      <img src="visual_reasoning_hero.png" alt="语言推理与视觉推理融合为空间世界模型的概念插图。">
+      <figcaption>语言推理遇上视觉推理。</figcaption>
+    </figure>
+    <p><strong>YouTube 源视频：</strong><a href="https://www.youtube.com/watch?v=cqW_VWYbIcU">Google AI 的 14 年、Gemini 的逆袭与视觉理解模型：对话前 DeepMind 核心科学家 Andrew Dai</a></p>
+    <p><strong>中文文字稿：</strong><a href="https://finance.sina.com.cn/wm/2026-05-20/doc-inhyqyvz8353820.shtml">新浪财经转载</a> / <a href="https://www.huxiu.com/article/4859876.html">虎嗅转载</a></p>
+    <p><strong>Andrew Dai 的 Google Scholar：</strong><a href="https://scholar.google.com/citations?user=2r2NuDAAAAAJ&amp;hl=en">scholar.google.com/citations?user=2r2NuDAAAAAJ</a></p>
+    <figure>
+      <img src="andrew_dai_google_scholar.png" alt="Andrew Dai 的 Google Scholar 主页。">
+      <figcaption>Andrew Dai 的 Google Scholar 主页。</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>Andrew Dai 是谁？</h2>
+    <p>Andrew Dai 是 Elorian AI 的创始人，曾是 Google AI 体系内的核心科学家。他 2012 年搬到硅谷加入 Google Brain，在 Google 一待就是近 14 年。这期间，他的工作横跨了现代 AI 历史上格外大的一段：序列学习、语言模型预训练、文本生成、对抗训练、预训练之后的强化学习、MoE、PaLM、Flan、Gemini、多模态、长上下文，以及那门不起眼却起决定作用的数据手艺。</p>
+    <p>他的合作者包括 Quoc Le、Ian Goodfellow、Liam Fedus、Noam Shazeer 和 Jeff Dean。他的职业履历读起来几乎就是一部 Google 大模型时代的编年史：Google Brain、Google Health、GLaM、PaLM、Flan、Gemini，然后是 Elorian。</p>
+    <p>所以，这不是一个站在场外愤而离职的人。他就在机器内部。</p>
+    <p>Gemini 之后，他离开并创办了 Elorian AI，一家专注于语言 + 视觉推理的新实验室。Elorian 宣布了一轮 5500 万美元的融资，估值 3 亿美元，投资方包括 Menlo Ventures、Altimeter Capital、Nvidia，以及以个人身份投资的 Jeff Dean。</p>
+    <figure>
+      <img src="elorian_ai_huxiu.png" alt="展示 Andrew Dai 的 Elorian AI 团队页面。">
+      <figcaption>Elorian AI 团队页面，来自虎嗅文字稿。</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>核心论点</h2>
+    <p>Andrew Dai 离开 Google，不是因为 Google 不擅长 AI。Google 的履历恰恰指向相反的方向：它发明了 Transformer，搭建了现代 AI 至今仍在使用的大部分基础设施，还坐拥世界上最强的两种 AI 文化：Google Brain 和 DeepMind。</p>
+    <p>更有意思的教训是：起得早并不够。你可以拥有研究洞见、人才、基础设施、数据和算力，却依然错过一个想法变成产品品类的那个时刻。</p>
+    <p>在 AI 领域，时机是一个技术变量。动作太慢，一个出色的模型就成了追赶者的模型；所有权摊得太开，一个锋利的研究方向就成了一场谈判。这才是这场访谈背后更深的故事：不是 Google 缺乏智力，而是大实验室要交一些小实验室有时可以免掉的税。</p>
+
+    <hr>
+
+    <h2>Google 错过的前 GPT 时刻</h2>
+    <p>Andrew 的故事里最耐人寻味的细节之一，是在 GPT 成为行业中心之前，Google 距离 GPT 配方有多近。</p>
+    <p>2015 年，Andrew Dai 和 Quoc Le 研究半监督序列学习。那个偶然的发现简单而重大：先训练一个语言模型，再在有监督的下游任务上微调。事后看，这正是后来成为大语言模型基石之一的“预训练 + 微调”范式。</p>
+    <p>2017 年 Transformer 问世时，Andrew 立刻意识到应该把它和那个预训练思路结合起来。他提议试一试。但 Google 没有把这个组合变成自己的定义性产品。OpenAI 做到了。</p>
+    <p>这是访谈中反复出现的第一个模式：想法并没有被藏起来，原料都摆在明面上，但组织没有足够早地把信念、算力和产品紧迫感集中到这个方向上。</p>
+
+    <hr>
+
+    <h2>Google 真正的瓶颈不是智商</h2>
+    <p>Google Brain 和 DeepMind 都是非凡的实验室，但两者在精神气质上并不是同一种机构。Brain 离 Google 的产品面更近；DeepMind 则保留了被收购前更多的独立研究实验室身份。这种差异很重要。</p>
+    <p>当两边的团队需要协作时，技术问题会迅速变成组织问题：谁牵头？模型归谁？数据归谁？听谁的路线图？功劳记在哪个团队头上？</p>
+    <p>这听上去像公司里的琐事，直到你在和一个前沿模型赛跑。那时它就成了速度税。模型不在乎数据出自哪张组织架构图，基准测试不在乎谁拿到了晋升材料，市场更不在乎。</p>
+    <p>但在内部，所有权很重要，绩效很重要，能见度很重要。当每个人都需要一份成绩单时，即使是好想法，在动起来之前也要先交一笔组织税。</p>
+    <blockquote><p>有时候，瓶颈不是架构、算力或人才。<br>有时候，瓶颈是功劳归谁。</p></blockquote>
+
+    <hr>
+
+    <h2>数据、MoE、PaLM、Flan、Gemini</h2>
+    <p>Andrew 的职业经历也让“AI 进步就是架构加算力”这种简单叙事变得站不住脚。访谈一次又一次回到数据这个主题。</p>
+    <p>GPT-3 之后，Google Brain 感受到了证明自己能造出更好模型的压力。Andrew 从 Google Health 调了回来，因为他相信问题不只在模型规模，而在数据。这项工作催生了 GLaM，一个把 MoE 与预训练、微调结合起来的专家混合模型。目标不只是造一个巨型模型，而是通过每次只激活模型的一部分来降低推理成本。</p>
+    <p>同样的主题后来在 Gemini 中再次出现。Gemini 1.0 是赶工出来的，用的是稠密架构；Gemini 1.5 终于把 MoE 引入了 Gemini 系列；Gemini 2.0 的提升在很大程度上来自数据：更好的过滤、更好的合成数据、更好的筛选。Gemini 3 延续了数据侧的创新，一度让 Google 重回领先。</p>
+    <p>合成数据这个细节尤其重要。合成数据不是喂给模型的神奇加餐。用得不好，它会用自身的痕迹毒化模型：如果合成语料过度使用 “delve” 这样的词，训练出的模型也会学着滥用 “delve”；如果合成数据里有错误的数学，模型的数学就会变差。用得好，Andrew 的说法很直白：它能帮你做出 GPT-5 那个量级的东西。用得不好，它会教给模型一个虚假的分布，然后让这个虚假分布显得理所当然。</p>
+    <p>这就是为什么 Andrew 在 Gemini 之后离开这件事值得注意。他不是在项目明显失败时走的，而是在 Google 重新找回势头之后离开的。问题在别处：在一个几千人参与、预训练规模巨大的项目里，激进的数据改动会变得很危险。训练规模越大，就越难尝试真正大胆的东西。</p>
+    <p>Gemini 3 又靠数据方法创新往前跳了一步，但也正是在那个时刻，天花板变得清晰可见。当几千人绑在一个项目上、预训练一跑就烧掉海量 GPU 时间时，组织自然会趋于保守。你可以改良配方，但你没法轻易拿整个厨房去赌。</p>
+
+    <hr>
+
+    <h2>研究品味被低估了</h2>
+    <p>顶尖研究者之间的差距不只在技术执行上。在前沿，每个人都聪明，每个人都读得懂论文，每个人都知道那些显而易见的 scaling 论证。如今，每个人还都能拉起 coding agent，把想法实现得比以前更快。</p>
+    <p>稀缺的是研究品味：知道哪个方向值得押上几年，哪个想法为时过早，哪个想法现在看起来很傻、日后却必然成立，什么时候该继续推进，什么时候该放弃。</p>
+    <p>Noam Shazeer 的轶事就是这种品味的好例子。Andrew 描述过和 Noam 讨论一处 Transformer 架构改动，问加一条连接会不会有帮助。Noam 不需要跑模型，看一眼代码就能说不行，因为梯度会从一条路径转移到另一条路径。这不只是文献功底，而是一台关于模型如何训练的内部模拟器。</p>
+    <p>Andrew 把自己品味的很大一部分追溯到 Geoffrey Hinton 的影响：造 AI，要关注大脑到底是怎么学习的。一个刚出生的模型什么都不知道，它从数据中学习。人类的孩子在学会语言之前，是先通过视觉和触觉认识世界的。这并不能证明 Elorian 的论点，但它解释了为什么这个论点对他来说如此自然。</p>
+    <p>当执行变得更容易时，想法的价值也会改变。Coding agent 让实验的实现成本更低。这让真正有创造力的研究者更值钱，而不是更廉价。当所有人都能快速试一个平庸的想法时，稀缺资源就变成了值得一试的想法本身。</p>
+
+    <hr>
+
+    <h2>通往 AGI 的三种押注：LLM、世界模型，与 Elorian 的赌注</h2>
+    <p>这场访谈也讲清楚了为什么视觉推理不是简单的“多喂点视频的世界模型”。Andrew 把这个领域分成三大直觉阵营。</p>
+    <p>第一个阵营相信语言模型的推理会持续 scale 下去：更长的思维链、更强的编码模型、递归自我改进，最终通向 AGI。目前前沿实验室的压力大多集中在这里，因为编码在商业上有价值，在战略上很紧迫。</p>
+    <p>第二个阵营相信世界模型才是关键。这个阵营往往来自计算机视觉。其直觉是：人和动物之所以智能，是因为理解视觉与物理世界。但仅有视觉世界模型，并不能自然地连接到科学、工程、法律、数学和医学中那些人类构建的概念体系。</p>
+    <p>Elorian 押的是中间路线：语言推理加视觉推理。不只是文本，也不只是像素，而是一个既能对物理现实进行推理、又能使用人类为解释和重塑这一现实而发明的抽象概念的系统。</p>
+    <figure>
+      <img src="elorian_gear_example.svg" alt="视觉推理示例：问应该把齿轮放在哪里才能让齿轮箱运转。">
+      <figcaption>视觉推理任务不只是看图说话；模型必须推断空间约束并选择一个动作。</figcaption>
+    </figure>
+    <p>这也是为什么在这里，“视觉 AGI”是比 AGI 更干净的说法。这个基准并不玄学，而是平凡的：模型能不能搞定人类不假思索就能完成的基础视觉任务？用方向盘、系鞋带、搭 Lego、组装 Ikea 家具、理解一个运动的场景、跟踪物体、解读可供性。如果一个模型能稳健地做到这些，AGI 看起来就不再那么遥远了。</p>
+
+    <hr>
+
+    <h2>为什么是现在？</h2>
+    <p>Andrew 的时机选择，也是对大实验室注意力方向的押注。OpenAI、DeepMind、Anthropic 等都承受着必须赢下编码之战的巨大压力，因为编码模型既是一个市场、一个基准，也是一条可能通向递归自我改进的路径。如果编码真的成为自我改进的循环，没有人想当第二名。</p>
+    <p>这就腾出了空间。如果最大的那几家实验室都被拉向编码，一支专注的团队就可以把全部注意力花在多模态视觉推理上。Elorian 想成为那支专注的团队。</p>
+    <p>这仍然是一场高风险的赌注。世界模型也许需要属于自己的 Transformer 时刻；专精的多模态推理未必能足够快地打败通用模型；市场可能先奖励 coding agent，再奖励视觉推理智能体。但这个赌注是自洽的：如果下一道智能鸿沟在于扎根现实的视觉推理，那么一个围绕这道鸿沟设计的实验室，就有机会举足轻重。</p>
+
+    <hr>
+
+    <h2>我的收获</h2>
+    <p>我反复回味的是这句话：</p>
+    <blockquote><p>硅谷没有秘密。科学家们会交流。但硅谷有相信不同未来的科学家。</p></blockquote>
+    <p>想法在流通，论文在流通，人才在流通。每个人都大致知道其他人在做什么。</p>
+    <p>但并不是每个人都相信同一件事。</p>
+    <p>有人相信把语言模型 scale 上去就能抵达终点；有人相信智能需要世界模型；有人相信缺失的那块拼图，是语言推理与视觉推理的融合。</p>
+    <p>Andrew Dai 离开了世界上最强的 AI 实验室之一，因为他相信下一条重要的路，也许不只是文本推理。</p>
+    <p>我自己的猜测是，Elorian 瞄准的东西更接近 MLLM-Omni：文本和视频 token 进，文本和视频 token 出，推理 token 同时存在于文本和视频空间。这不同于当前大多数 VLM——文本/视频进，但只有文本出；也不同于视频生成器——文本/视频进，只有视频出。缺失的那一块，是一个能在两种模态中推理的模型，而不只是把一种模态翻译成另一种。</p>
+    <blockquote><p>Qwen 式 VLM：文本/视频进，文本出。<br>Gemini-Omni 或 Veo 式生成：文本/视频进，视频出。<br>Elorian 式猜想：文本/视频进，文本/视频出，推理 token 同时存在于文本和视频中。</p></blockquote>
+    <p><em>为什么 Elorian 不只是一个更大的 Qwen：</em>Qwen-VL、Gemini、GPT-4 级模型和 Claude 式系统已经能接收文本和视觉输入，但真正有用的输出大多仍是文本。Elorian 似乎相信的是：视觉推理不应该是挂在文本模型上的附属功能。我个人的猜测是，他们在朝“文本/视觉进，文本/视觉出”的方向构建，并让思维链推理 token 同时存在于文本和视觉空间。这样一来，从数据、预训练到架构、RL、后训练、推理和视觉编码器，整个技术栈都必须指向多模态推理。</p>
+    <p>一个通用模型必须什么都擅长：聊天、代码、数学、翻译、OCR、文档理解、网页浏览、工具使用、图像理解、视频理解。一个专精模型可以卸掉其中一部分负担。如果“谁赢了第二次世界大战？”对多模态推理没有帮助，你就可以减少这类数据，把更多预算花在图像、视频、空间布局、物理动态和视觉解题上。</p>
+    <p><em>只有视频生成并不等于视觉推理。</em>视频模型可以画出看似合理的运动，却不理解运动背后的约束。视觉推理意味着跨时间跟踪物体、推断隐藏状态、遵守物理约束、选择下一步动作。区别不在于是否输出像素，而在于模型能否把这些像素用作推理过程的一部分。</p>
+    <p>在架构上，我的猜测大致是这样：一个 decoder-only Transformer 作为因果主干，一个类 RAE 的视觉表示空间来处理视频，以及一条单一的多模态 token 流，让文本 token、视频 token 和推理 token 在其中共存。这里的 RAE 指的是类似表示自编码器（representation autoencoder）的东西：一个压缩后的视觉隐空间，丰富到足以在其上进行推理，而不只是等待解码的像素。思维链也不必是纯文本的：在模型给出书面指令和生成的视频步骤之前，它可以同时包含文本推理 token 和隐式的视频推理 token。</p>
+    <figure>
+      <img src="mllm_omni_architecture.png" alt="推测性的多模态架构图：文本和视频输入、文本和视频推理 token，以及文本和视频输出。">
+      <figcaption>推测性架构：不是 Elorian 公开的设计，而是我对“文本/视频进，文本/视频出”式视觉推理可能需要什么的猜测。</figcaption>
+    </figure>
+    <p>所以这个更深层的产品不会长成“放大版 Qwen”的样子。它会更像一个全模态的多模态模型：文本和视频既是输入也是输出，并且都是推理轨迹的一部分。模型不只是描述一个场景或生成一段视频，而是会在视觉状态中层层推理、修正这些状态，并把它们重新连接回语言。</p>
+    <p>举个具体的例子：给模型一张 LEGO 小车的图片，或者一个目标页面，比如<a href="https://www.wikihow.com/Build-a-LEGO-Car">这份 LEGO 小车搭建指南</a>。普通的 VLM 可以描述这张图，或者总结这份说明。而视觉推理模型应该做得更多：推断出零件、理解组装顺序、生成分步搭建视频，并配上同步的文字说明。同样的能力也适用于系鞋带、用方向盘、搭 Lego 或组装 Ikea 家具。这些是人类的基础视觉任务，却需要空间推理、时间推理、物体恒存和动作规划。</p>
+    <p>这就是“文本/视频进，文本/视频出”这个想法重要的原因。输出不应该只是一个答案，而应该是一份可执行的视觉讲解：一串模型可以推理、纠正并解释的状态序列。</p>
+    <p>也正是在这个意义上，“异端者”这个词在这里显得有用。不是骂人，也不是作秀，而是用来描述那种在共识发放许可之前，就愿意偏离主流信仰体系的人。</p>
+    <p>也许 Andrew 是对的，也许他来得太早，也许他错了，也许通用模型终将吞掉专精路线。但这正是这场赌局值得关注的原因：它不是一个秘密，而是一种与满屋共识分道扬镳的信念。</p>
+
+    <hr>
+
+    <h2>关键对话笔记</h2>
+    <p><em>按主题整理的意译笔记，而非逐句文字稿。</em></p>
+
+    <h3>1. Elorian 的团队与野心</h3>
+    <ul>
+      <li>Elorian 是一支以研究为主的小团队，规模大约十五人上下，计划在未来两年内增长到 50 到 70 人。</li>
+      <li>公司要打造的是一个围绕多模态视觉推理的专精实验室，而不是一个通用聊天机器人。</li>
+      <li>商业计划是提供一个帮助企业解决视觉问题的 API，而长期研究目标是视觉 AGI。</li>
+    </ul>
+
+    <h3>2. Andrew 进入 Google 的路径</h3>
+    <ul>
+      <li>Andrew 出生在中国，在英国长大，本科就读于剑桥，在爱丁堡拿到博士学位，2012 年搬到硅谷加入 Google Brain。</li>
+      <li>他原本以为自己会在硅谷待几年然后创业，结果在 Google 待了近 14 年。</li>
+      <li>他在 Google 最早的工作包括 Google Now 这类面向产品的系统，在回到更深的 AI 研究之前，他先学会了端到端的工程与产品约束。</li>
+    </ul>
+
+    <h3>3. Google Brain、DeepMind 与两种研究文化</h3>
+    <ul>
+      <li>Hinton 的加入让深度学习在 Google 的身份认同中变得更核心。</li>
+      <li>DeepMind 带着独立得多的研究实验室架构进入 Google，而 Google Brain 更贴近产品落地。</li>
+      <li>Brain 和 DeepMind 之间可以协作，但所有权和功劳分配让跨实验室合作比外界想象的更难。</li>
+    </ul>
+
+    <h3>4. 半监督序列学习与错过的 GPT 配方</h3>
+    <ul>
+      <li>Andrew 和 Quoc Le 2015 年的工作发现了“语言模型预训练 + 有监督微调”这一范式。</li>
+      <li>2017 年 Transformer 出现时，Andrew 就看出它可以与那个预训练配方自然结合。</li>
+      <li>Google 没有把这个组合推上定义性产品的路线；OpenAI 做到了，尤其是 Alec Radford 的 GPT 工作。</li>
+      <li>直到 GPT-3 展示出 scaling 语言模型能带来惊人的能力，Google 才彻底更新了自己的信念。</li>
+    </ul>
+
+    <h3>5. Google Health、MaskGAN、RL 与早期后训练想法</h3>
+    <ul>
+      <li>当 Google 想把 AI 带进医疗产品时，Andrew 调入了 Google Health。</li>
+      <li>他的医疗工作包括利用病历预测未来的疾病、用药需求和住院费用。</li>
+      <li>与 Liam Fedus、Ian Goodfellow 合作的 MaskGAN 探索了文本填空以及在预训练之后使用 RL，这一想法后来在语言模型训练中变得重要得多。</li>
+    </ul>
+
+    <h3>6. MoE、GLaM、PaLM、Flan 与数据</h3>
+    <ul>
+      <li>GPT-3 之后，Google Brain 感受到了打造更强模型的压力。</li>
+      <li>Andrew 认为差距不只在模型规模，还在数据质量。</li>
+      <li>GLaM 用专家混合的方法让大模型更高效：每次请求只激活模型的一部分。</li>
+      <li>PaLM 和 Flan 是 Google 重返前沿 LLM 的一部分，但时机很重要：一个发布太晚的强模型，可能在市场叙事中变得隐形。</li>
+    </ul>
+
+    <h3>7. Gemini 的逆袭与 Andrew 离开的原因</h3>
+    <ul>
+      <li>ChatGPT 之后，Google 进入紧急状态，把 Brain 和 DeepMind 合并进 Gemini 项目。</li>
+      <li>联合领导架构起初让协调非常困难，早期的 Gemini 工作被组织复杂性拖慢。</li>
+      <li>Noam Shazeer 的回归帮助了 Gemini 2.5，Andrew 形容 Shazeer 拥有异常强的模型直觉。</li>
+      <li>Gemini 后期的提升在很大程度上来自数据：更高质量的过滤、合成数据和数据方法创新。</li>
+      <li>合成数据是核心主题：用得好，Andrew 把它比作能帮助造出 GPT-5 级模型的那类原料；用得不好，它会教给模型各种痕迹、重复短语，甚至错误的数学。</li>
+      <li>Andrew 举了合成数据滥用 “delve” 这类词的例子，这会让训练出的模型也滥用同一个词。</li>
+      <li>Andrew 离开，是因为 Google 的巨型项目没法轻易尝试他想追求的那些更大胆、更冒险的数据改动。</li>
+      <li>Gemini 3 继续靠数据方法进步，但项目规模让激进实验更难：几千人、巨大的 GPU 训练开销，以及一旦激进的新配方失败就难以承受的代价。</li>
+      <li>Noam Shazeer 的模型直觉体现在一则架构轶事里：他不用跑实验，看一眼提议的 Transformer 连接就能预测梯度会怎么走。</li>
+    </ul>
+
+    <h3>8. Elorian 的技术路线</h3>
+    <ul>
+      <li>Elorian 走的是全栈路线：数据、架构、RL、后训练、推理和视觉编码器全部围绕多模态推理优化。</li>
+      <li>这家公司更接近一个专精实验室，而不是通用模型公司。</li>
+      <li>核心主张是：在专精模型为之设计的领域内，它可以打败通用模型。</li>
+      <li>专精的逻辑是：删掉或减少对多模态推理没有帮助的数据，把更多容量花在图像、视频、空间布局和视觉解题上。</li>
+      <li>Andrew 把这比作 Anthropic 对编码的专注：当每个组件都指向同一个目标时，整个技术栈都会更强。</li>
+    </ul>
+
+    <h3>9. 只有视频生成并不等于视觉推理</h3>
+    <ul>
+      <li>Sora、Veo 等视觉生成系统能生成漂亮的运动，但漂亮的运动本身并不能证明视觉推理。</li>
+      <li>理解意味着模型明白正在发生什么，而不只是什么看起来合理。</li>
+      <li>推理意味着模型能利用结构、约束和关系来判断接下来会发生什么、什么是不可能的、应该采取什么动作。</li>
+      <li>关键的检验是像素能否成为推理过程的一部分，而不仅仅是输出格式。</li>
+    </ul>
+
+    <h3>10. 语言模型、世界模型与中间路线</h3>
+    <ul>
+      <li>语言模型阵营相信更长、更强的思维链最终会通向 AGI。</li>
+      <li>Andrew 怀疑只 scale 纯语言的思维链并不够，因为当前模型在数桌上有几个杯子这类简单视觉任务上仍会产生幻觉。</li>
+      <li>世界模型阵营相信视觉与物理预测是智能的核心。</li>
+      <li>世界模型阵营往往来自计算机视觉。Andrew 把它与 Fei-Fei Li、Yann LeCun 这样的研究者，以及一种崇尚新颖性的学术文化联系起来。</li>
+      <li>Andrew 认为只有视觉并不够，因为数学、物理、化学、法律这些人类知识体系是概念性的、由语言承载的。</li>
+      <li>Elorian 的路线是把视觉推理与语言推理结合起来。</li>
+      <li>我的猜测：目标更接近 MLLM-Omni，文本/视频 token 进，文本/视频 token 出，推理 token 同时存在于文本和视频空间。</li>
+    </ul>
+
+    <h3>11. 视觉 AGI</h3>
+    <ul>
+      <li>Andrew 更喜欢“视觉 AGI”这个说法，因为它的定义比 AGI 更具体。</li>
+      <li>一个具备视觉智能的系统应该能搞定人类的基础视觉任务：使用物品、系鞋带、组装家具、跟踪运动、理解可供性、解读场景。</li>
+      <li>一个具体的产品例子：模型看到一张 LEGO 小车的目标图片，就能生成分步组装视频和同步的文字说明。</li>
+      <li>当前的模型在这些日常视觉任务上仍然失败得太频繁。</li>
+    </ul>
+
+    <h3>12. 研究品味、人才与 neolab 窗口期</h3>
+    <ul>
+      <li>Andrew 认为最重要的研究资源是时间。算力重要，但花在错误方向上的时间不会回来。</li>
+      <li>他的研究品味部分由 Hinton 的信念塑造：AI 的学习方式应该与人类认知相互呼应。</li>
+      <li>Jeff Dean 是亲自动手的技术深度的重要榜样。</li>
+      <li>随着 coding agent 让实现变得更容易，有创造力的研究者会变得更值钱。</li>
+      <li>当前的 neolab 创业窗口也许还能再开一两年，但不会永远敞开。</li>
+    </ul>
+
+    <div class="subscribe-box">
+      <p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p>
+      <form class="subscribe-form" data-title="硅谷没有秘密，只有异端者。" data-url="https://guochengqian.github.io/blog/elorian-ai/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+  </article>
+
+</div>
+</body>
+</html>

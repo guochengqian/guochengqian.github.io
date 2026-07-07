@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>模型 Scaling 之后，下一个 Scaling 是什么？ — Gordon's Blog</title>
+  <meta name="description" content="Context scaling 与 agent scaling 是下一个产品前沿——两者都需要远超以往的内存带宽。HBM 短缺远未结束。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css?v=202607070100">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607070030" defer></script>
+  <style>
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .token-chart { margin: 30px 0; padding: 20px 18px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); }
+    .token-chart figcaption { margin: 0 0 14px; }
+    #token-legend { display: flex; flex-wrap: wrap; gap: 12px 18px; margin: 0 0 12px; font-size: 12px; color: var(--muted); align-items: center; font-family: var(--sans); }
+    .token-chart-frame { position: relative; width: 100%; height: 390px; }
+    .chart-note { margin: 12px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; font-family: var(--sans); }
+  </style>
+</head>
+<body data-blog-slug="next-scaling-after-model-scaling">
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
+    <p class="article-tag">AI</p>
+    <h1>模型 Scaling 之后，下一个 Scaling 是什么？</h1>
+    <p class="subtitle">对日常用户来说，ChatGPT、Claude 这类顶级聊天机器人的知识层已经足以胜任许多工作。下一个产品前沿是更便宜、更快、更 agentic 的自动化 &mdash; 也就是 context scaling 和 agent scaling。两者都需要显著更多的内存带宽（memory bandwidth），这意味着 HBM 短缺远未结束。</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">2026 年 6 月 22 日 &middot; 阅读约 9 分钟</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="模型 Scaling 之后，下一个 Scaling 是什么？" data-url="https://guochengqian.github.io/blog/next-scaling-after-model-scaling/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+    <figure>
+      <img src="preview.png" alt="大量并行运行的 AI agent 与超长 context 数据流汇入层层堆叠的内存模块">
+      <figcaption>模型 scaling 之后，下一个压力点是 context 长度、agent 数量，以及支撑这些系统持续运转所需的内存带宽。</figcaption>
+    </figure>
+
+    <p>对大多数日常用户来说，ChatGPT、Claude 这类产品的基础知识和推理能力，已经足以应付许多日常任务：回答问题、写代码、总结文档、规划行程、起草邮件、讲解概念。当这种能力成为常态之后，用户尚未被满足的需求就从&ldquo;懂得更多&rdquo;转向了&ldquo;替我做更多&rdquo;。杠精会说，我们只是需要更多参数罢了。XD</p>
+
+    <hr>
+
+    <h2>Context scaling</h2>
+    <p>如今的 tier-0 模型出厂就带着约 1M token 的 context 窗口。这足够你上传一整本书、就书中内容提问、跑一次网络搜索，再把所有信息汇总起来，生成一份详尽的回答。</p>
+    <p>但如果你不停地上传书籍、不停地附加图片、不停地搜索互联网、在一个长会话里不停地和聊天机器人对话 &mdash; 迟早会撞上上限。context 被填满，较早的信息被逐出或压缩，模型的输出质量随之下降。这是继续 scale context 最显而易见的理由。</p>
+    <p>但还有一个更深层的理由，而且更加重要。</p>
+    <blockquote><p><a href="https://www.youtube.com/watch?v=nyKxC5B6GKk"><strong>Context 是梯度下降之外的另一条路。</strong></a></p></blockquote>
+    <p>这句话出自 Andrej Karpathy 与 Dwarkesh Patel 的对谈。更深层的含义在于：context 窗口不只是一个长期记忆的缓冲区，它还给了模型另一种在推理时进行适应的方式。</p>
+    <p>严谨的说法并不是模型的权重在推理时发生了变化 &mdash; 权重并没有变。关键在于，context 可以扮演一种临时学习基质的角色：示例、检索到的文档、笔记、测试、计划、工具输出、失败记录，全都变成了在前向传播过程中改变模型行为的状态。</p>
+    <p>这与 <a href="https://trinkle23897.github.io/learning-beyond-gradients/">Jiayi Weng 的《<em>Learning Beyond Gradients</em>》</a>相呼应：一个 coding agent 可以不断读取失败信息、修改代码、补充测试、回看执行记录，在不训练任何新神经网络的情况下持续改进一个软件系统。被更新的对象是显式且可维护的 &mdash; 规则、测试、日志、memory、版本 diff、反馈渠道 &mdash; 而不只是隐藏的权重。</p>
+    <blockquote><p>虽然 in-context learning 本质上是高级的模式补全，但在机制上，它可能像一个在网络前向传播过程中运行的小型内部梯度下降循环。<br>&mdash; Andrej Karpathy</p></blockquote>
+    <p><strong>递归自我改进也许根本不需要训练 &mdash; 只需要 In-Context Manipulation。</strong>一个能写入自己 context 的 agent &mdash; 笔记、计划、过往错误、发现的启发式、子目标、中间推理 &mdash; 实际上可以在推理时&ldquo;微调&rdquo;自己，而不触碰任何一个权重。context 越大、越结构化，这个自我改进的循环就越强大。</p>
+    <p><strong>定制化不需要训练 &mdash; 只需要更大的 context。</strong></p>
+    <p>这也是为什么更大的 context 窗口对企业级和个性化 LLM 如此重要。你不必为每个客户单独微调一个模型，而是可以让同一个强模型基于一份丰富、持久的 context 来工作：用户偏好、公司知识库、交互历史、领域专属指令。个性化从一个训练问题，变成了一个 context 工程问题。</p>
+
+    <hr>
+
+    <h2>Agent scaling</h2>
+    <p>第二个 scaling 维度是 agent 数量。</p>
+    <p>这已经是市场正在走的方向。顶级聊天机器人公司不只是在发布更大的旗舰模型，还在推出更便宜、更快的模型，并把它们包装成更 agentic 的产品：coding agent、deep research、computer-use agent、工作流自动化、任务执行。趋势很清楚：大多数用户对模型的原始能力已经越来越满意，但他们想要更多的自动化。</p>
+    <p>token 数据也指向同一个方向。随着模型变得更便宜、更有用，市场消耗的并不是多一点点推理量，而是多出几个数量级的 token &mdash; 先是通过 chat 和 API 的使用，随后是通过那些在循环中阅读、搜索、规划、调用工具、验证输出、不断重试的 agent。</p>
+
+    <figure class="token-chart" aria-labelledby="token-chart-title">
+      <h2 id="token-chart-title" class="sr-only">折线图：对比 Google、ByteDance、OpenAI、OpenRouter、Together AI 的每月 AI token 处理量，以及由营收推算的 Anthropic 与 Microsoft 估计值，时间跨度为 2024 年 5 月至 2026 年 6 月，纵轴为每月 token 数的对数刻度。</h2>
+      <figcaption><strong>Token 需求已经在复利式增长。</strong>头部平台的每月 AI token 处理量已经从万亿（T）级迈向千万亿（Q）级。Agentic 产品会把这个数字推得更高，因为每一个用户请求都可能在规划、浏览、写代码、执行和验证等环节中展开成多次模型调用。</figcaption>
+      <div id="token-legend"></div>
+      <div class="token-chart-frame">
+        <canvas id="tok" role="img" aria-label="各公司每月处理的 token 数（对数刻度），2024 年 5 月至 2026 年 6 月。">各公司每月处理的 token 数，对数刻度，2024 至 2026 年。</canvas>
+      </div>
+      <p class="chart-note">对数刻度；T = 万亿 token/月，Q = 千万亿 token/月。虚线为由营收推算的估计值。</p>
+    </figure>
+
+    <p>当前的 agent 系统仍处于早期：一个模型、一份 context、一条动作流。</p>
+    <p>Cathie Wood 和 ARK Invest 在他们的《<a href="https://www.ark-invest.com/big-ideas-2026"><em>Big Ideas 2026</em></a>》报告中提出了类似的观点。他们把基础模型描述为互联网技术栈中的一个新层：用户将越来越少地通过点击各种 app 来交互，而是把目标委托给 AI agent，由它们代为搜索、比价、下单和交易。在他们的框架里，agent 会变成一种消费者操作系统。</p>
+    <p>现在想象一下未来某个版本的 ChatGPT 或 Claude Code：你可以同时启动 100 个甚至 1,000 个 agent &mdash; 每一个都在自己的领域具备超人级智能，每一个都有自己的 context，并行运行，通过共享 memory 或消息传递来协同。</p>
+    <ul>
+      <li>一个 agent 读代码库；另一个写测试；另一个 review diff；另一个负责部署；另一个监控日志。</li>
+      <li>一个 agent 检索文献；另一个跑实验；另一个写论文；另一个管理引用。</li>
+      <li>一个 agent 盯着你的投资组合；另一个扫描财报文件；另一个执行交易；另一个负责风控。</li>
+    </ul>
+    <p>算力需求并不随 agent 数量线性增长 &mdash; 它随 agent 数量 &times; context 长度 &times; 协同开销一起增长。一个每个 agent 都维持 1M token context 的 100-agent 系统，与单个聊天机器人相比，是完全不同量级的计算形态。</p>
+
+    <hr>
+
+    <h2>两者都需要多得多的 HBM &mdash; 以及更多的 AI 基础设施</h2>
+    <p>硬件层面的现实是这样的：</p>
+    <ul>
+      <li><strong>Context scaling</strong> 意味着 KV cache 随 context 长度线性增长。在一个 10T 参数的模型上，1M token 的 context 光是存放激活值就需要巨大的内存。要做到 10M 甚至 100M token，需要的不只是更大的 context &mdash; 而是每张 GPU 上更大的内存，以及更多的 GPU。</li>
+      <li><strong>Agent scaling</strong> 意味着并行运行大量独立的模型实例，每个实例都有自己的 KV cache。1,000 个 agent &times; 每个 1M token，就是 10 亿 token 的活跃 context 必须常驻在高速内存里。</li>
+    </ul>
+    <p>这两者首先都是内存带宽受限、内存容量受限的问题。而一旦 context 和 agent 的规模起来了，需求不会止步于 HBM，还会外溢到定制推理芯片、scale-out 网络、scale-up 互连、光模块 DSP，以及全栈 GPU 系统。</p>
+    <p>所以这个投资逻辑很简单：</p>
+    <blockquote><p>模型 scaling 驱动了上一波 GPU 需求。context scaling 和 agent scaling 将驱动下一波对内存、网络、定制 ASIC、光互连和全栈 AI 基础设施的需求。</p></blockquote>
+
+    <hr>
+
+    <h2>总结</h2>
+    <p>模型 scaling 仍然重要。但对日常用户来说，实际的瓶颈正在转移：聊天机器人懂得的知识已经足够应付许多任务，而产品替用户做的事仍然太少。</p>
+    <p><strong>Context scaling</strong> 是下一条 scaling law，因为 context 可以充当推理时的学习基质 &mdash; 不是通过更新权重，而是携带示例、memory、测试和反馈，在推理过程中改变模型的行为。</p>
+    <p><strong>Agent scaling</strong> 是显而易见的下一步：从一次聊天回复，走向成百上千个自动化动作，每个动作由更便宜、更快、更专精的 agent 并行完成。</p>
+    <p>两者都需要多得多的内存，以及围绕模型的多得多的基础设施。瓶颈正从纯粹的 FLOPS 转向 HBM 带宽与容量、推理 ASIC、网络、光互连和 scale-up 系统。所以这篇博客的结论很简单：</p>
+    <blockquote><p><strong>多买点 SK 海力士和美光。😂</strong></p></blockquote>
+    <p>这并不完全是玩笑。在 context scaling + agent scaling 这套逻辑里，内存 / HBM 是最上游的约束，而领先者很清晰：SK 海力士是 HBM 龙头，份额约 50&ndash;60%；美光是美股中表达 HBM / DRAM 逻辑最纯粹的标的，在 HBM 上争夺第二或第三的位置，并且在 DRAM 上最近超越了三星；三星是第三大 HBM 玩家。</p>
+    <p>但受益者版图比 HBM 更广。按品类来看，各领域的领先者如下：</p>
+    <ul>
+      <li><strong>内存 / HBM：</strong>SK 海力士是 context + agent scaling 技术栈最上游的领先者，HBM 份额约 50&ndash;60%。美光是美股中表达 HBM / DRAM 逻辑最纯粹的方式：HBM 第二或第三，DRAM 最近领先于三星。三星是第三大 HBM 玩家。</li>
+      <li><strong>定制 ASIC / XPU：</strong>这是推理和 agent 算力的第二波。博通（Broadcom）是领先者，在定制 AI 加速器芯片中占有约 70% 的份额；迈威尔（Marvell）是第二大玩家，约 25%。博通的 AI 业务正在极速扩张：FY2026 第一季度的 AI 收入约 84 亿美元，同比增长 106%；AI 芯片毛利率约 65%；FY2026 的 AI 收入目标约 560 亿美元，在手订单约 730 亿美元，2027 年的目标接近 1,000 亿美元。据报道，其 XPU 客户名单包括 Google、Meta、OpenAI、Anthropic、Apple，可能还有字节跳动。</li>
+      <li><strong>AI 网络交换芯片：</strong>博通同样是这里的领先者。Tomahawk 6 是业界首款 102.4 Tbps 以太网交换芯片，Jericho 4 则把 fabric 层延伸到了超大规模 AI 集群。</li>
+      <li><strong>光互连 / 光模块 DSP：</strong>迈威尔在光 DSP 这一层领先。其 PAM4 DSP 是 800G 和 1.6T 光模块背后的行业标准，而随着 scale-out AI 集群不断扩张，光模块的重要性还会继续上升。</li>
+      <li><strong>商用以太网交换机系统：</strong>Arista 是系统级的领先者。在底层，这些交换机中的许多仍然依赖博通的芯片，而 NVIDIA 的 Spectrum-X 正在激进地争夺 AI 以太网这块市场。</li>
+      <li><strong>GPU / 全栈 AI 计算：</strong>NVIDIA 仍是全栈领先者，AI 芯片份额约 70%。凭借 Vera + NVLink，它不仅是 GPU 的领先者，也在引领 agent-CPU 与 scale-up 互连这一层。</li>
+    </ul>
+
+    <div class="subscribe-box">
+      <p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p>
+      <form class="subscribe-form" data-title="模型 Scaling 之后，下一个 Scaling 是什么？" data-url="https://guochengqian.github.io/blog/next-scaling-after-model-scaling/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+  </article>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+(function(){
+  var muted = '#6b6b6b';
+  var grid = '#e8e6e1';
+  var C = {
+    google: '#2a78d6',
+    bytedance: '#eda100',
+    openai: '#1baf7a',
+    openrouter: '#e87ba4',
+    together: '#4a3aa7',
+    anthropic: '#e34948',
+    microsoft: '#eb6834'
+  };
+  var mk = function(label, color, pts, opts){
+    return Object.assign({
+      label: label, data: pts, borderColor: color, backgroundColor: color,
+      borderWidth: 2, pointRadius: 3, pointHoverRadius: 5, tension: 0,
+      pointBackgroundColor: color, pointBorderColor: color
+    }, opts || {});
+  };
+  var data = { datasets: [
+    mk('Google', C.google, [{x:4,y:9.7},{x:16,y:480},{x:18,y:980},{x:21,y:1300},{x:28,y:3200}], {pointStyle:'circle'}),
+    mk('ByteDance / Doubao', C.bytedance, [{x:4,y:0.36},{x:21,y:900},{x:23,y:1800},{x:26,y:3600},{x:29,y:5400}], {pointStyle:'rectRot'}),
+    mk('OpenAI (API)', C.openai, [{x:21,y:259},{x:26,y:648}], {pointStyle:'triangle'}),
+    mk('OpenRouter', C.openrouter, [{x:11,y:0.83},{x:16,y:8.3},{x:23,y:30},{x:28,y:100}], {pointStyle:'rect'}),
+    mk('Together AI', C.together, [{x:17,y:0.03},{x:29,y:400}], {pointStyle:'crossRot'}),
+    mk('Anthropic (est.)', C.anthropic, [{x:23,y:75},{x:26,y:158},{x:27,y:250},{x:28,y:392}], {borderDash:[6,4], pointStyle:'circle'}),
+    mk('Microsoft (est.)', C.microsoft, [{x:15,y:50},{x:28,y:200}], {borderDash:[6,4], pointStyle:'triangle'})
+  ]};
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var monLbl = function(x){ return months[(((x%12)+12)%12)] + " '" + String(2024 + Math.floor(x/12)).slice(2); };
+  var yFmt = function(v){ return v >= 1000 ? (v/1000)+'Q' : v+'T'; };
+  new Chart(document.getElementById('tok'), {
+    type: 'line', data: data,
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: {padding:{top:6,right:12,bottom:0,left:0}},
+      plugins: {
+        legend: {display:false},
+        tooltip: { callbacks: {
+          title: function(items){ return monLbl(items[0].parsed.x); },
+          label: function(it){
+            var v = it.parsed.y;
+            var s = v >= 1000 ? (v/1000).toFixed(2)+' quadrillion' : (v >= 1 ? Math.round(v)+' trillion' : v+' trillion');
+            return it.dataset.label + ': ' + s + ' /mo';
+          }
+        }}
+      },
+      scales: {
+        x: {type:'linear', min:3.5, max:30,
+          grid:{display:false}, border:{color:grid},
+          ticks:{color:muted, font:{size:11}, autoSkip:false, callback:function(v){ return monLbl(v); }},
+          afterBuildTicks: function(a){ a.ticks = [4,10,16,22,28].map(function(v){ return {value:v}; }); }
+        },
+        y: {type:'logarithmic', min:0.01, max:10000,
+          grid:{color:grid, drawTicks:false}, border:{display:false},
+          ticks:{color:muted, font:{size:11},
+            callback:function(v){ var l = Math.log10(v); return Math.abs(l-Math.round(l)) < 1e-6 ? yFmt(v) : ''; }
+          }
+        }
+      }
+    }
+  });
+  var items = [
+    ['Google','google','solid'],['ByteDance / Doubao','bytedance','solid'],
+    ['OpenAI (API)','openai','solid'],['OpenRouter','openrouter','solid'],
+    ['Together AI','together','solid'],
+    ['Anthropic (est.)','anthropic','dash'],['Microsoft (est.)','microsoft','dash']
+  ];
+  document.getElementById('token-legend').innerHTML = items.map(function(it){
+    var name = it[0], c = C[it[1]], style = it[2];
+    var bar = style === 'dash'
+      ? '<span style="width:16px;height:0;border-top:2px dashed '+c+';display:inline-block;"></span>'
+      : '<span style="width:12px;height:12px;border-radius:3px;background:'+c+';display:inline-block;"></span>';
+    return '<span style="display:flex;align-items:center;gap:6px;">'+bar+name+'</span>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

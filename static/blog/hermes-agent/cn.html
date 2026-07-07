@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我如何把 Hermes Agent 用作全天候在线的研究与写作助手 — Gordon's Blog</title>
+  <meta name="description" content="我的配置：早上 8 点每日简报、晚上 10 点每日与每周总结、论文写作、写博客，以及用手机远程办公。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css?v=202607070100">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607070030" defer></script>
+</head>
+<body data-blog-slug="hermes-agent">
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
+    <p class="article-tag">AI</p>
+    <h1>我如何把 Hermes Agent 用作全天候在线的研究与写作助手</h1>
+    <p class="subtitle">我的配置：早上 8 点每日简报、晚上 10 点每日与每周总结、论文写作、写博客，以及用手机远程办公。</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">2026 年 5 月 18 日 &middot; 阅读约 7 分钟</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="我如何把 Hermes Agent 用作全天候在线的研究与写作助手" data-url="https://guochengqian.github.io/blog/hermes-agent/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+    <p>我一直把 <strong>Hermes Agent</strong> 当作围绕我的研究、写作和日常工作流的个人 AI 操作层来使用。</p>
+    <p>重点不在于它能聊天。能聊天的工具很多。真正有用的地方在于，Hermes 可以作为一个持久运行的 agent 存在，具备记忆、工具、定时任务、文件访问、联网能力和消息平台推送。这让它从一个聊天机器人变成了更接近个人研究助理的东西：可以在后台干活，需要时向我汇报。</p>
+    <p>我目前的配置有三个主要循环：</p>
+    <ol>
+      <li>早上 8 点的<strong>每日简报</strong>，覆盖研究、市场观察和待办事项。</li>
+      <li>晚上 10 点的<strong>每日总结</strong>，回顾我今天做了什么、哪些应该延续到明天。</li>
+      <li>一份<strong>每周总结</strong>，把一周的工作沉淀成更高层次的工作日志。</li>
+    </ol>
+    <figure>
+      <img src="phone-remote-agent.png" alt="手机界面远程控制 Mac mini 上的 Hermes Agent，并可访问本地文件">
+      <figcaption>在手机上，我可以让 Hermes 检查本地仓库、总结近期工作、润色论文章节、准备博客草稿、跑一个快速的终端检查，或者留下一份报告，等我回到 Mac mini 时查看。</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>基本配置</h2>
+    <p>Hermes 在我的 Mac mini 上本地运行，通过以终端为核心的工作流连接我的各种工具。因为这个 agent 就住在存放我本地仓库、论文草稿、笔记和博客文件的那台机器上，一条手机消息可以变成文件系统上的真实工作，而不只是又一条聊天回复。大致架构如下：</p>
+    <pre>Mac / 本地文件系统
+        ↓
+Hermes Agent CLI + 工具系统
+        ↓
+网页搜索、文件编辑、终端命令、记忆、会话搜索、定时任务
+        ↓
+通过飞书/Lark 推送到我的手机</pre>
+    <p>深度工作我用终端版本，尤其是论文编辑和仓库级任务。我还把 Hermes 接入了飞书/Lark，这样定时简报和总结可以直接推送到我的手机上。</p>
+    <p>这套配置刻意做得很“无聊”：本地文件留在本地，定时任务通过 Hermes cron 运行，消息通过一个普通的聊天应用送达。正是这一点让它真正实用。</p>
+
+    <h3>定时任务</h3>
+    <p>周期性的自动化由 Hermes cron 任务处理。概念上大致是这样：</p>
+    <pre>上午 8:00   每日简报
+晚上 10:00  每日工作总结
+晚上 10:00  每周总结 / 每周复盘节点</pre>
+    <p>早上 8 点的任务使用网页和研究工具。晚上 10 点的任务使用会话搜索和带记忆的总结能力，因此 Hermes 可以回顾我实际做过的工作，而不是让我手动重建这一天。</p>
+    <p>实际用下来，cron 的提示词比日程本身更重要。提示词规定了我关心哪类信息、输出应当多精简，以及哪些工作类别绝不能漏掉。</p>
+
+    <hr>
+
+    <h2>早上 8 点：每日简报</h2>
+    <p>每天早晨，在开始一天之前，我想要一份简短但有用的概览。</p>
+    <p>我的每日简报由几部分组成：</p>
+    <ul>
+      <li><strong>AI 精选阅读</strong>：论文、技术报告、模型发布和重要博客文章。</li>
+      <li><strong>研究相关性</strong>：某篇论文或某次发布为什么对视频生成、VLM、diffusion/flow 模型、多模态 agent 或 3D 生成重要。</li>
+      <li><strong>市场观察</strong>：我关注的 AI 相关公司和板块的宏观走势。</li>
+      <li><strong>待办事项</strong>：一小份今天可以考虑去做的具体事项清单。</li>
+    </ul>
+    <p>关键在于，这份简报不是一份泛泛的新闻摘要，而是按我的研究品味调校的。举个例子，一份普通的 AI 通讯可能只是提到某个新模型发布了。Hermes 会试着回答那个更有用的问题：<em>它是否改变了我应该读什么、写什么、测试什么、思考什么？</em></p>
+    <p>我还希望论文部分带上直接的原文链接，尤其是 arXiv 摘要页链接。这让简报可以直接付诸行动：我可以立刻在手机上打开论文，判断它是否值得之后深读。</p>
+
+    <hr>
+
+    <h2>晚上 10 点：每日与每周总结</h2>
+    <p>晚上 10 点的总结与早上 8 点的简报正好相反。早晨，Hermes 向外看；夜晚，它向回看。</p>
+    <p>每日总结回答这些问题：</p>
+    <ul>
+      <li>我今天实际做了哪些工作？</li>
+      <li>哪些论文修改、稿件改动、代码改动或博客草稿是重要的？</li>
+      <li>我做了哪些决定？</li>
+      <li>明天应该继续做什么？</li>
+    </ul>
+    <p>这很有用，因为大量研究工作是碎片化的。一天可能包括重写一节论文、打磨一张图、检索一轮相关工作、跑一个代码实验，再加一篇博客草稿。没有总结，这一天会显得零散；有了总结，工作就变成了一条可追溯的轨迹。</p>
+    <p>每周总结是同一想法的更高层版本。它把每日活动压缩成主题：推进了哪些论文、准备了哪些投稿、调试了哪些实验、完成了哪些写作，以及有哪些待跟进事项。</p>
+    <blockquote><p>目标不是为了记日记而记日记。目标是连续性。Hermes 帮助把许多微小的交互变成一份持久的工作记忆。</p></blockquote>
+
+    <hr>
+
+    <h2>论文写作与润色</h2>
+    <p>对我来说，最有价值的用例是论文写作。</p>
+    <p>Hermes 可以直接操作本地论文仓库。这意味着它能查看 LaTeX 文件、编辑章节、润色段落、检查一致性，并在需要时运行构建或搜索命令。</p>
+    <p>我用它做几类论文工作：</p>
+    <ul>
+      <li><strong>语法与表达润色</strong>：在不改变技术含义的前提下清理语言。</li>
+      <li><strong>相关工作梳理</strong>：比较论文、归组引用、改善叙事流畅度。</li>
+      <li><strong>方法章节重写</strong>：在保留技术论断的同时让结构更清晰。</li>
+      <li><strong>摘要与引言迭代</strong>：打磨动机、贡献和定位。</li>
+      <li><strong>投稿准备</strong>：检查文件、图注、参考文献和论文相关的 TODO。</li>
+    </ul>
+    <p>重要的是，Hermes 记得我的偏好。比如，当我要求做语法润色时，我通常不希望它重写整个论证。我希望它修正语法、错别字和别扭的措辞，同时保留我的原意。</p>
+    <p>这正是持久记忆和技能派上用场的地方。随着时间推移，Hermes 学会了“重写这一节”和“轻度润色这一段”之间的区别。</p>
+
+    <hr>
+
+    <h2>写博客与技术写作</h2>
+    <p>我也用 Hermes 写博客。</p>
+    <p>我的博客工作流通常是：</p>
+    <ol>
+      <li>我写下粗略的笔记或一个核心论点。</li>
+      <li>Hermes 把它们变成结构化的草稿。</li>
+      <li>我要求做语法润色或加强行文。</li>
+      <li>Hermes 生成一份干净的本地 HTML 或 Markdown 版本。</li>
+      <li>发布之前，我人工审阅最终版本。</li>
+    </ol>
+    <p>这对偏推测性的技术文章尤其有用——这类文章的目标不只是正确性，还有定位：论点是什么、各种可能性如何排序、有哪些公开证据，以及哪些论断应该留有余地。</p>
+    <p>Hermes 尤其擅长帮我让一篇博客保持在正确的“模式”里。有些文章应该精确而技术化；有些应该口语化；有些要按 X 或 LinkedIn 的格式来写；有些则应保持为一份干净的独立 HTML 文件。</p>
+
+    <hr>
+
+    <h2>用手机远程办公</h2>
+    <p>移动端工作流让这套系统与普通的终端 agent 感觉截然不同。</p>
+    <p>因为 Hermes 可以通过飞书/Lark 推送消息，我可以在手机上和它交互。这意味着我可以：</p>
+    <ul>
+      <li>不用打开笔记本就收到早上 8 点的简报；</li>
+      <li>不在书桌前也能查看晚上 10 点的总结；</li>
+      <li>在路上想起什么时，随手发一条快速指令；</li>
+      <li>让它在我回到电脑之前先检查或准备好本地工作；</li>
+      <li>把手机当作研究与写作任务的轻量指挥中心。</li>
+    </ul>
+    <p>这并不能取代笔记本上的深度工作，它消除的是深度工作周围的摩擦。走路、通勤或会议间隙冒出一个想法，我可以直接发给 Hermes；如果某次定时总结提醒我漏掉了一个 TODO，我可以立即回复。agent 成了移动碎片时间与桌面执行之间的桥梁。</p>
+    <p>实际效果是，我的研究工作流不再绑定在某一个物理场景上。重活仍然由 Mac 承担，但手机成了同一个助手的远程界面。</p>
+    <figure>
+      <img src="fsd-agent-productivity.png" alt="开启监督式 FSD 的通勤途中，手机连接着 Mac mini 上的远程 AI agent">
+      <figcaption>在同一循环的监督驾驶版本里，FSD 降低了通勤的摩擦，而 Hermes 让工作在后台继续推进。FSD + Agent = 生产力：通勤时间变成了处理研究、写作和文件类任务的轻量控制台。</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>为什么这很重要</h2>
+    <p>最大的收益是连续性。</p>
+    <p>研究和写作不是单轮任务。它们在一天又一天中展开：读论文、形成观点、重写章节、更新论断、准备投稿，还要记住昨天改了什么。</p>
+    <p>Hermes 帮助把这些碎片连接起来。每日简报把新信息带进来；每晚总结把一天压缩下来；每周总结把零散的进展变成更高层次的记录；写作工作流让论文和博客草稿持续推进；移动界面则让这个循环在我不在书桌前时也保持运转。</p>
+    <p>这就是为什么在我眼里，Hermes 与其说是一个聊天机器人，不如说是一个全天候在线的研究与写作助手。</p>
+
+    <div class="subscribe-box">
+      <p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p>
+      <form class="subscribe-form" data-title="我如何把 Hermes Agent 用作全天候在线的研究与写作助手" data-url="https://guochengqian.github.io/blog/hermes-agent/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+  </article>
+
+</div>
+</body>
+</html>
