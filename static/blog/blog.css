@@ -247,6 +247,21 @@ html.dark {
 }
 .subscribe-box .subscribe-form { width: 100%; }
 
+/* ---------- Language: header global toggle + per-post pill ---------- */
+.site-nav .nav-lang {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--sub-accent);
+  border: 1.5px solid var(--sub-accent);
+  border-radius: 999px;
+  padding: 5px 13px;
+}
+.site-nav .nav-lang:hover {
+  background: var(--sub-accent);
+  color: #fffaf5;
+  text-decoration: none;
+}
+
 /* ---------- Language switch (per-post EN/中文 toggle) ---------- */
 .lang-row {
   display: flex;

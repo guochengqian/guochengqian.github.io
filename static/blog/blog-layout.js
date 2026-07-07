@@ -105,6 +105,49 @@
     '</nav>');
   page.insertBefore(header, page.firstChild);
 
+  /* --- global language preference (localStorage `blog_lang`: 'en' | 'zh') ---
+     Each post page carries a .lang-switch pill pointing at its other-language
+     version. The header button sets a site-wide preference; on entering any
+     post whose language differs, we hop to the alternate before paint.
+     Clicking a per-post pill also records the choice as the preference. */
+  function getLang() { try { return localStorage.getItem('blog_lang'); } catch (e) { return null; } }
+  function setLang(v) { try { localStorage.setItem('blog_lang', v); } catch (e) {} }
+  var langSwitch = document.querySelector('.lang-switch');
+  var pageLang = (document.documentElement.getAttribute('lang') || 'en').indexOf('zh') === 0 ? 'zh' : 'en';
+  var altLang = langSwitch ?
+    (((langSwitch.getAttribute('hreflang') || '').indexOf('zh') === 0) ? 'zh' : 'en') : null;
+
+  var langPref = getLang();
+  if (isPost && langSwitch && langPref && langPref !== pageLang && langPref === altLang) {
+    location.replace(langSwitch.getAttribute('href'));
+    return; // stop building this page; we are navigating away
+  }
+  if (langSwitch) {
+    langSwitch.addEventListener('click', function () { if (altLang) setLang(altLang); });
+  }
+
+  var navBox = header.querySelector('.site-nav');
+  var langBtn = el('a', 'nav-lang');
+  langBtn.href = '#';
+  function paintLangBtn() {
+    var cur = getLang() || pageLang;
+    langBtn.textContent = cur === 'zh' ? 'EN' : '中文';
+    langBtn.setAttribute('aria-label', cur === 'zh' ? 'Switch to English' : '切换到中文');
+    langBtn.title = cur === 'zh' ? 'Read the blog in English' : '全站切换为中文';
+  }
+  paintLangBtn();
+  langBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    var next = (getLang() || pageLang) === 'zh' ? 'en' : 'zh';
+    setLang(next);
+    if (isPost && langSwitch && altLang === next && pageLang !== next) {
+      location.href = langSwitch.getAttribute('href');
+      return;
+    }
+    paintLangBtn();
+  });
+  navBox.appendChild(langBtn);
+
   /* --- list page: render the post list from the manifest --- */
   if (!isPost) {
     var list = document.querySelector('.post-list');
