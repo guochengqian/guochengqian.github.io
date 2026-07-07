@@ -2,14 +2,14 @@
 
 ![视频生成需求从 30B tokens/月增长到 400T tokens/月](./video-token-growth.png)
 
-看到 Together AI 的数字，最容易漏掉的一点是：
+最近有学生问我：现在到底该做什么方向？Agents 已经能写很多东西，大厂/大 lab 又有巨量算力，这让很多人很焦虑。
+
+但看到 Together AI 的数字后，我的答案更明确了：
 
 ✅ token usage 接近 10,000x 的增长，只用了 9 个月。  
 从 30B tokens/月到 400T tokens/月。
 
-前两天有人问我：video generation researcher 现在应该做什么？
-
-我的答案很简单：**inference、post-training、RL**。
+如果是 video generation researcher，我的答案很简单：**inference、post-training、RL**。
 
 ![视频生成研究方向：Inference、Post-training、RL](./video-research-bets.png)
 
