@@ -1,5 +1,7 @@
 # 视频生成包有活
 
+![视频生成需求从 30B tokens/月增长到 400T tokens/月](./video-token-growth.png)
+
 看到 Together AI 的数字，最容易漏掉的一点是：
 
 ✅ token usage 接近 10,000x 的增长，只用了 9 个月。  
@@ -8,6 +10,8 @@
 前两天有人问我：video generation researcher 现在应该做什么？
 
 我的答案很简单：**inference、post-training、RL**。
+
+![视频生成研究方向：Inference、Post-training、RL](./video-research-bets.png)
 
 原因是：**LLM 是 video generation 的前置预演**。
 
