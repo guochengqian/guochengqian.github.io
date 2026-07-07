@@ -57,7 +57,7 @@
       dek: 'META’s move reminded me why “it’s already priced in” is often too lazy. Expectation, confirmation, and scale are different stages.' },
     { slug: 'claude-hosted-blog',
       title: 'I Host This Blog with Claude',
-      date: 'July 5, 2026', read: '2 min read', tag: 'AI', image: 'preview.png',
+      date: 'July 5, 2026', read: '3 min read', tag: 'AI', image: 'preview.png',
       dek: 'A clean, free blog on GitHub Pages — likes, comments, email, and sharing to X, WeChat, Rednote, and Zhihu — built entirely by talking to an agent.' }
   ];
 

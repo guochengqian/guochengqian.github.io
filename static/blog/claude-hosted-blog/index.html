@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../blog.css?v=202607060100">
   <script src="../blog-theme.js?v=202607051748"></script>
-  <script src="../blog-layout.js?v=202607060400" defer></script>
+  <script src="../blog-layout.js?v=202607062030" defer></script>
 </head>
 <body>
 <div class="page">
@@ -22,7 +22,7 @@
       <img src="../img/avatar.jpg" alt="">
       <div>
         <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
-        <div class="byline-sub">July 5, 2026 &middot; 2 min read</div>
+        <div class="byline-sub">July 5, 2026 &middot; 3 min read</div>
       </div>
       <form class="subscribe-form subscribe-compact byline-subscribe" data-title="I Host This Blog with Claude" data-url="https://guochengqian.github.io/blog/claude-hosted-blog/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
     </div>
@@ -34,16 +34,43 @@
 
     <p>I described what I wanted to Claude Code, and it built the blog underneath me while I kept writing.</p>
 
+    <figure>
+      <img src="home-gallery.jpg" alt="The blog home page: title, bio, subscribe button, and a gallery of posts with preview images" loading="lazy">
+      <figcaption>The home page &mdash; a post gallery with previews, RSS, dark mode, and profile links, all rendered from one manifest.</figcaption>
+    </figure>
+
     <hr>
 
     <h2>What it does</h2>
     <ul>
       <li><strong>Clean reading experience.</strong> Static pages, a serif typeface, dark mode that follows your system, and no tracker or paywall anywhere.</li>
+    </ul>
+    <figure>
+      <img src="post-page.jpg" alt="A post page with serif typography and a floating action bar at the bottom" loading="lazy">
+      <figcaption>A post page &mdash; serif type, generous whitespace, and the floating action bar. Yes, it is the page you are reading right now.</figcaption>
+    </figure>
+    <ul>
       <li><strong>Comments.</strong> Powered by <a href="https://utteranc.es">utterances</a> &mdash; every post maps to a GitHub issue, so comments are free, spam-resistant, and owned by me.</li>
       <li><strong>Likes.</strong> A floating action bar with a like counter backed by a free hit-counter API. No accounts, no database.</li>
+    </ul>
+    <figure>
+      <img src="comments.jpg" alt="Below a post: previous and next post cards, author card, and GitHub-backed comment box" loading="lazy">
+      <figcaption>Below every post: previous/next navigation, the author card, and comments stored as GitHub issues.</figcaption>
+    </figure>
+    <ul>
       <li><strong>Sharing.</strong> One Share menu covering X, Facebook, LinkedIn, Substack Notes, email &mdash; and, because much of my audience is Chinese, WeChat, Rednote (小红书), and Zhihu, which have no share URLs, so the menu copies a ready-to-paste message instead.</li>
+    </ul>
+    <figure>
+      <img src="share-menu.jpg" alt="The share menu open over the post, listing X, Facebook, LinkedIn, Email, WeChat, Rednote, and Zhihu" loading="lazy">
+      <figcaption>The share menu. X, Facebook, and LinkedIn open a compose window; WeChat, Rednote, and Zhihu copy a ready-to-paste message.</figcaption>
+    </figure>
+    <ul>
       <li><strong>Email a post.</strong> Readers type their address and get the post link composed in their own mail client &mdash; no mailing-list service involved.</li>
     </ul>
+    <figure>
+      <img src="email-subscribe.jpg" alt="An email address typed into the byline subscribe box, cursor hovering over the Email this blog button" loading="lazy">
+      <figcaption>&ldquo;Email this blog&rdquo; composes the post link in the reader&rsquo;s own mail client &mdash; no mailing-list service behind it.</figcaption>
+    </figure>
 
     <hr>
 
