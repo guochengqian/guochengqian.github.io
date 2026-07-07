@@ -356,7 +356,7 @@ DRAFT_IDS = {
     'post-training-market': 199263879, 'gemini-omni-architecture': 205424225,
     'research-labs-shutdown': 205424228, 'stock-inspiration-20260701': 205424233,
     'agent-for-finance': 205424275, 'visual-generation-chatbot-accessory': 205424278,
-    'next-scaling-after-model-scaling': 205424280,
+    'next-scaling-after-model-scaling': 205424280, 'claude-hosted-blog': 205711895,
 }
 
 SLUGS = ['hermes-agent', 'elorian-ai', 'agent-for-finance', 'visual-generation-chatbot-accessory',
