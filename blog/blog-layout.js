@@ -62,7 +62,11 @@
     { slug: 'squirrel-rime',
       title: '我的 Mac 连我的名字都记不住',
       date: '2026 年 7 月 6 日', read: '阅读约 3 分钟', tag: '工具', image: 'preview.png',
-      dek: '苹果自带的中文输入法不会记住你的常用字。Squirrel（Rime）记得住 —— 你的名字、常用词、甚至 emoji。配置也不用自己动手，交给你的 agent 就好。' }
+      dek: '苹果自带的中文输入法不会记住你的常用字。Squirrel（Rime）记得住 —— 你的名字、常用词、甚至 emoji。配置也不用自己动手，交给你的 agent 就好。' },
+    { slug: 'sync-skills-across-agents',
+      title: 'One Git Repo to Sync All My Agents',
+      date: 'July 6, 2026', read: '2 min read', tag: 'AI', image: 'preview.png',
+      dek: 'Claude, Codex, and Hermes share one set of skills across three machines — and the only commands I run are git pull and git push.' }
   ];
 
   var ACTIONS_VERSION = '202607060100'; // blog-actions.js cache-buster, managed here only.

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>One Git Repo to Sync All My Agents — Gordon's Blog</title>
+  <meta name="description" content="Claude, Codex, and Hermes share one set of skills across three machines — and the only commands I run are git pull and git push.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css?v=202607060100">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607070100" defer></script>
+</head>
+<body>
+<div class="page">
+  <article>
+    <p class="article-tag">AI</p>
+    <h1>One Git Repo to Sync All My Agents</h1>
+    <p class="subtitle">Claude, Codex, and Hermes share one set of skills across three machines &mdash; and the only commands I run are <code>git pull</code> and <code>git push</code>.</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">July 6, 2026 &middot; 2 min read</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="One Git Repo to Sync All My Agents" data-url="https://guochengqian.github.io/blog/sync-skills-across-agents/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
+    </div>
+
+    <figure>
+      <img src="preview.png" alt="Three agents and three devices connected through one central git repo">
+      <figcaption>One hub repo in the middle; agents and devices fast-forward through it.</figcaption>
+    </figure>
+
+    <h2>The pain</h2>
+    <p>Every AI product now grows its own &ldquo;skills&rdquo;: Claude keeps them in <code>~/.claude/skills</code>, Codex in <code>~/.codex/skills</code>, Hermes in <code>~/.hermes/skills</code>. I also work across a Mac mini, a laptop, and a workstation. Teach one agent a trick on one machine, and five other copies of that agent never hear about it. Skills drift, memories fork, and the same rule gets patched in three places, three slightly different ways.</p>
+
+    <figure>
+      <img src="pain.png" alt="A 3 by 3 grid of agents and devices, each holding a different, diverged version of the same skill">
+      <figcaption>Three agents &times; three machines: nine copies of the same skill, no two alike.</figcaption>
+    </figure>
+
+    <h2>The logic</h2>
+    <p>The whole design fits in one block &mdash; and this block is also the part you paste to your agent:</p>
+
+    <figure class="code-figure">
+      <button type="button" class="code-copy" aria-label="Copy the spec">Copy</button>
+      <pre><code>Build a cross-agent, cross-device skill sync for me:
+
+hub:     one private git repo; inside it, one snapshot dir per agent
+         (claude/ codex/ hermes/) mirroring each agent home's skills.
+
+merge, don't copy: keep a per-DEVICE base hash for every skill
+         (a local file, never committed).
+         repo changed, home didn't  -&gt;  fast-forward repo -&gt; home
+         home changed, repo didn't  -&gt;  fast-forward home -&gt; repo
+         both changed               -&gt;  keep mine; save repo version
+                                        as &lt;skill&gt;-CONFLICT-from-repo/
+                                        never overwrite silently
+
+ownership: each skill has ONE owning agent; other agents receive
+         copies stamped with a marker — regenerated, never hand-edited.
+
+automation: git hooks (core.hooksPath)
+         post-merge / post-rewrite  -&gt;  merge repo-&gt;homes, then fan
+                                        out skills across agents
+         pre-push                   -&gt;  block while conflicts remain
+
+deletions: report only, never auto-propagate.</code></pre>
+    </figure>
+
+    <p>After every <code>git pull</code>, new skills flow in and fan out across agents; before every <code>git push</code>, the state reconciles or the push is refused. Two verbs. Everything else is plumbing that runs itself.</p>
+
+    <h2>How to get it</h2>
+    <p>Don&rsquo;t implement this by hand. Hit the copy button on the block above, paste it into any capable agent, and say: <em>&ldquo;build this for my setup.&rdquo;</em></p>
+
+    <figure>
+      <img src="howto.png" alt="Three steps: copy the spec, paste it to any agent, and one conversation later the merge script, hooks, and wrappers exist">
+      <figcaption>You write one sentence; the agent writes the infrastructure.</figcaption>
+    </figure>
+
+    <div class="subscribe-box">
+      <p>Enjoyed this post? Send it to your email to read later.</p>
+      <form class="subscribe-form" data-title="One Git Repo to Sync All My Agents" data-url="https://guochengqian.github.io/blog/sync-skills-across-agents/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
+    </div>
+
+  </article>
+
+</div>
+<style>
+  .code-figure { position: relative; margin-left: 0; margin-right: 0; }
+  .code-figure pre { padding-top: 2.4em; }
+  .code-copy {
+    position: absolute; top: 10px; right: 10px;
+    font: 600 12px/1 var(--sans); letter-spacing: .02em;
+    color: var(--muted); background: var(--bg);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 10px; cursor: pointer;
+  }
+  .code-copy:hover { color: var(--accent); border-color: var(--accent); }
+</style>
+<script>
+  document.querySelectorAll('.code-figure').forEach(function (fig) {
+    var btn = fig.querySelector('.code-copy');
+    btn.addEventListener('click', function () {
+      var text = fig.querySelector('pre code').innerText;
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+        .then(function () { btn.textContent = 'Copied ✓'; })
+        .catch(function () {
+          var ta = document.createElement('textarea');
+          ta.value = text; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); ta.remove(); btn.textContent = 'Copied ✓';
+        })
+        .then(function () { setTimeout(function () { btn.textContent = 'Copy'; }, 1600); });
+    });
+  });
+</script>
+</body>
+</html>

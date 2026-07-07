@@ -9,6 +9,13 @@
   <lastBuildDate>Mon, 06 Jul 2026 12:00:00 +0000</lastBuildDate>
 
   <item>
+    <title>One Git Repo to Sync All My Agents</title>
+    <link>https://guochengqian.github.io/blog/sync-skills-across-agents/</link>
+    <guid>https://guochengqian.github.io/blog/sync-skills-across-agents/</guid>
+    <pubDate>Mon, 06 Jul 2026 12:00:00 +0000</pubDate>
+    <description>Claude, Codex, and Hermes share one set of skills across three machines — and the only commands I run are git pull and git push.</description>
+  </item>
+  <item>
     <title>我的 Mac 连我的名字都记不住</title>
     <link>https://guochengqian.github.io/blog/squirrel-rime/</link>
     <guid>https://guochengqian.github.io/blog/squirrel-rime/</guid>
