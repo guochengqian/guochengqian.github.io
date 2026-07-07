@@ -1,0 +1,7 @@
+📣️📣️📣️ Prompt2Effect accepted to ECCV 2026!
+
+Effect tuning needs LoRA finetuning per effect. Imagine thousands of server requests.
+
+We propose amortized tuning: train on many LoRA effects, then generate LoRA for unseen effects in 3.3s from text.
+
+https://xiaomeng-yang.github.io/Prompt2Effect/

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prompt2Effect results card</title>
+<style>
+  :root { --bg:#faf6ee; --ink:#172033; --muted:#647084; --accent:#b76531; --blue:#2255b8; --green:#18734a; --card:#fffdfa; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  .canvas { width:1200px; height:675px; padding:48px 56px; background:radial-gradient(circle at 80% 20%, #fff4e6 0, #faf6ee 42%, #f4efe6 100%); }
+  .eyebrow { color:var(--accent); font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:22px; margin-bottom:10px; }
+  h1 { margin:0 0 22px; font-size:58px; line-height:1.02; letter-spacing:-.045em; }
+  .sub { font-size:25px; color:var(--muted); margin-bottom:34px; }
+  .grid { display:grid; grid-template-columns: 1.05fr 1fr; gap:26px; }
+  .card { background:rgba(255,253,250,.92); border:2px solid rgba(183,101,49,.18); border-radius:28px; padding:28px 30px; box-shadow:0 18px 50px rgba(42,29,11,.08); }
+  .metric { display:flex; align-items:baseline; gap:16px; margin:8px 0 22px; }
+  .big { font-size:64px; font-weight:900; color:var(--accent); letter-spacing:-.04em; }
+  .label { font-size:25px; font-weight:700; }
+  .rows { display:grid; gap:14px; }
+  .row { display:grid; grid-template-columns: 145px 1fr; align-items:center; gap:14px; font-size:23px; }
+  .tag { display:inline-flex; justify-content:center; padding:10px 12px; border-radius:999px; font-weight:800; color:white; background:var(--blue); }
+  .tag.green { background:var(--green); }
+  .tag.gray { background:#798293; }
+  .vs { color:var(--muted); font-size:21px; }
+  b { color:var(--ink); }
+  .foot { position:absolute; margin-top:30px; font-size:19px; color:#7b684f; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="eyebrow">Prompt2Effect • ECCV 2026</div>
+  <h1>LoRA specialization without per-effect training</h1>
+  <div class="sub">Generate effect-specific I2V LoRA weights in one hypernetwork forward pass.</div>
+  <div class="grid">
+    <div class="card">
+      <div class="metric"><div class="big">56 GPU-h → 3.3s</div></div>
+      <div class="label">Per-effect cost: conventional LoRA training vs. Prompt2Effect inference</div>
+      <div class="rows" style="margin-top:28px">
+        <div class="row"><span class="tag">IID</span><span><b>56.93</b> VLM overall, close to full LoRA <span class="vs">(57.57)</span></span></div>
+        <div class="row"><span class="tag green">OOD</span><span><b>48.87</b> zero-shot vs. base <span class="vs">(42.46)</span></span></div>
+        <div class="row"><span class="tag gray">Init-100</span><span><b>56.33</b> VLM overall vs. 1000-step LoRA <span class="vs">(56.70)</span></span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="label" style="font-size:31px; margin-bottom:22px;">What changes?</div>
+      <div class="rows">
+        <div class="row"><span class="tag">1</span><span>Condition the hypernetwork on frozen base weights <b>W₀</b></span></div>
+        <div class="row"><span class="tag">2</span><span>Predict SVD-canonicalized LoRA factors instead of raw ambiguous BA</span></div>
+        <div class="row"><span class="tag">3</span><span>Apply generated weights directly, or use them as a fast LoRA initialization</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot">Numbers from arXiv:2606.13971 / project page tables.</div>
+</div>
+</body>
+</html>
