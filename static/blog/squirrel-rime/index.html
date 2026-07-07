@@ -1,82 +1,82 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Mac Couldn't Type My Name — Gordon's Blog</title>
-  <meta name="description" content="Apple's built-in Chinese input never learns your words. Squirrel (Rime) remembers your name, your phrases, even your emoji — and an agent can configure all of it for you.">
+  <title>我的 Mac 连我的名字都记不住 — Gordon's Blog</title>
+  <meta name="description" content="苹果自带的中文输入法不会记住你的常用字。Squirrel（Rime）记得住 —— 你的名字、常用词、甚至 emoji。配置也不用自己动手，交给你的 agent 就好。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../blog.css?v=202607060100">
   <script src="../blog-theme.js?v=202607051748"></script>
-  <script src="../blog-layout.js?v=202607062200" defer></script>
+  <script src="../blog-layout.js?v=202607070030" defer></script>
 </head>
 <body>
 <div class="page">
   <article>
-    <p class="article-tag">Tools</p>
-    <h1>My Mac Couldn&rsquo;t Type My Name</h1>
-    <p class="subtitle">Apple&rsquo;s built-in Chinese input never learns your words. Squirrel (Rime) remembers your name, your phrases, even your emoji &mdash; and an agent can configure all of it for you.</p>
+    <p class="article-tag">工具</p>
+    <h1>我的 Mac 连我的名字都记不住</h1>
+    <p class="subtitle">苹果自带的中文输入法不会记住你的常用字。Squirrel（Rime）记得住 —— 你的名字、常用词、甚至 emoji。配置也不用自己动手，交给你的 agent 就好。</p>
     <div class="byline">
       <img src="../img/avatar.jpg" alt="">
       <div>
         <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
-        <div class="byline-sub">July 6, 2026 &middot; 3 min read</div>
+        <div class="byline-sub">2026 年 7 月 6 日 &middot; 阅读约 3 分钟</div>
       </div>
-      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="My Mac Couldn't Type My Name" data-url="https://guochengqian.github.io/blog/squirrel-rime/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="我的 Mac 连我的名字都记不住" data-url="https://guochengqian.github.io/blog/squirrel-rime/"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
     </div>
 
     <figure>
-      <img src="preview.png" alt="Two candidate windows for the input qgc: the built-in Pinyin shows generic phrases, Squirrel shows the name 钱国成 first">
-      <figcaption>Same three keystrokes, two input methods. One of them knows who I am.</figcaption>
+      <img src="preview.png" alt="同样输入 qgc 的两个候选窗：系统自带拼音只给通用词，Squirrel 第一个就是 钱国成">
+      <figcaption>同样三个键，两个输入法，只有一个认识我。</figcaption>
     </figure>
 
-    <p>I type my Chinese name, 钱国成, every day &mdash; in emails, in chat apps, in forms. And every day, Apple&rsquo;s built-in Pinyin input offers me someone else&rsquo;s words first.</p>
+    <p>我每天都要打自己的名字：钱国成 —— 邮件里、聊天里、各种表单里。而苹果自带的拼音输入法，每天都把别人的词排在我名字前面。</p>
 
     <hr>
 
-    <h2>The pain: Apple&rsquo;s Pinyin has no memory</h2>
-    <p>The built-in input method does not really learn. Words you type dozens of times a day stay buried behind generic phrases; there is no practical way to pin your own frequent words; and the moment a name or term is slightly uncommon, you are back to hunting through candidate pages. For a system that is otherwise so polished, the Chinese support is simply not good.</p>
-    <p>Your own name is the clearest example: it is the single string you type most often, and the system treats it like a stranger every time.</p>
+    <h2>痛点：自带输入法没有记忆</h2>
+    <p>它基本不学习。你一天打几十遍的词，永远埋在一堆通用词后面；想手动置顶常用词，也没有实用的入口；名字或术语稍微不常见一点，就得一页页翻候选。macOS 整体那么精致，中文输入的体验却实在说不过去。</p>
+    <p>你自己的名字就是最典型的例子：这是你打得最多的一串字，系统却每次都把它当陌生人。</p>
 
     <hr>
 
-    <h2>The fix: Squirrel (Rime)</h2>
-    <p><a href="https://rime.im">Squirrel (鼠鬚管)</a> is the macOS build of RIME, a free and open-source input method engine. Its defining feature is exactly the one Apple is missing: it remembers. Pick a word once and it rises to the top; keep using it and it stays there.</p>
+    <h2>解决：Squirrel（鼠须管）</h2>
+    <p><a href="https://rime.im">Squirrel（鼠须管）</a>是开源输入法引擎 RIME（中州韵）的 macOS 版本，完全免费。它的核心能力恰好是苹果缺的那一个：<strong>记忆</strong>。一个词你选过一次，它就排上来；一直在用，就一直在最前面。</p>
     <figure>
-      <img src="name-full-pinyin.png" alt="Squirrel candidate window: typing qian guo ch shows 钱国成 as the first candidate" style="margin:0 auto" loading="lazy">
-      <figcaption>Full pinyin: &ldquo;qian guo ch&rdquo; &mdash; my name is already the first candidate.</figcaption>
+      <img src="name-full-pinyin.png" alt="Squirrel 候选窗：输入 qian guo ch，第一候选就是 钱国成" style="margin:0 auto" loading="lazy">
+      <figcaption>全拼「qian guo ch」—— 名字已经是第一候选。</figcaption>
     </figure>
     <figure>
-      <img src="name-initials.png" alt="Squirrel candidate window: typing just the initials qgc still shows 钱国成 first" style="margin:0 auto" loading="lazy">
-      <figcaption>Even bare initials work: &ldquo;qgc&rdquo; &rarr; 钱国成. Three keystrokes for a full name.</figcaption>
+      <img src="name-initials.png" alt="Squirrel 候选窗：只输入首字母 qgc，第一候选依然是 钱国成" style="margin:0 auto" loading="lazy">
+      <figcaption>首字母也行：「qgc」&rarr; 钱国成，三个键打出全名。</figcaption>
     </figure>
-    <p>It installs like any other input source and sits quietly in the menu bar. Squirrel has become my daily driver for all Chinese typing.</p>
+    <p>它和普通输入法一样安装，安安静静待在菜单栏里。现在 Squirrel 已经是我日常打中文的唯一来源。</p>
     <figure>
-      <img src="input-menu.png" alt="The macOS input menu showing Squirrel - Simplified selected next to U.S." style="margin:0 auto" loading="lazy">
-      <figcaption>Squirrel in the macOS input menu, one Ctrl-Space away from U.S. English.</figcaption>
-    </figure>
-
-    <hr>
-
-    <h2>Configure it your way</h2>
-    <p>Rime is famously configurable: everything is a plain YAML file under <code>~/Library/Rime</code> &mdash; candidate window theme, fuzzy pinyin rules, custom dictionaries, key bindings. One tweak I love: emoji and symbols appear right in the candidate list. Type &ldquo;jiu&rdquo; and 🍷 🥃 🍺 line up next to 酒; flags, arrows, and math symbols work the same way. No more hunting through the emoji picker.</p>
-    <figure>
-      <img src="emoji-candidates.png" alt="Squirrel candidate window for jiu showing 就, 酒, and wine, whisky, and beer emoji annotated with 酒" style="margin:0 auto" loading="lazy">
-      <figcaption>Emoji as candidates: &ldquo;jiu&rdquo; offers 酒 &mdash; and three ways to drink it.</figcaption>
+      <img src="input-menu.png" alt="macOS 输入法菜单中选中了 Squirrel - Simplified，旁边是 U.S." style="margin:0 auto" loading="lazy">
+      <figcaption>输入法菜单里的 Squirrel，一个 Ctrl-Space 就切回英文。</figcaption>
     </figure>
 
     <hr>
 
-    <h2>How to set it up: just ask your agent</h2>
-    <p>Rime&rsquo;s flexibility used to come with a legendary learning curve &mdash; schemas, patch files, deployment commands, wiki pages. In 2026 you can skip all of it: tell your coding agent to install and configure Squirrel, then state your needs in plain language. &ldquo;Make it remember my name.&rdquo; &ldquo;Add emoji to the candidates.&rdquo; &ldquo;Match the candidate window to dark mode.&rdquo; The agent installs the package, writes the YAML patches, redeploys the config, and you just keep typing.</p>
-    <blockquote><p>You no longer read the manual. You state the need &mdash; the agent reads the manual.</p></blockquote>
-    <p>Same loop as <a href="../claude-hosted-blog/">this blog itself</a>: describe what you want, and the tooling assembles itself underneath you.</p>
+    <h2>想怎么配就怎么配</h2>
+    <p>Rime 以可定制著称：所有配置都是 <code>~/Library/Rime</code> 下的 YAML 文件 —— 候选窗主题、模糊音规则、自定义词库、快捷键，全都能改。我最喜欢的一个配置：让 emoji 和符号直接出现在候选列表里。打「jiu」，🍷 🥃 🍺 就排在 酒 旁边；国旗 🇨🇳、箭头、数学符号同理。再也不用去翻 emoji 面板了。</p>
+    <figure>
+      <img src="emoji-candidates.png" alt="Squirrel 输入 jiu 的候选窗：除了 就 和 酒，还有标注为 酒 的红酒、威士忌、啤酒 emoji" style="margin:0 auto" loading="lazy">
+      <figcaption>emoji 直接进候选：打「jiu」，除了酒，还送三种喝法。</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>怎么装：直接告诉你的 agent</h2>
+    <p>Rime 的灵活是出了名的，学习曲线也是 —— schema、patch 文件、部署命令、一堆 wiki。2026 年，这些你都可以跳过：直接让你的 coding agent 帮你安装、配置 Squirrel，然后用大白话提需求就行。「记住我的名字」「候选里加上 emoji」「候选窗跟随深色模式」。agent 负责装包、写 YAML patch、重新部署，你只管继续打字。</p>
+    <blockquote><p>说明书不用你读了。你负责提需求，agent 负责读说明书。</p></blockquote>
+    <p>和<a href="../claude-hosted-blog/">这个博客本身</a>一样：把想要的说出来，工具就在你脚下自己长出来。</p>
 
     <div class="subscribe-box">
-      <p>Enjoyed this post? Send it to your email to read later.</p>
-      <form class="subscribe-form" data-title="My Mac Couldn't Type My Name" data-url="https://guochengqian.github.io/blog/squirrel-rime/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
+      <p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p>
+      <form class="subscribe-form" data-title="我的 Mac 连我的名字都记不住" data-url="https://guochengqian.github.io/blog/squirrel-rime/"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
     </div>
 
   </article>
