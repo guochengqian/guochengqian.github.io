@@ -1,4 +1,4 @@
-1/ One detail I forgot: Together AI's ~10,000x token usage increase happened in only 9 months (30B/mo -> 400T/mo). That shift is why I told junior video-gen researchers to look at inference, post-training, and RL for video applications.
+1/ Students keep asking what they should work on. Agents and big labs' enormous compute make them anxious. My answer for junior video-gen researchers: inference, post-training, and RL. The Together AI number is the clue: tokens jumped ~10,000x in only 9 months (30B/mo -> 400T/mo).
 
 2/ LLMs are a leading indicator for video generation. LLM demand moved from pre-training to post-training/RL, and now increasingly to inference. Video generation is behind that curve, so the underbuilt parts are easier to see.
 
