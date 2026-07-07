@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>一个 Git 仓库，同步我所有的 Agent — Gordon's Blog</title>
+  <meta name="description" content="Claude、Codex、Hermes 在三台机器上共用同一套 skills —— 我需要敲的命令只有 git pull 和 git push。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css?v=202607070200">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607070200" defer></script>
+</head>
+<body data-blog-slug="sync-skills-across-agents">
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
+    <p class="article-tag">AI</p>
+    <h1>一个 Git 仓库，同步我所有的 Agent</h1>
+    <p class="subtitle">Claude、Codex、Hermes 在三台机器上共用同一套 skills —— 我需要敲的命令只有 <code>git pull</code> 和 <code>git push</code>。</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">2026 年 7 月 6 日 &middot; 阅读约 2 分钟</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="一个 Git 仓库，同步我所有的 Agent" data-url="https://guochengqian.github.io/blog/sync-skills-across-agents/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+    <figure>
+      <img src="preview.png" alt="三个 agent 和三台设备通过中间的一个 git 仓库互相连接">
+      <figcaption>中间一个 hub 仓库；所有 agent 和设备都通过它 fast-forward。</figcaption>
+    </figure>
+
+    <h2>痛点</h2>
+    <p>现在每个 AI 产品都长出了自己的「skills」：Claude 放在 <code>~/.claude/skills</code>，Codex 放在 <code>~/.codex/skills</code>，Hermes 放在 <code>~/.hermes/skills</code>。而我还同时用三台机器：Mac mini、笔记本、工作站。在一台机器上教会一个 agent 一个新技能，另外五份拷贝对此一无所知。skills 各自漂移、记忆分叉，同一条规则要在三个地方改三遍，每遍还改得不太一样。</p>
+
+    <figure>
+      <img src="pain.png" alt="3×3 的 agent 与设备网格，每一格里同一个 skill 的版本都不相同" loading="lazy">
+      <figcaption>三个 agent &times; 三台机器：同一个 skill 有九份拷贝，没有两份是一样的。</figcaption>
+    </figure>
+
+    <h2>设计逻辑</h2>
+    <p>整个设计就一段话 —— 而这段话也正是你要贴给 agent 的内容（保持英文即可，agent 都看得懂）：</p>
+
+    <figure class="code-figure">
+      <button type="button" class="code-copy" aria-label="复制这段说明">复制</button>
+      <pre><code>Build a cross-agent, cross-device skill sync for me:
+
+hub:     one private git repo; inside it, one snapshot dir per agent
+         (claude/ codex/ hermes/) mirroring each agent home's skills.
+
+merge, don't copy: keep a per-DEVICE base hash for every skill
+         (a local file, never committed).
+         repo changed, home didn't  -&gt;  fast-forward repo -&gt; home
+         home changed, repo didn't  -&gt;  fast-forward home -&gt; repo
+         both changed               -&gt;  keep mine; save repo version
+                                        as &lt;skill&gt;-CONFLICT-from-repo/
+                                        never overwrite silently
+
+ownership: each skill has ONE owning agent; other agents receive
+         copies stamped with a marker — regenerated, never hand-edited.
+
+automation: git hooks (core.hooksPath)
+         post-merge / post-rewrite  -&gt;  merge repo-&gt;homes, then fan
+                                        out skills across agents
+         pre-push                   -&gt;  block while conflicts remain
+
+deletions: report only, never auto-propagate.</code></pre>
+    </figure>
+
+    <p>每次 <code>git pull</code> 之后，新 skills 自动流入并分发到所有 agent；每次 <code>git push</code> 之前，状态要么完成对账，要么拒绝推送。两个动词，其余全是自己运转的管道。</p>
+
+    <h2>怎么拿到它</h2>
+    <p>别自己手写实现。点上面代码块的「复制」按钮，把它贴给任何一个够强的 agent，然后说一句：<em>「按我的环境把它搭出来。」</em></p>
+
+    <figure>
+      <img src="howto.png" alt="三步：复制说明、贴给任意 agent、一段对话之后合并脚本、hooks 和包装命令全部就位" loading="lazy">
+      <figcaption>你只写一句话，agent 负责写完全部基础设施。</figcaption>
+    </figure>
+
+    <div class="subscribe-box">
+      <p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p>
+      <form class="subscribe-form" data-title="一个 Git 仓库，同步我所有的 Agent" data-url="https://guochengqian.github.io/blog/sync-skills-across-agents/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+  </article>
+
+</div>
+<style>
+  .code-figure { position: relative; margin-left: 0; margin-right: 0; }
+  .code-figure pre { padding-top: 2.4em; }
+  .code-copy {
+    position: absolute; top: 10px; right: 10px;
+    font: 600 12px/1 var(--sans); letter-spacing: .02em;
+    color: var(--muted); background: var(--bg);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 10px; cursor: pointer;
+  }
+  .code-copy:hover { color: var(--accent); border-color: var(--accent); }
+</style>
+<script>
+  document.querySelectorAll('.code-figure').forEach(function (fig) {
+    var btn = fig.querySelector('.code-copy');
+    btn.addEventListener('click', function () {
+      var text = fig.querySelector('pre code').innerText;
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+        .then(function () { btn.textContent = '已复制 ✓'; })
+        .catch(function () {
+          var ta = document.createElement('textarea');
+          ta.value = text; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); ta.remove(); btn.textContent = '已复制 ✓';
+        })
+        .then(function () { setTimeout(function () { btn.textContent = '复制'; }, 1600); });
+    });
+  });
+</script>
+</body>
+</html>
