@@ -1,1 +1,0 @@
-Students keep asking what to work on. Agents and big labs' enormous compute make them anxious. Together AI's tokens jumped ~10,000x in 9 months. For video-gen researchers, my answer: inference, post-training, and RL. LLMs are leading indicator; video infra is still underbuilt.
