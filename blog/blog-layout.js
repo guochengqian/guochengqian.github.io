@@ -58,7 +58,11 @@
     { slug: 'claude-hosted-blog',
       title: 'I Host This Blog with Claude',
       date: 'July 5, 2026', read: '3 min read', tag: 'AI', image: 'preview.png',
-      dek: 'A clean, free blog on GitHub Pages — likes, comments, email, and sharing to X, WeChat, Rednote, and Zhihu — built entirely by talking to an agent.' }
+      dek: 'A clean, free blog on GitHub Pages — likes, comments, email, and sharing to X, WeChat, Rednote, and Zhihu — built entirely by talking to an agent.' },
+    { slug: 'squirrel-rime',
+      title: 'My Mac Couldn’t Type My Name',
+      date: 'July 6, 2026', read: '3 min read', tag: 'Tools', image: 'preview.png',
+      dek: 'Apple’s built-in Chinese input never learns your words. Squirrel (Rime) remembers your name, your phrases, even your emoji — and an agent can configure all of it for you.' }
   ];
 
   var ACTIONS_VERSION = '202607060100'; // blog-actions.js cache-buster, managed here only.
