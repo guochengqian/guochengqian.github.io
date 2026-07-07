@@ -56,13 +56,13 @@
       date: 'July 1, 2026', read: '5 min read', tag: 'Markets', image: 'preview.png',
       dek: 'META’s move reminded me why “it’s already priced in” is often too lazy. Expectation, confirmation, and scale are different stages.' },
     { slug: 'claude-hosted-blog',
-      title: 'I Host This Blog with Claude',
+      title: 'I Build a Commentable Blog for Free with Claude in 20 Mins',
       date: 'July 5, 2026', read: '3 min read', tag: 'AI', image: 'preview.png',
       dek: 'A clean, free blog on GitHub Pages — likes, comments, email, and sharing to X, WeChat, Rednote, and Zhihu — built entirely by talking to an agent.' },
     { slug: 'squirrel-rime',
-      title: 'My Mac Couldn’t Type My Name',
-      date: 'July 6, 2026', read: '3 min read', tag: 'Tools', image: 'preview.png',
-      dek: 'Apple’s built-in Chinese input never learns your words. Squirrel (Rime) remembers your name, your phrases, even your emoji — and an agent can configure all of it for you.' }
+      title: '我的 Mac 连我的名字都记不住',
+      date: '2026 年 7 月 6 日', read: '阅读约 3 分钟', tag: '工具', image: 'preview.png',
+      dek: '苹果自带的中文输入法不会记住你的常用字。Squirrel（Rime）记得住 —— 你的名字、常用词、甚至 emoji。配置也不用自己动手，交给你的 agent 就好。' }
   ];
 
   var ACTIONS_VERSION = '202607060100'; // blog-actions.js cache-buster, managed here only.
