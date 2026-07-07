@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gemini-Omni 可能是如何实现的 — Gordon's Blog</title>
+  <meta name="description" content="对 Google 最新视频模型的三种可能架构按概率排序——以及为什么 Transfusion 式统一 transformer 是我的首选猜测。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css?v=202607070100">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607070030" defer></script>
+</head>
+<body data-blog-slug="gemini-omni-architecture">
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
+    <p class="article-tag">AI</p>
+    <h1>Gemini-Omni 可能是如何实现的</h1>
+    <p class="subtitle">本文是我对 Google 最新视频编辑/生成模型 <strong>Gemini-Omni</strong> 可能实现方式的一些高层推测。</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">2026 年 6 月 18 日 &middot; 阅读约 6 分钟</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="Gemini-Omni 可能是如何实现的" data-url="https://guochengqian.github.io/blog/gemini-omni-architecture/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+    <p>仅凭公开信息还无法确定具体架构，但我认为有三种合理的可能性，按概率从高到低排列：</p>
+    <ol>
+      <li><strong>Transfusion / HunyuanImage-3.0 式的单一统一 transformer</strong>，联合完成多模态理解与生成。<strong>最有可能是 Gemini-Omni 的方案。</strong></li>
+      <li><strong>Qwen-Image-Edit 式的编码器-解码器系统</strong>：Gemini 作为多模态编码器，其输出的 embedding 作为条件输入给 flow matching 模型来渲染视频。<strong>最有可能是 Veo 3 的方案。</strong></li>
+      <li><strong>GLM-Image 式的混合架构</strong>：在离散空间自回归地生成粗粒度视觉 token，再在连续空间用扩散模型精修。对图像来说是可行的，但<strong>不太可能</strong>成为今年稠密视频生成的主路线。</li>
+    </ol>
+    <p>我认为 <strong>Transfusion 式的统一模型</strong>是 Gemini-Omni 最有可能采用的架构。</p>
+
+    <hr>
+
+    <h2>路线一：Transfusion</h2>
+    <p><strong>这是 Transfusion 式的技术路线，也是我对 Gemini-Omni 的首选猜测。</strong></p>
+    <p>核心思想是用<strong>一个共享的 transformer</strong> 同时处理两件事：</p>
+    <ul>
+      <li>对文本和离散 token 做 next-token prediction（下一个 token 预测）</li>
+      <li>对连续的图像、视频、音频 latent 做 flow matching</li>
+    </ul>
+    <p><strong>简化的训练/推理流程：</strong></p>
+    <pre>Text / Image / Video / Audio Context
+          ↓
+Shared Multimodal Transformer
+          ↓
+Next-token prediction (discrete modality like text generation) + Flow matching (continuous modality like video/image/audio generation)
+          ↓
+Text, Images, Video, or Audio Output</pre>
+    <p>模型使用<strong>分块因果掩码（blockwise causal mask）</strong>：文本区域（因果注意力）按标准的 next-token prediction 训练，而视觉/音频区域（全注意力）则用 flow matching 目标训练。</p>
+    <figure>
+      <img src="transfusion.png" alt="带有离散 token 预测头和连续 flow matching 头的统一 transformer">
+      <figcaption>统一 transformer，同时带有离散 token 预测头和连续 flow matching 头。</figcaption>
+    </figure>
+    <p><strong>为什么这个方案有吸引力：</strong></p>
+    <p>目前大多数扩散系统仍采用编码器-解码器架构：编码器是一个文本编码器，把文本 prompt 编码成 embedding；解码器是一个 DiT，负责迭代去噪。</p>
+    <p>早期用的是很小的 CLIP 文本编码器，比如 Stable Diffusion。在当时，这种编码器-解码器架构是合理的，反正编码器本身就很小。</p>
+    <p>现代 DiT 则改用更重的 LLM（如 Mistral）或 VLM（如 Qwen2.5-VL）作为文本编码器，FLUX 2.0 和 Qwen-Image-Edit 都是如此。从简单的 CLIP 换成更大规模的预训练 LLM 是合理的：它能带来更好的 prompt 对齐，并支持多模态条件输入（例如原生支持参考图像/视频）。</p>
+    <p>如今编码器可以是一个巨大的多模态模型，比如约 250B 参数、45B 激活参数的 Gemini 3.5 Flash。这样一个庞大的模型已经能深入理解 prompt、源视频、音频、对话和编辑意图，却<em>只</em>被当作 embedding 提取器来用，未免太浪费了。</p>
+    <p>类 Transfusion 的统一模型消除了&ldquo;负责理解的模型&rdquo;和&ldquo;负责生成的模型&rdquo;之间这种别扭的割裂。它通过统一的损失函数把架构统一起来（反正文本编码器和 DiT 本来都是 Transformer），不仅带来更好的 prompt 对齐，还实现了多模态理解与生成的联合建模——这一点对编辑任务尤为重要。</p>
+    <p>Gemini-Omni 名字里的 <strong>&ldquo;Omni&rdquo;</strong> 也强烈暗示这是一个跨模态既能理解<em>又</em>能生成的单一模型家族——而这正是这条路线所提供的。</p>
+
+    <hr>
+
+    <h2>路线二：Gemini 作为多模态编码器 + DiT 作为视频渲染解码器</h2>
+    <p><strong>这条路线沿用 Qwen-Image-Edit 的模式，并应用到视频上。</strong></p>
+    <p>Gemini 并不取代视频主干网络。它扮演多模态编码器的角色，其输出的 embedding 作为条件输入给 DiT，由 DiT 渲染出用于生成或编辑的视频。</p>
+    <p><strong>架构：</strong></p>
+    <pre>Text / Image / Video / Audio / Dialogue Context
+          ↓
+Gemini Multimodal Model
+          ↓
+Prompt rewriting + Dense multimodal embeddings
+          ↓
+Latent Video/Audio Diffusion Model
+          ↓
+Edited Video + Audio</pre>
+    <figure>
+      <img src="qwen-image.png" alt="Gemini 作为条件编码器，将稠密 embedding 输入给 Veo 式生成器">
+      <figcaption>Gemini 作为条件编码器，把稠密 embedding 输入给 DiT 渲染器。</figcaption>
+    </figure>
+    <p><strong>主要优势：</strong></p>
+    <ul>
+      <li>让视频生成器保持专精，确保高视觉质量</li>
+      <li>只需改进 Gemini 就能升级理解能力，迭代更容易</li>
+      <li>可以复用强大的 Gemini 和 Veo 预训练模型</li>
+    </ul>
+    <p>这很可能就是 <strong>Veo 3 最有可能采用的架构：Gemini 负责理解意图，DiT 负责渲染</strong>。</p>
+    <p><strong>局限：</strong>它仍然是一个双系统 pipeline，而不是真正的单一 &ldquo;Omni&rdquo; 模型。</p>
+
+    <hr>
+
+    <h2>路线三：自回归粗粒度 token + 扩散精修</h2>
+    <p><strong>这是 GLM-Image 式的混合架构。</strong></p>
+    <p>模型先自回归地生成<strong>粗粒度视觉 token</strong>：布局、结构、构图和低分辨率内容；然后由扩散模型把它们精修成高质量输出。</p>
+    <p><strong>流程：</strong></p>
+    <pre>Prompt / Multimodal Context
+          ↓
+Autoregressive Model → Coarse Discrete Visual Tokens
+          ↓
+Diffusion Refinement Model
+          ↓
+High-Quality Image or Video</pre>
+    <p>这套方案在<strong>图像</strong>上表现非常出色。但对于<strong>稠密视频</strong>，token 数量会爆炸——视频同时包含空间、时间、运动、时序一致性，往往还有音频。即使做了压缩和分层，代价依然非常高。</p>
+    <p>我把这条路线看作视频生成的未来版本，因为收益非常明确：可以把 LLM 的全套技术直接用到视频生成上，比如 KV cache、speculative decoding（投机解码）、CUDA Graph 加速，以及现成的训练基础设施。</p>
+    <figure>
+      <img src="glm-image.png" alt="自回归模型生成粗粒度的场景/视频 token，随后由扩散模型精修">
+      <figcaption>自回归模型先生成粗粒度的场景/视频 token，再由扩散模型精修。</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>我目前的猜测</h2>
+    <p><strong>最终排序：</strong></p>
+    <ol>
+      <li><strong>统一 Transformer（路线一）</strong>：最有可能是 <strong>Gemini-Omni</strong> 的方案</li>
+      <li><strong>Gemini-DiT（路线二）</strong>：最有可能是 <strong>Veo 3</strong> 的方案</li>
+      <li><strong>自回归 + 扩散混合（路线三）</strong>：当前视频生成采用的可能性较低，但可能是未来视频模型的路线</li>
+    </ol>
+    <p><strong>Gemini-Omni</strong> 这个名字本身就指向统一化，而整个领域也明显在朝着<strong>更少的胶水层、更多的跨模态共享建模</strong>方向演进（文本、图像、视频、音频，以及未来几个月里用于世界建模的动作模态）。</p>
+
+    <hr>
+
+    <h2>参考文献</h2>
+    <ol>
+      <li>Google, &ldquo;Introducing Gemini Omni.&rdquo;</li>
+      <li>Google DeepMind, &ldquo;Veo 3 Technical Report.&rdquo;</li>
+      <li>Zhou et al., &ldquo;Transfusion&rdquo; (arXiv:2408.11039).</li>
+      <li>Zhipu AI, &ldquo;GLM-Image.&rdquo;</li>
+      <li>Qwen Team, &ldquo;Qwen-Image&rdquo; and &ldquo;Qwen-Image-Edit.&rdquo;</li>
+      <li>Tencent Hunyuan, &ldquo;HunyuanImage-3.0.&rdquo;</li>
+    </ol>
+
+    <hr>
+
+    <p>你觉得哪条路线最有可能？欢迎在评论区聊聊你的看法。</p>
+
+    <div class="subscribe-box">
+      <p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p>
+      <form class="subscribe-form" data-title="Gemini-Omni 可能是如何实现的" data-url="https://guochengqian.github.io/blog/gemini-omni-architecture/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+  </article>
+
+</div>
+</body>
+</html>
