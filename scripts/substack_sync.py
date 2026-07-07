@@ -357,6 +357,7 @@ DRAFT_IDS = {
     'research-labs-shutdown': 205424228, 'stock-inspiration-20260701': 205424233,
     'agent-for-finance': 205424275, 'visual-generation-chatbot-accessory': 205424278,
     'next-scaling-after-model-scaling': 205424280, 'claude-hosted-blog': 205711895,
+    'squirrel-rime': 205713056,
 }
 
 SLUGS = ['hermes-agent', 'elorian-ai', 'agent-for-finance', 'visual-generation-chatbot-accessory',
