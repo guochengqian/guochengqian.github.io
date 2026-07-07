@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我用 Claude 20 分钟免费搭了个可评论的博客 — Gordon's Blog</title>
+  <meta name="description" content="一个部署在 GitHub Pages 上的免费简洁博客，支持点赞、评论、邮件，还能分享到 X、微信、小红书和知乎——全程只靠和 agent 对话搭建。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css?v=202607070100">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607070030" defer></script>
+</head>
+<body data-blog-slug="claude-hosted-blog">
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
+    <p class="article-tag">AI</p>
+    <h1>我用 Claude 20 分钟免费搭了个可评论的博客</h1>
+    <p class="subtitle">一个部署在 GitHub Pages 上的免费简洁博客——点赞、评论、邮件，以及分享到 X、微信、小红书和知乎——全程只靠和 agent 对话搭建。</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">2026 年 7 月 5 日 &middot; 阅读约 3 分钟</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="我用 Claude 20 分钟免费搭了个可评论的博客" data-url="https://guochengqian.github.io/blog/claude-hosted-blog/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+    <figure>
+      <img src="preview.png" alt="终端里的对话变成了一篇上线的博客页面">
+      <figcaption>整个博客——排版、评论、分享、同步——都是从一场对话里长出来的。</figcaption>
+    </figure>
+
+    <p>我把想要的效果告诉 Claude Code，它就在我继续写作的同时，把整个博客悄悄搭了起来。</p>
+
+    <figure>
+      <img src="home-gallery.jpg" alt="博客首页：标题、个人简介、订阅按钮，以及带预览图的文章画廊" loading="lazy">
+      <figcaption>首页——带预览图的文章画廊、RSS、深色模式和个人主页链接，全部由一份 manifest 渲染而成。</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>它能做什么</h2>
+    <ul>
+      <li><strong>干净的阅读体验。</strong>纯静态页面、衬线字体、跟随系统的深色模式，全站没有任何跟踪器和付费墙。</li>
+    </ul>
+    <figure>
+      <img src="post-page.jpg" alt="一篇文章页：衬线排版，底部有悬浮操作栏" loading="lazy">
+      <figcaption>文章页——衬线字体、大量留白，加上悬浮操作栏。没错，就是你现在正在读的这个页面。</figcaption>
+    </figure>
+    <ul>
+      <li><strong>评论。</strong>由 <a href="https://utteranc.es">utterances</a> 驱动——每篇文章对应一个 GitHub issue，评论免费、天然防垃圾，而且数据完全归我所有。</li>
+      <li><strong>点赞。</strong>悬浮操作栏里有一个点赞计数器，背后是一个免费的计数 API。不用注册账号，也不用数据库。</li>
+    </ul>
+    <figure>
+      <img src="comments.jpg" alt="文章下方：上一篇和下一篇卡片、作者卡片，以及基于 GitHub 的评论框" loading="lazy">
+      <figcaption>每篇文章下方：上一篇/下一篇导航、作者卡片，以及以 GitHub issues 形式存储的评论。</figcaption>
+    </figure>
+    <ul>
+      <li><strong>分享。</strong>一个分享菜单覆盖 X、Facebook、LinkedIn、Substack Notes 和邮件——考虑到我的读者里有很多中文用户，还加上了微信、小红书和知乎；这三家没有分享链接，菜单会直接复制一段即贴即发的文案。</li>
+    </ul>
+    <figure>
+      <img src="share-menu.jpg" alt="文章上方展开的分享菜单，列着 X、Facebook、LinkedIn、邮件、微信、小红书和知乎" loading="lazy">
+      <figcaption>分享菜单。X、Facebook 和 LinkedIn 会打开撰写窗口；微信、小红书和知乎则复制一段即贴即发的文案。</figcaption>
+    </figure>
+    <ul>
+      <li><strong>邮件收藏文章。</strong>读者输入自己的邮箱地址，文章链接就会在他们自己的邮件客户端里生成一封邮件——完全不经过任何邮件列表服务。</li>
+    </ul>
+    <figure>
+      <img src="email-subscribe.jpg" alt="署名栏的订阅框里输入了一个邮箱地址，光标悬停在「发送到邮箱」按钮上" loading="lazy">
+      <figcaption>「发送到邮箱」会在读者自己的邮件客户端里生成一封含文章链接的邮件——背后没有任何邮件列表服务。</figcaption>
+    </figure>
+
+    <hr>
+
+    <h2>它是怎么搭出来的</h2>
+    <p>上面每一个功能，最初都只是终端里一句随口的话：「给悬浮栏加上上一篇/下一篇箭头」「这个栏在手机上不好用」「再加一个分享到微信」。</p>
+    <p>Claude 写好代码，用无头浏览器渲染页面来检查自己的成果，按手机宽度截图，然后提交、推送，再盯着 GitHub Pages 的部署，直到线上站点跑起新版本。当部署在 GitHub 那边失败时，它自己发现并重新触发了构建。</p>
+    <blockquote><p>有意思的不是 agent 会写博客主题，而是整个闭环——构建、验证、上线、监控——全都装进了一场对话里。</p></blockquote>
+    <p>运营这个博客的总成本：零。GitHub Pages 负责托管，GitHub issues 存评论，点赞计数器用的是免费的公共 API。</p>
+
+    <div class="subscribe-box">
+      <p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p>
+      <form class="subscribe-form" data-title="我用 Claude 20 分钟免费搭了个可评论的博客" data-url="https://guochengqian.github.io/blog/claude-hosted-blog/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+  </article>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>同策略蒸馏（On-Policy Distillation）：前沿实验室合并专家模型的配方 — Gordon's Blog</title>
+  <meta name="description" content="OPD 不只是一个损失函数。它是一个千人规模的实验室并行打磨同一份智能的工作方式。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../blog.css?v=202607070100">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607070030" defer></script>
+</head>
+<body data-blog-slug="opd">
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
+    <p class="article-tag">AI</p>
+    <h1>同策略蒸馏（On-Policy Distillation）：前沿实验室合并专家模型的配方</h1>
+    <p class="subtitle">OPD 不只是一种更好的专家模型合并技术。它是大型 AI 实验室组织成百上千人围绕同一个共享巨型模型开展工作的方式。</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">2026 年 6 月 15 日 &middot; 阅读约 9 分钟</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="同策略蒸馏（On-Policy Distillation）：前沿实验室合并专家模型的配方" data-url="https://guochengqian.github.io/blog/opd/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+    <p>同策略蒸馏（On-Policy Distillation，OPD）不只是一种更好的专家模型合并技术。它也是大型 AI 实验室让成百上千人围绕同一个共享巨型模型（比如 Gemini-3.5）开展工作的一种组织方式。</p>
+    <p>简单来说是这样的：不同的子团队可以各自独立地推进不同的专家模型，凭借在自己领域上的提升获得认可，然后再用 OPD 把这些专家行为折叠回同一个模型。</p>
+    <p>这才是我觉得有意思的地方。不只是那个损失函数，而是这套生产模式。</p>
+    <p>粗略地说，现代 LLM 训练分为几个阶段：</p>
+    <ol>
+      <li>预训练让模型学会语言、世界知识和基础推理。</li>
+      <li>SFT 和基于 RL 的后训练让它学会遵循指令、更有帮助地回答问题，表现得更像一个还懂得调用工具的聊天机器人产品。</li>
+      <li>专家微调进一步强化特定能力：数学、代码、对话、写作风格、工具使用、搜索、智能体、安全、长上下文等等。</li>
+      <li>OPD 把这些专门化的模型折叠回一个人们真正能用的模型。</li>
+    </ol>
+    <p>OPD 主要关注最后一步：如何把许多专家模型的行为合并进一个共享模型。</p>
+    <p>这个术语最近变得更加常见，主要是因为 Thinking Machines Lab 那篇关于 on-policy distillation 的博客 [1]。DeepSeek-V4 [2] 和 GLM-5 [3] 等前沿实验室的公开技术报告也指向了这套配方。我不敢断言每个实验室都在使用完全相同的配方，也不敢断言某个未发布的系统就以这种确切形式使用 OPD。但作为一种理解前沿模型生产的思路，OPD 感觉非常接近这个领域正在收敛的方向。</p>
+    <p>我从三个层面来看它。</p>
+
+    <hr>
+
+    <h2>1. 数学很干净</h2>
+    <p>OPD 的核心思想并不复杂。</p>
+    <p>与其让 student 模型在 teacher 预先写好的答案上训练，不如让 student 先自己试着解题。然后 teacher 检查 student 实际到达的那些状态，逐 token 地问：换作是我，会这么做吗？</p>
+    <p>这正是它被称为 on-policy（同策略）的原因。训练轨迹是由当前的 student 策略 rollout 出来的，而不是来自一个固定的 teacher 补全数据集。</p>
+    <figure>
+      <img src="opd-illustration.png" alt="离策略蒸馏与同策略蒸馏示意图">
+      <figcaption>离策略蒸馏 vs. 同策略蒸馏：经典蒸馏在 teacher 写好的轨迹上训练，而 OPD 在 student 实际到达的状态上给出 teacher 的反馈。</figcaption>
+    </figure>
+    <p>一个常见的版本使用逐 token 的 reverse KL：</p>
+    <pre><code>KL(pi_student || pi_teacher)
+= E_{x ~ pi_student} [ log pi_student(x_{t+1}|x_{1..t}) - log pi_teacher(x_{t+1}|x_{1..t}) ]</code></pre>
+    <p>用大白话说：</p>
+    <ul>
+      <li>student 自己生成答案；</li>
+      <li>对它生成的每个 token，我们看 student 有多自信；</li>
+      <li>我们问 teacher（通常是该 prompt 或该领域对应的专家模型）：在同样的上下文里，这个 token 的概率有多大；</li>
+      <li>如果 student 自信地生成了一个 teacher 认为很差的 token，student 就会受到惩罚；</li>
+      <li>随着时间推移，student 学会在自己更容易到达的那些状态里，表现得更像 teacher。</li>
+    </ul>
+    <p>这与普通的 off-policy（离策略）蒸馏不同。</p>
+    <p>经典蒸馏更像是抄 teacher 的答案。在 student 自己犯错之前，这都没什么问题。可一旦 student 漂移到一个从未在 teacher 轨迹中出现过的状态，监督信号就会变得弱得多。</p>
+    <p>OPD 更像是 teacher 坐在 student 旁边看着它做题。如果 student 走错了方向，teacher 会在拐错弯的那个路口当场给出反馈。</p>
+    <p>这对推理很重要。很多推理失败并不只是最终答案错了，而是在推理链条中途某个小的分支决策上走偏了。OPD 可以在这些分支点上给出稠密的反馈，而不是等到最后才说一句“错了”。</p>
+    <p>在 OPD 之前，人们已经有其他跨模型组合能力的方法。最简单的一族是模型合并（model merging）或权重平均（weight averaging）。Model Soups 对多个微调模型的权重取平均。TIES-Merging 和 DARE 则尝试在合并之前减少不同任务增量之间的干扰。</p>
+
+    <hr>
+
+    <h2>2. 它比一个巨大的混合奖励更干净</h2>
+    <p>看待 OPD 的第二个角度，是把它当作一种训练策略。</p>
+    <p>假设你想要一个最终模型：数学很强、代码很强、对话自然、工具调用可靠、能当好智能体，而且安全。</p>
+    <p>一个显而易见的做法是用一个大混合奖励训练一个模型：</p>
+    <pre><code>Reward = math reward + coding reward + dialogue reward + agent reward + safety reward + ...</code></pre>
+    <p>听起来很合理。实践中它很快就会变得一团糟。</p>
+    <p>每种奖励的尺度都不一样。有的稀疏，有的稠密。有的容易验证，有的很主观。数学通常有干净的可验证奖励：答案要么对要么错。代码可以跑测试。但对话质量、写作风格、有用性、安全边界和智能体行为都很难干净地打分。</p>
+    <p>于是问题变成了混乱的多目标 RL：</p>
+    <ul>
+      <li>一种能力提升的同时另一种能力变差；</li>
+      <li>reward hacking 变得更难诊断；</li>
+      <li>训练变得更不稳定；</li>
+      <li>credit assignment 变得模糊；</li>
+      <li>团队为奖励权重、数据配比、评测优先级和回滚标准争论不休。</li>
+    </ul>
+    <p>OPD 给了你一种不同的分解方式。</p>
+    <p>不要强迫一个模型同时在所有方面进步。先训练专家。</p>
+    <p>每个专家都可以使用最适合自己领域的奖励、数据、基准和训练配方。</p>
+    <p>然后用 OPD 把这些专家的行为蒸馏进一个统一的模型。</p>
+    <p>这并不能神奇地解决一切。专家之间仍然会有分歧。数学专家可能偏好很长的思维链。对话专家可能偏好简短的回答。安全专家可能会拒答。智能体专家可能会想直接执行。代码专家可能倾向确定性输出。创意写作专家可能想要更高的熵。</p>
+    <p>但问题的形态变了。它不再只是一个奖励工程的烂摊子，而变成了一个行为仲裁问题。你可以用路由、领域条件化、teacher 选择、KL 加权、混合数据、偏好模型和后训练策略选择来处理它。</p>
+    <p>OPD 并没有消除冲突。它让冲突变得更容易管理。</p>
+
+    <hr>
+
+    <h2>3. 它是一种组织设计模式</h2>
+    <p>这是我最在意的部分。</p>
+    <p>OPD 不只是一个算法。它是组织一个巨型实验室的方式。</p>
+    <p>如果一个前沿 AI 实验室有一千人，难题并不是它有没有足够多聪明的研究员，而是这一千人的工作如何能在同一个模型里累加起来。</p>
+    <p>如果每个人都在碰同一个基础模型、同一个奖励、同一个数据配比，协调成本就会爆炸。一个数学上的改动可能伤害对话。一个代码上的改动可能破坏安全。一个智能体方面的改进可能增加延迟。一次数据微调可能悄悄同时挪动五个基准的分数。</p>
+    <p>于是整个组织就会把大量时间花在开会、消融实验、回滚、配比之争、评测之争，以及“到底是谁弄坏了什么”的排查上。</p>
+    <p>OPD 让几百人能以一种更独立的方式协作。每个团队可以推进自己的专家模型，用自己的评测衡量进展，同时仍然为最终的共享模型做出贡献。</p>
+    <figure>
+      <img src="opd-org.png" alt="OPD 作为前沿 AI 实验室的组织设计模式">
+      <figcaption>OPD 作为组织设计模式：多个能力团队分别训练专门化的专家模型，再把它们的行为蒸馏回一个通用模型。</figcaption>
+    </figure>
+    <p>一种可能的结构是这样的：</p>
+    <ul>
+      <li><strong>通用知识团队</strong>：推进广义的理解能力，使用 MMLU 之类的基准。</li>
+      <li><strong>数学团队</strong>：专注数学。由于数学有很强的验证器，它可以在 AIME、MATH、奥赛风格题目、证明任务和符号推理上猛攻。</li>
+      <li><strong>代码团队</strong>：专注编程。编程可以利用单元测试、编译器、基准套件、仓库级编辑任务、bug 修复、code review 和 agentic coding。它可以推进 LiveCodeBench、SWE-bench、Codeforces 风格任务以及仓库级智能体基准。</li>
+      <li><strong>写作团队</strong>：专注结构、文风、创意写作、摘要、改写、指令遵循和偏好匹配。</li>
+      <li><strong>搜索/研究团队</strong>：专注 query 改写、检索、信息源选择、证据锚定、引用和多跳研究。</li>
+      <li><strong>函数调用团队</strong>：专注工具调用、schema 遵循、参数抽取、API 选择、多次调用规划、工具结果解读和错误恢复。</li>
+      <li><strong>对话团队</strong>：专注人类偏好和对话风格。</li>
+      <li><strong>智能体团队</strong>：专注长程任务的完成。</li>
+      <li><strong>安全团队</strong>：专注拒答边界和政策合规。</li>
+      <li><strong>长上下文团队</strong>：专注检索、记忆，以及对远距离信息的追踪。</li>
+      <li><strong>最后一步</strong>：OPD 把这些专门化的专家蒸馏回一个通用模型。</li>
+    </ul>
+    <p>现在，组织是按能力划分的，而不是围着一锅全局奖励大杂烩转。</p>
+    <p>每个团队只有一个清晰的任务：把自己的专家模型做成该能力上的世界第一。</p>
+    <p>它不必时刻担心自己的改进会毁掉其他所有能力，因为最终的整合由 OPD/后训练流水线来负责。</p>
+    <p>这很重要，因为前沿模型训练早已不只是一个“巧妙损失函数”的问题。它是一个大规模工程与组织问题。</p>
+    <p>瓶颈不只是 GPU。不只是数据。也不只是一个聪明的新目标函数。</p>
+    <p>一个真正的瓶颈是：</p>
+    <p><strong>如何让一千个人并行地打磨同一份智能？</strong></p>
+    <p>OPD 的有趣之处在于，它把“训练一个万能模型”变成了“训练许多可验证的专家，再把它们蒸馏回一个模型”。</p>
+    <p>这感觉非常像现代软件工程。</p>
+    <p>你不会让一千个工程师去编辑同一个巨大的函数。你会把系统拆成模块、定义接口、写测试、跑 CI，然后合并。</p>
+    <p>OPD 也许就是前沿模型训练的 CI 与 merge 系统。</p>
+
+    <hr>
+
+    <h2>参考文献 / 延伸阅读</h2>
+    <ul>
+      <li>[1] Thinking Machines Lab，“On-Policy Distillation”（Kevin Lu 等，2025）。这是我目前见过对 OPD 最清晰的公开讲解，包含 reverse KL、伪代码、Qwen3 推理蒸馏复现和计算效率的讨论。<a href="https://thinkingmachines.ai/blog/on-policy-distillation/">thinkingmachines.ai/blog/on-policy-distillation</a></li>
+      <li>[2] DeepSeek-AI，“DeepSeek-V4”。关于专门化后训练、专家模型整合与可部署统一模型这一方向的相关前沿模型参考。</li>
+      <li>[3] 智谱 AI，“GLM-5”。与专门化后训练、专家行为迁移和统一模型生产这一大趋势相关的前沿模型示例。</li>
+      <li>[4] Agarwal 等，“On-Policy Distillation of Language Models: Learning from Self-Generated Mistakes”，ICLR 2024。提出了 Generalized Knowledge Distillation（GKD）。<a href="https://arxiv.org/abs/2306.13649">arxiv.org/abs/2306.13649</a></li>
+      <li>[5] Wortsman 等，“Model Soups”，ICML 2022。权重平均 / model soups 的经典参考文献。<a href="https://arxiv.org/abs/2203.05482">arxiv.org/abs/2203.05482</a></li>
+      <li>[6] Yadav 等，“TIES-Merging: Resolving Interference When Merging Models”，NeurIPS 2023。<a href="https://arxiv.org/abs/2306.01708">arxiv.org/abs/2306.01708</a></li>
+      <li>[7] OpenAI，“Model Distillation in the API”，2024。一个产品层面的信号：蒸馏已经是主流模型生产栈的一部分。<a href="https://openai.com/index/api-model-distillation/">openai.com/index/api-model-distillation</a></li>
+    </ul>
+
+    <div class="subscribe-box">
+      <p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p>
+      <form class="subscribe-form" data-title="同策略蒸馏（On-Policy Distillation）：前沿实验室合并专家模型的配方" data-url="https://guochengqian.github.io/blog/opd/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+  </article>
+
+</div>
+</body>
+</html>
