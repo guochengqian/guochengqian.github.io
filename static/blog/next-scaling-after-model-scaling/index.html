@@ -27,7 +27,7 @@
     <div class="lang-row"><a class="lang-switch" href="cn.html" lang="zh-CN" hreflang="zh-CN">🌐 中文版</a></div>
     <p class="article-tag">AI</p>
     <h1>What Is the Next Scaling After Model Scaling?</h1>
-    <p class="subtitle">For daily users, the knowledge layer of top-tier chatbots like ChatGPT and Claude is already good enough for many jobs. The next product frontier is cheaper, faster, more agentic automation &mdash; and that means context scaling and agent scaling. Both demand significantly more memory bandwidth, which means the HBM shortage is far from over.</p>
+    <p class="subtitle">For daily users, the knowledge layer of top-tier chatbots like ChatGPT and Claude is already good enough for many jobs. The next product frontier is cheaper, faster, more agentic, larger-scale automation &mdash; and that means context scaling and agent scaling. Both demand significantly more memory bandwidth, which means the HBM shortage is far from over.</p>
     <div class="byline">
       <img src="../img/avatar.jpg" alt="">
       <div>
@@ -42,20 +42,45 @@
       <figcaption>After model scaling, the next pressure points are context length, agent count, and the memory bandwidth needed to keep those systems alive.</figcaption>
     </figure>
 
-    <p>For most daily users, the baseline knowledge and reasoning in products like ChatGPT and Claude already feels good enough for many everyday jobs: answering questions, writing code, summarizing documents, planning trips, drafting emails, and explaining concepts. Once that capability becomes normal, the user&rsquo;s unmet need shifts from &ldquo;know more&rdquo; to &ldquo;do more for me.&rdquo; Haters will say we just need more parameters. XD</p>
+    <p>For most daily users, the baseline knowledge and reasoning in products like ChatGPT and Claude already feels good enough for many everyday tasks: answering questions, writing code, summarizing documents, planning trips, drafting emails, and explaining concepts. For everyday tasks and everyday coding, Optus 4.8 and GPT-5 are not fundamentally different. When that capability becomes the norm, the practical bottleneck shifts: the unmet need moves from &ldquo;know more&rdquo; to &ldquo;do more for me.&rdquo;</p>
 
     <hr>
 
     <h2>Context scaling</h2>
     <p>Today&rsquo;s tier-0 models already ship with context windows around 1M tokens. That is enough to upload an entire book, ask questions about it, run a web search, and aggregate everything before generating a thorough response.</p>
     <p>But if you keep uploading books, keep attaching images, keep searching the internet, keep talking with the chatbot across a long session &mdash; sooner or later you hit the limit. The context fills up, earlier information gets evicted or compressed, and the model&rsquo;s quality degrades. This is the most obvious reason to scale context further.</p>
+
+    <figure>
+      <img src="context_overflow.jpg" alt="Context overflow illustration">
+    </figure>
+
     <p>But there is a deeper reason, and it is more important.</p>
     <blockquote><p><a href="https://www.youtube.com/watch?v=nyKxC5B6GKk"><strong>Context is an alternative to gradient descent.</strong></a></p></blockquote>
+    <p><a href="https://www.youtube.com/watch?v=nyKxC5B6GKk">https://www.youtube.com/watch?v=nyKxC5B6GKk</a></p>
+
+    <figure>
+      <img src="karpathy_context_alternative.jpg" alt="Karpathy video thumbnail: Context is an alternative to gradient descent">
+      <figcaption><a href="https://www.youtube.com/watch?v=nyKxC5B6GKk">Andrej Karpathy &mdash; Context is an alternative to gradient descent</a></figcaption>
+    </figure>
+
     <p>This line comes from Andrej Karpathy&rsquo;s conversation with Dwarkesh Patel. The deeper point is not that the context window is merely a long-term memory buffer, but that it gives the model another way to adapt at inference time.</p>
     <p>The precise version is not that the model&rsquo;s weights change during inference. They do not. The point is that the context can behave like a temporary learning substrate: examples, retrieved documents, notes, tests, plans, tool outputs, and failure traces all become state that changes the model&rsquo;s behavior during the forward pass.</p>
-    <p>This connects to <a href="https://trinkle23897.github.io/learning-beyond-gradients/">Jiayi Weng&rsquo;s <em>Learning Beyond Gradients</em></a>: a coding agent can keep reading failures, editing code, adding tests, watching replays, and improving a software system without training a new neural network. The object being updated is explicit and maintainable &mdash; rules, tests, logs, memory, version diffs, and feedback channels &mdash; rather than only hidden weights.</p>
     <blockquote><p>While in-context learning is primarily advanced pattern completion, it may act mechanically like a small, internal gradient-descent loop running during the network&rsquo;s forward pass.<br>&mdash; Andrej Karpathy</p></blockquote>
+    <p>This connects to <a href="https://trinkle23897.github.io/learning-beyond-gradients/">Jiayi Weng&rsquo;s <em>Learning Beyond Gradients</em></a>: a coding agent can keep reading failures, editing code, adding tests, watching replays, and improving a software system without training a new neural network. The object being updated is explicit and maintainable &mdash; rules, tests, logs, memory, version diffs, and feedback channels &mdash; rather than only hidden weights.</p>
+
+    <figure>
+      <img src="jiayi_lbg.png" alt="Diagram from Jiayi Weng's Learning Beyond Gradients">
+      <figcaption><a href="https://trinkle23897.github.io/learning-beyond-gradients/">Jiayi Weng &mdash; Learning Beyond Gradients</a></figcaption>
+    </figure>
+
     <p><strong>Recursive self-improvement might require no training &mdash; only In-Context Manipulation.</strong> An agent that can write to its own context &mdash; notes, plans, past mistakes, discovered heuristics, sub-goals, intermediate reasoning &mdash; can effectively &ldquo;fine-tune&rdquo; itself at inference time without touching a single weight. The larger and more structured the context, the more powerful this self-improvement loop becomes.</p>
+    <p>A useful companion here is Lilian Weng&rsquo;s <a href="https://lilianweng.github.io/posts/2026-07-04-harness/"><em>Context is an Alternative to Memorizing: In-Context Learning and Self-Improvement</em></a>. She explores how context can serve as a proxy for memory and a substrate for self-improvement at inference time &mdash; covering ICL mechanisms, meta-learning through demonstrations, and how models can bootstrap better behavior purely from well-structured context, without any weight updates.</p>
+
+    <figure>
+      <img src="lilian_ace.png" alt="Diagram from Lilian Weng's In-Context Learning and Self-Improvement post">
+      <figcaption><a href="https://lilianweng.github.io/posts/2026-07-04-harness/">Lilian Weng &mdash; Context is an Alternative to Memorizing</a></figcaption>
+    </figure>
+
     <p><strong>Customization requires no training &mdash; only larger context.</strong></p>
     <p>This is also why larger context windows matter for enterprise and personalized LLMs. Instead of fine-tuning a separate model for every customer, you can condition a single strong model on a rich, persistent context: user preferences, company knowledge base, interaction history, domain-specific instructions. Personalization becomes a context-engineering problem rather than a training problem.</p>
 
@@ -76,7 +101,7 @@
       <p class="chart-note">Log scale; T = trillion tokens/month, Q = quadrillion tokens/month. Dashed lines are revenue-derived estimates.</p>
     </figure>
 
-    <p>Current agent systems are still early: one model, one context, one stream of actions.</p>
+    <p>Current agent systems are still early: one model, one context, one stream of actions. That said, GPT-5 and Claude Optus 4.8 have already begun rolling out sub-agent and multi-agent workflows &mdash; though agent counts and task coverage remain limited.</p>
     <p>Cathie Wood and ARK Invest make a similar point in their <a href="https://www.ark-invest.com/big-ideas-2026"><em>Big Ideas 2026</em></a> report. They describe foundation models as a new layer of the internet stack: users will interact less by clicking through apps and more by delegating goals to AI agents that search, compare, purchase, and transact on their behalf. In their framing, agents become a kind of consumer operating system.</p>
     <p>Now imagine a future release of ChatGPT or Claude Code where you can spin up 100, or 1,000 agents simultaneously &mdash; each one with superhuman-level intelligence in its domain, each one with its own context, running in parallel, coordinating through shared memory or message passing.</p>
     <ul>
@@ -94,7 +119,7 @@
       <li><strong>Context scaling</strong> means the KV cache grows linearly with context length. A 1M-token context on a 10T-parameter model requires enormous memory just to store activations. Going to 10M or 100M tokens does not just need bigger context &mdash; it needs bigger memory per GPU, and more of it.</li>
       <li><strong>Agent scaling</strong> means running many independent model instances in parallel, each with its own KV cache. 1,000 agents &times; 1M tokens each is 1 billion tokens of live context that must reside in fast memory.</li>
     </ul>
-    <p>Both of these are memory-bandwidth-bound and memory-capacity-bound problems first. But once context and agents scale, the demand does not stop at HBM. It spills into custom inference silicon, scale-out networking, scale-up interconnect, optical DSPs, and full-stack GPU systems.</p>
+    <p>Both of these are memory-bandwidth-bound and memory-capacity-bound problems first. Memory bandwidth, CPU scheduling, and massive GPU compute underpin both. But once context and agents scale, the demand does not stop at HBM. It spills into custom inference silicon, scale-out networking, scale-up interconnect, optical DSPs, and full-stack GPU systems.</p>
     <p>So the investment thesis is simple:</p>
     <blockquote><p>Model scaling drove the last wave of GPU demand. Context scaling and agent scaling will drive the next wave of memory, networking, custom ASIC, optical interconnect, and full-stack AI infrastructure demand.</p></blockquote>
 
