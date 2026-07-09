@@ -105,10 +105,17 @@
       dek: 'Claude, Codex, and Hermes share one set of skills across three machines — and the only commands I run are git pull and git push.',
       zh: { file: 'cn.html', title: '一个 Git 仓库，同步我所有的 Agent',
         date: '2026 年 7 月 6 日', read: '阅读约 2 分钟', tag: 'AI',
-        dek: 'Claude、Codex、Hermes 在三台机器上共用同一套 skills —— 我需要敲的命令只有 git pull 和 git push。' } }
+        dek: 'Claude、Codex、Hermes 在三台机器上共用同一套 skills —— 我需要敲的命令只有 git pull 和 git push。' } },
+    { slug: 'wake-my-gpu-on-demand',
+      title: 'A Visual Generation Practitioner’s Three Machines',
+      date: 'July 8, 2026', read: '2 min read', tag: 'Tools', image: 'preview.png',
+      dek: 'A roaming laptop, a Mac mini running my agents around the clock, and an RTX 5090 that sleeps until something wakes it in 30 seconds.',
+      zh: { file: 'cn.html', title: '视觉生成从业者的三台机器',
+        date: '2026 年 7 月 8 日', read: '阅读约 2 分钟', tag: 'Tools',
+        dek: '到处跑的笔记本、24 小时跑 agent 的 Mac mini，以及一台默认睡着、30 秒就能被叫醒的 5090。' } }
   ];
 
-  var ACTIONS_VERSION = '202607060100'; // blog-actions.js cache-buster, managed here only.
+  var ACTIONS_VERSION = '202607081900'; // blog-actions.js cache-buster, managed here only.
   var SITE_URL = 'https://guochengqian.github.io/blog/';
 
   /* Slug: prefer <body data-blog-slug="...">, else derive from the path
