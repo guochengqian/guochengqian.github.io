@@ -27,7 +27,7 @@
     <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
     <p class="article-tag">AI</p>
     <h1>模型 Scaling 之后，下一个 Scaling 是什么？</h1>
-    <p class="subtitle">对日常用户来说，ChatGPT、Claude 这类顶级聊天机器人的知识层已经足以胜任许多工作。下一个产品前沿是更便宜、更快、更 agentic 的自动化 &mdash; 也就是 context scaling 和 agent scaling。两者都需要显著更多的内存带宽（memory bandwidth），这意味着 HBM 短缺远未结束。</p>
+    <p class="subtitle">对日常用户来说，ChatGPT、Claude 这类顶级聊天机器人的知识层已经足以胜任许多工作。下一个产品前沿是更便宜、更快、更 agentic、更大规模的自动化 &mdash; 也就是 context scaling 和 agent scaling。两者都需要显著更多的内存带宽（memory bandwidth），这意味着 HBM、CPU、GPU 短缺远未结束。</p>
     <div class="byline">
       <img src="../img/avatar.jpg" alt="">
       <div>
@@ -42,20 +42,45 @@
       <figcaption>模型 scaling 之后，下一个压力点是 context 长度、agent 数量，以及支撑这些系统持续运转所需的内存带宽。</figcaption>
     </figure>
 
-    <p>对大多数日常用户来说，ChatGPT、Claude 这类产品的基础知识和推理能力，已经足以应付许多日常任务：回答问题、写代码、总结文档、规划行程、起草邮件、讲解概念。当这种能力成为常态之后，用户尚未被满足的需求就从&ldquo;懂得更多&rdquo;转向了&ldquo;替我做更多&rdquo;。杠精会说，我们只是需要更多参数罢了。XD</p>
+    <p>对大多数日常用户来说，ChatGPT、Claude 这类产品的基础知识和推理能力，已经足以应付许多日常任务：回答问题、写代码、总结文档、规划行程、起草邮件、讲解概念。对于日常任务和日常 coding 来说，Optus 4.8 和 GPT-5 没有本质区别。当这种能力成为常态之后，实际的瓶颈就转移了：用户尚未被满足的需求就从&ldquo;懂得更多&rdquo;转向了&ldquo;替我做更多&rdquo;。</p>
 
     <hr>
 
     <h2>Context scaling</h2>
     <p>如今的 tier-0 模型出厂就带着约 1M token 的 context 窗口。这足够你上传一整本书、就书中内容提问、跑一次网络搜索，再把所有信息汇总起来，生成一份详尽的回答。</p>
     <p>但如果你不停地上传书籍、不停地附加图片、不停地搜索互联网、在一个长会话里不停地和聊天机器人对话 &mdash; 迟早会撞上上限。context 被填满，较早的信息被逐出或压缩，模型的输出质量随之下降。这是继续 scale context 最显而易见的理由。</p>
+
+    <figure>
+      <img src="context_overflow.jpg" alt="Context overflow illustration">
+    </figure>
+
     <p>但还有一个更深层的理由，而且更加重要。</p>
     <blockquote><p><a href="https://www.youtube.com/watch?v=nyKxC5B6GKk"><strong>Context 是梯度下降之外的另一条路。</strong></a></p></blockquote>
+    <p><a href="https://www.youtube.com/watch?v=nyKxC5B6GKk">https://www.youtube.com/watch?v=nyKxC5B6GKk</a></p>
+
+    <figure>
+      <img src="karpathy_context_alternative.jpg" alt="Karpathy 视频封面图：Context is an alternative to gradient descent">
+      <figcaption><a href="https://www.youtube.com/watch?v=nyKxC5B6GKk">Andrej Karpathy &mdash; Context is an alternative to gradient descent</a></figcaption>
+    </figure>
+
     <p>这句话出自 Andrej Karpathy 与 Dwarkesh Patel 的对谈。更深层的含义在于：context 窗口不只是一个长期记忆的缓冲区，它还给了模型另一种在推理时进行适应的方式。</p>
     <p>严谨的说法并不是模型的权重在推理时发生了变化 &mdash; 权重并没有变。关键在于，context 可以扮演一种临时学习基质的角色：示例、检索到的文档、笔记、测试、计划、工具输出、失败记录，全都变成了在前向传播过程中改变模型行为的状态。</p>
-    <p>这与 <a href="https://trinkle23897.github.io/learning-beyond-gradients/">Jiayi Weng 的《<em>Learning Beyond Gradients</em>》</a>相呼应：一个 coding agent 可以不断读取失败信息、修改代码、补充测试、回看执行记录，在不训练任何新神经网络的情况下持续改进一个软件系统。被更新的对象是显式且可维护的 &mdash; 规则、测试、日志、memory、版本 diff、反馈渠道 &mdash; 而不只是隐藏的权重。</p>
     <blockquote><p>虽然 in-context learning 本质上是高级的模式补全，但在机制上，它可能像一个在网络前向传播过程中运行的小型内部梯度下降循环。<br>&mdash; Andrej Karpathy</p></blockquote>
+    <p>这与 <a href="https://trinkle23897.github.io/learning-beyond-gradients/">Jiayi Weng 的《<em>Learning Beyond Gradients</em>》</a>相呼应：一个 coding agent 可以不断读取失败信息、修改代码、补充测试、回看执行记录，在不训练任何新神经网络的情况下持续改进一个软件系统。被更新的对象是显式且可维护的 &mdash; 规则、测试、日志、memory、版本 diff、反馈渠道 &mdash; 而不只是隐藏的权重。</p>
+
+    <figure>
+      <img src="jiayi_lbg.png" alt="Jiayi Weng《Learning Beyond Gradients》配图">
+      <figcaption><a href="https://trinkle23897.github.io/learning-beyond-gradients/">Jiayi Weng &mdash; Learning Beyond Gradients</a></figcaption>
+    </figure>
+
     <p><strong>递归自我改进也许根本不需要训练 &mdash; 只需要 In-Context Manipulation。</strong>一个能写入自己 context 的 agent &mdash; 笔记、计划、过往错误、发现的启发式、子目标、中间推理 &mdash; 实际上可以在推理时&ldquo;微调&rdquo;自己，而不触碰任何一个权重。context 越大、越结构化，这个自我改进的循环就越强大。</p>
+    <p>配合阅读 Lilian Weng 的 <a href="https://lilianweng.github.io/posts/2026-07-04-harness/"><em>Context is an Alternative to Memorizing: In-Context Learning and Self-Improvement</em></a>。她探讨了 context 如何作为记忆的替代品和推理时自我改进的基质 &mdash; 涵盖 ICL 机制、通过示例实现的元学习，以及模型如何在完全不更新权重的情况下，仅凭结构化的 context 来引导更好的行为。</p>
+
+    <figure>
+      <img src="lilian_ace.png" alt="Lilian Weng《Context is an Alternative to Memorizing》配图">
+      <figcaption><a href="https://lilianweng.github.io/posts/2026-07-04-harness/">Lilian Weng &mdash; Context is an Alternative to Memorizing</a></figcaption>
+    </figure>
+
     <p><strong>定制化不需要训练 &mdash; 只需要更大的 context。</strong></p>
     <p>这也是为什么更大的 context 窗口对企业级和个性化 LLM 如此重要。你不必为每个客户单独微调一个模型，而是可以让同一个强模型基于一份丰富、持久的 context 来工作：用户偏好、公司知识库、交互历史、领域专属指令。个性化从一个训练问题，变成了一个 context 工程问题。</p>
 
@@ -68,7 +93,7 @@
 
     <figure class="token-chart" aria-labelledby="token-chart-title">
       <h2 id="token-chart-title" class="sr-only">折线图：对比 Google、ByteDance、OpenAI、OpenRouter、Together AI 的每月 AI token 处理量，以及由营收推算的 Anthropic 与 Microsoft 估计值，时间跨度为 2024 年 5 月至 2026 年 6 月，纵轴为每月 token 数的对数刻度。</h2>
-      <figcaption><strong>Token 需求已经在复利式增长。</strong>头部平台的每月 AI token 处理量已经从万亿（T）级迈向千万亿（Q）级。Agentic 产品会把这个数字推得更高，因为每一个用户请求都可能在规划、浏览、写代码、执行和验证等环节中展开成多次模型调用。</figcaption>
+      <figcaption><strong>Token 需求已经在复利式增长。</strong>头部平台的每月 AI token 处理量已经从万亿（T）级迈向千万亿（Q）级。Agentic 产品会把这个数字推得更高，因为每一个用户请求都可能在规划、浏览，写代码、执行和验证等环节中展开成多次模型调用。</figcaption>
       <div id="token-legend"></div>
       <div class="token-chart-frame">
         <canvas id="tok" role="img" aria-label="各公司每月处理的 token 数（对数刻度），2024 年 5 月至 2026 年 6 月。">各公司每月处理的 token 数，对数刻度，2024 至 2026 年。</canvas>
@@ -76,7 +101,7 @@
       <p class="chart-note">对数刻度；T = 万亿 token/月，Q = 千万亿 token/月。虚线为由营收推算的估计值。</p>
     </figure>
 
-    <p>当前的 agent 系统仍处于早期：一个模型、一份 context、一条动作流。</p>
+    <p>当前的 agent 系统仍处于早期：一个模型、一份 context、一条动作流。不过 GPT-5 和 Claude Optus 4.8 之后都开始有 subagent 以及 multi-agent workflow 了，但 agent 数量以及任务覆盖率尚且有限。</p>
     <p>Cathie Wood 和 ARK Invest 在他们的《<a href="https://www.ark-invest.com/big-ideas-2026"><em>Big Ideas 2026</em></a>》报告中提出了类似的观点。他们把基础模型描述为互联网技术栈中的一个新层：用户将越来越少地通过点击各种 app 来交互，而是把目标委托给 AI agent，由它们代为搜索、比价、下单和交易。在他们的框架里，agent 会变成一种消费者操作系统。</p>
     <p>现在想象一下未来某个版本的 ChatGPT 或 Claude Code：你可以同时启动 100 个甚至 1,000 个 agent &mdash; 每一个都在自己的领域具备超人级智能，每一个都有自己的 context，并行运行，通过共享 memory 或消息传递来协同。</p>
     <ul>
@@ -94,7 +119,7 @@
       <li><strong>Context scaling</strong> 意味着 KV cache 随 context 长度线性增长。在一个 10T 参数的模型上，1M token 的 context 光是存放激活值就需要巨大的内存。要做到 10M 甚至 100M token，需要的不只是更大的 context &mdash; 而是每张 GPU 上更大的内存，以及更多的 GPU。</li>
       <li><strong>Agent scaling</strong> 意味着并行运行大量独立的模型实例，每个实例都有自己的 KV cache。1,000 个 agent &times; 每个 1M token，就是 10 亿 token 的活跃 context 必须常驻在高速内存里。</li>
     </ul>
-    <p>这两者首先都是内存带宽受限、内存容量受限的问题。而一旦 context 和 agent 的规模起来了，需求不会止步于 HBM，还会外溢到定制推理芯片、scale-out 网络、scale-up 互连、光模块 DSP，以及全栈 GPU 系统。</p>
+    <p>这两者首先都是内存带宽受限、内存容量受限的问题。内存带宽、CPU 调度和大量 GPU 基础算力共同支撑这两者。但一旦 context 和 agent 的规模起来了，需求不会止步于 HBM，还会外溢到定制推理芯片、scale-out 网络、scale-up 互连，光模块 DSP，以及全栈 GPU 系统。</p>
     <p>所以这个投资逻辑很简单：</p>
     <blockquote><p>模型 scaling 驱动了上一波 GPU 需求。context scaling 和 agent scaling 将驱动下一波对内存、网络、定制 ASIC、光互连和全栈 AI 基础设施的需求。</p></blockquote>
 
@@ -104,7 +129,7 @@
     <p>模型 scaling 仍然重要。但对日常用户来说，实际的瓶颈正在转移：聊天机器人懂得的知识已经足够应付许多任务，而产品替用户做的事仍然太少。</p>
     <p><strong>Context scaling</strong> 是下一条 scaling law，因为 context 可以充当推理时的学习基质 &mdash; 不是通过更新权重，而是携带示例、memory、测试和反馈，在推理过程中改变模型的行为。</p>
     <p><strong>Agent scaling</strong> 是显而易见的下一步：从一次聊天回复，走向成百上千个自动化动作，每个动作由更便宜、更快、更专精的 agent 并行完成。</p>
-    <p>两者都需要多得多的内存，以及围绕模型的多得多的基础设施。瓶颈正从纯粹的 FLOPS 转向 HBM 带宽与容量、推理 ASIC、网络、光互连和 scale-up 系统。所以这篇博客的结论很简单：</p>
+    <p>两者都需要多得多的内存，以及围绕模型的多得多的基础设施。瓶颈正从纯粹的 FLOPS 转向 HBM 带宽与容量、推理 ASIC、网络，光互连和 scale-up 系统。所以这篇博客的结论很简单：</p>
     <blockquote><p><strong>多买点 SK 海力士和美光。😂</strong></p></blockquote>
     <p>这并不完全是玩笑。在 context scaling + agent scaling 这套逻辑里，内存 / HBM 是最上游的约束，而领先者很清晰：SK 海力士是 HBM 龙头，份额约 50&ndash;60%；美光是美股中表达 HBM / DRAM 逻辑最纯粹的标的，在 HBM 上争夺第二或第三的位置，并且在 DRAM 上最近超越了三星；三星是第三大 HBM 玩家。</p>
     <p>但受益者版图比 HBM 更广。按品类来看，各领域的领先者如下：</p>
