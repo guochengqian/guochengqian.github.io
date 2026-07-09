@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>视觉生成从业者的三台机器 — Gordon's Blog</title>
+  <meta name="description" content="到处跑的笔记本、24 小时跑 agent 的 Mac mini、以及一台默认睡着、30 秒就能被叫醒的 5090。它们怎么连起来，以及怎么复刻。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../img/favicon.png?v=202607072">
+  <link rel="stylesheet" href="../blog.css?v=202607070200">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607081900" defer></script>
+</head>
+<body data-blog-slug="wake-my-gpu-on-demand">
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
+    <p class="article-tag">Tools</p>
+    <h1>视觉生成从业者的三台机器</h1>
+    <p class="subtitle">到处跑的笔记本、24 小时跑 agent 的 Mac mini，以及一台默认睡着、30 秒就能被叫醒的 5090。</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">2026 年 7 月 8 日 &middot; 阅读约 2 分钟</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="视觉生成从业者的三台机器" data-url="https://guochengqian.github.io/blog/wake-my-gpu-on-demand/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+    <h2>三台机器，三种职责</h2>
+    <p>我平时在三台机器之间干活。每一台的存在，都是因为另外两台干不了它的活。</p>
+
+    <p><strong>MacBook Pro</strong> 是我真正办公的地方。它跟着我跑：家里、公司、咖啡馆、飞机上。它的网络一天要换好几次 —— 这意味着这套系统里其他任何东西，都不能假设自己知道它在哪儿。</p>
+
+    <p><strong>Mac mini</strong> 从不睡觉。它 24 小时跑着我的 <a href="../hermes-agent/cn.html">Hermes</a>、Codex、Claude agents —— 早上 8 点的简报、晚上 10 点的总结、我睡着或者在飞机上时照常触发的任务。所以这台机器必须常开。这才是它真正的职责。</p>
+
+    <p><strong>Ubuntu 工作站</strong>里装着一块 RTX 5090。我一周只用它几次。剩下的时间它应该睡着，而不是醒着空转。所以它默认睡眠，只在需要它的时候醒来。</p>
+
+    <h2>它们怎么连起来</h2>
+    <p>三台机器都在同一个 Tailscale 网络里，每台机器都有一个跟着自己走的固定地址，换 Wi-Fi 也不变。这把「笔记本到处跑」的问题彻底解决了：在咖啡馆连工作站，和坐在它旁边没有区别。</p>
+
+    <p>但 Tailscale 叫不醒一台睡着的机器 —— 睡着的机器压根不在网络上。唯一能叫醒它的是 <em>magic packet</em>：一个活在链路层的 Wake-on-LAN 广播包。它无法跨越互联网被路由，必须由一台已经待在工作站所在局域网里的机器，就地喊出来。</p>
+
+    <p>而 Mac mini 本来就待在那儿，本来就为了 agent 常开着。所以「叫醒 GPU」这件事几乎没有额外成本：它只是一台反正也不会睡的机器顺手多干的第二份活。这也正是为什么这套配置需要三台机器，而不是两台。</p>
+
+    <figure>
+      <img src="preview.png" alt="笔记本经 Tailscale 连到 Mac mini；Mac mini 24 小时跑着 Hermes、和 GPU 机同一个局域网，向睡眠中的 5090 工作站发出 magic packet">
+      <figcaption>只有唤醒要过 Mac mini，其余都走 Tailscale 直连。</figcaption>
+    </figure>
+
+    <p>注意有哪些事情<em>不</em>经过 Mac mini：跑任务、看 GPU 占用、跑完让它睡回去 —— 这些都是笔记本经 Tailscale 直连工作站，在哪个网络都一样。只有唤醒需要中继。</p>
+
+    <h2>怎么复刻</h2>
+    <p>别自己手搓。点复制按钮，粘贴给任何一个能干活的 agent，然后说：<em>「照这个给我搭一套。」</em></p>
+
+    <figure class="code-figure">
+      <button type="button" class="code-copy" aria-label="复制这段规格">复制</button>
+      <pre><code>帮我在同一个 Tailscale 网络的三台机器上搭一套按需 GPU：
+
+  笔记本    到处跑，网络随时变
+  中继机    常开，和 GPU 机在同一个局域网
+  GPU 机    默认处于睡眠
+
+唤醒：  笔记本 -&gt; ssh 中继机 -&gt; 在局域网广播 magic packet。
+        如果笔记本本来就在那个局域网里，就直接发，跳过中继。
+        轮询"ssh 能不能连上"，而不是轮询 VPN 说的"在线" ——
+        控制平面的状态会滞后好几分钟。
+
+使用：  笔记本经 VPN 直连 GPU 机。睡着就先唤醒。
+
+睡眠：  经 ssh 挂起，但如果还有 CUDA 进程在跑就拒绝执行。
+        每次挂起前重新武装网卡的唤醒源（它们撑不过一次重启），
+        并把非网卡的唤醒源全部解除武装 —— 否则 USB 控制器
+        会在挂起后几十秒内自己把机器弄醒。
+
+兜底：  RTC 闹钟（/sys/class/rtc/rtc0/wakealarm）不依赖网络
+        就能唤醒。做任何唤醒实验前先挂上它，失败的测试
+        就永远不会把机器睡死。
+
+验证：  唤醒测试必须以一段"什么都不发"的对照相位开场，
+        并要求机器在这段时间里保持睡眠。否则，
+        一个乱发信号的唤醒源会替你把测试"通过"掉。</code></pre>
+    </figure>
+
+    <p>最后得到的就是四条命令：</p>
+
+    <figure class="code-figure">
+      <button type="button" class="code-copy" aria-label="复制命令">复制</button>
+      <pre><code>gpu status                    # 三台机器、GPU 占用、正在跑什么
+gpu run 'python train.py'     # 睡着就先自动唤醒
+gpu sleep                     # 有 CUDA 进程在跑就拒绝
+gpu wol-test                  # 带 RTC 安全网地重新验证唤醒链路</code></pre>
+    </figure>
+
+    <h2>BIOS 那三项</h2>
+    <p>软件部分 agent 全能替你搞定；BIOS 里的开关得你自己拨。不过连进 BIOS 都不用守着开机画面抢按 Del —— 在 Ubuntu 里一条命令就行：</p>
+
+    <figure class="code-figure">
+      <button type="button" class="code-copy" aria-label="复制命令">复制</button>
+      <pre><code>sudo systemctl reboot --firmware-setup</code></pre>
+    </figure>
+
+    <p>它会告诉固件「下次开机直接进设置界面」，然后重启。</p>
+
+    <p>进去之后，这三项必须设对，否则机器要么叫不醒，要么睡不住：</p>
+
+    <figure class="code-figure">
+      <button type="button" class="code-copy" aria-label="复制 BIOS 设置">复制</button>
+      <pre><code>Settings → Advanced → Power Management Setup
+    ErP Ready              → Disabled
+
+Settings → Advanced → Wake Up Event Setup
+    Wake Up Event By       → BIOS
+    Resume By PCI-E Device → Enabled</code></pre>
+    </figure>
+
+    <p><code>ErP Ready</code> 会切断 PCIe 和 M.2 插槽的待机供电 —— Wi-Fi 网卡插在 M.2 上，断了电自然发不出任何唤醒信号。<code>Resume By PCI-E Device</code> 决定这个信号能不能沿 PCIe 树往上传到根。<code>Wake Up Event By</code> 不设成 <code>BIOS</code>，后面那项会直接变灰。</p>
+
+    <p>剩下的，遇到问题问你的 agent 就好。</p>
+
+    <div class="subscribe-box">
+      <p>喜欢这篇？发到你的邮箱，稍后再读。</p>
+      <form class="subscribe-form" data-title="视觉生成从业者的三台机器" data-url="https://guochengqian.github.io/blog/wake-my-gpu-on-demand/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+  </article>
+
+</div>
+<style>
+  .code-figure { position: relative; margin-left: 0; margin-right: 0; }
+  .code-figure pre { padding-top: 2.4em; }
+  .code-copy {
+    position: absolute; top: 10px; right: 10px;
+    font: 600 12px/1 var(--sans); letter-spacing: .02em;
+    color: var(--muted); background: var(--bg);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 10px; cursor: pointer;
+  }
+  .code-copy:hover { color: var(--accent); border-color: var(--accent); }
+</style>
+<script>
+  document.querySelectorAll('.code-figure').forEach(function (fig) {
+    var btn = fig.querySelector('.code-copy');
+    btn.addEventListener('click', function () {
+      var text = fig.querySelector('pre code').innerText;
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+        .then(function () { btn.textContent = '已复制 ✓'; })
+        .catch(function () {
+          var ta = document.createElement('textarea');
+          ta.value = text; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); ta.remove(); btn.textContent = '已复制 ✓';
+        })
+        .then(function () { setTimeout(function () { btn.textContent = '复制'; }, 1600); });
+    });
+  });
+</script>
+</body>
+</html>
