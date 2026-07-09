@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A Visual Generation Practitioner’s Three Machines — Gordon's Blog</title>
+  <meta name="description" content="A roaming laptop, a Mac mini running my agents around the clock, and an RTX 5090 that sleeps until something wakes it in 30 seconds. How they connect, and how to replicate it.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../img/favicon.png?v=202607072">
+  <link rel="stylesheet" href="../blog.css?v=202607070200">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607081900" defer></script>
+</head>
+<body>
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="cn.html" lang="zh-CN" hreflang="zh-CN">🌐 中文版</a></div>
+    <p class="article-tag">Tools</p>
+    <h1>A Visual Generation Practitioner’s Three Machines</h1>
+    <p class="subtitle">A roaming laptop, a Mac mini running my agents around the clock, and an RTX 5090 that sleeps until something wakes it in 30 seconds.</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">July 8, 2026 &middot; 2 min read</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="A Visual Generation Practitioner’s Three Machines" data-url="https://guochengqian.github.io/blog/wake-my-gpu-on-demand/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
+    </div>
+
+    <h2>Three machines, three jobs</h2>
+    <p>I work across three machines, and each exists because the other two cannot do its job.</p>
+
+    <p><strong>The MacBook Pro</strong> is where I actually work. It travels: home, office, café, plane. Its network changes several times a day, which means nothing else in the setup can rely on knowing where it is.</p>
+
+    <p><strong>The Mac mini</strong> never sleeps. It runs my <a href="../hermes-agent/">Hermes</a>, Codex, and Claude agents around the clock &mdash; the 8am briefing, the 10pm summary, the jobs that fire while I am asleep or on a plane. So this machine is always on. That is its real job.</p>
+
+    <p><strong>The Ubuntu workstation</strong> has an RTX 5090 in it. I use it a few times a week. The rest of the time it should be asleep, not idling. So it sleeps by default and wakes only when it is needed.</p>
+
+    <h2>How they connect</h2>
+    <p>All three sit on one Tailscale network, so every machine has a stable address that follows it across Wi-Fi networks. That solves the roaming laptop entirely: from a café, it reaches the workstation as if it were on the same desk.</p>
+
+    <p>But Tailscale cannot reach a machine that is asleep, because a sleeping machine is not on the network at all. The only thing that wakes it is a <em>magic packet</em> &mdash; a Wake-on-LAN broadcast that lives at the link layer. It cannot be routed across the internet. It has to be shouted on the workstation&rsquo;s own LAN, by something already sitting there.</p>
+
+    <p>The Mac mini is already sitting there, already on, for the agent. So waking the GPU costs nothing extra: it is a second job for a machine that was never going to sleep anyway. That is the whole reason the setup needs exactly three machines and not two.</p>
+
+    <figure>
+      <img src="preview.png" alt="A laptop reaching a Mac mini over Tailscale; the Mac mini, running Hermes 24/7 on the GPU's LAN, sends a magic packet to the sleeping RTX 5090 workstation">
+      <figcaption>Waking goes through the Mac mini. Everything else goes straight over Tailscale.</figcaption>
+    </figure>
+
+    <p>Note what does <em>not</em> go through the Mac mini. Running a job, checking GPU usage, suspending the box afterwards &mdash; all of that is the laptop talking directly to the workstation over Tailscale, from any network. Only the wake needs a relay.</p>
+
+    <h2>Replicating it</h2>
+    <p>Don&rsquo;t build this by hand. Hit the copy button, paste it into any capable agent, and say: <em>&ldquo;build this for my setup.&rdquo;</em></p>
+
+    <figure class="code-figure">
+      <button type="button" class="code-copy" aria-label="Copy the spec">Copy</button>
+      <pre><code>Build me an on-demand GPU box across three machines on one
+Tailscale network:
+
+  laptop    roams; may be on any network
+  relay     always on; sits on the GPU box's LAN
+  gpu box   suspended by default
+
+wake:   laptop -&gt; ssh relay -&gt; magic packet broadcast on the LAN.
+        If the laptop is already on that LAN, send it directly
+        and skip the relay. Poll until ssh answers, not until
+        the VPN says "online" -- its control plane lags by minutes.
+
+use:    laptop -&gt; gpu box directly over the VPN. Wake if asleep.
+
+sleep:  suspend over ssh, but REFUSE if CUDA processes run.
+        On every suspend, re-arm the NIC's wake source (it does
+        not survive a reboot) and DISARM every wake source that
+        is not a NIC -- or a USB controller resumes the box.
+
+safety: an RTC alarm (/sys/class/rtc/rtc0/wakealarm) wakes the
+        box with no network involved. Arm it before any wake
+        experiment so a failed test cannot strand the machine.
+
+verify: a wake test MUST open with a control phase that sends
+        nothing and requires the box to stay asleep. Otherwise
+        a spurious wake source passes the test for you.</code></pre>
+    </figure>
+
+    <p>What you get is four commands:</p>
+
+    <figure class="code-figure">
+      <button type="button" class="code-copy" aria-label="Copy the commands">Copy</button>
+      <pre><code>gpu status                 # three machines, GPU usage, jobs
+gpu run 'python train.py'  # wakes it first if asleep
+gpu sleep                  # refuses if CUDA processes run
+gpu wol-test               # re-verify wake, behind an RTC net</code></pre>
+    </figure>
+
+    <h2>The three BIOS settings</h2>
+    <p>An agent can do the whole software side for you; the BIOS toggles you flip yourself. You do not have to hammer <kbd>Del</kbd> at boot to get there, though &mdash; one command from Ubuntu does it:</p>
+
+    <figure class="code-figure">
+      <button type="button" class="code-copy" aria-label="Copy the command">Copy</button>
+      <pre><code>sudo systemctl reboot --firmware-setup</code></pre>
+    </figure>
+
+    <p>It tells the firmware to open the setup menu on the next boot, then reboots.</p>
+
+    <p>Once inside, get these three right or the box either never wakes, or never stays asleep:</p>
+
+    <figure class="code-figure">
+      <button type="button" class="code-copy" aria-label="Copy the BIOS settings">Copy</button>
+      <pre><code>Settings → Advanced → Power Management Setup
+    ErP Ready              → Disabled
+
+Settings → Advanced → Wake Up Event Setup
+    Wake Up Event By       → BIOS
+    Resume By PCI-E Device → Enabled</code></pre>
+    </figure>
+
+    <p><code>ErP Ready</code> cuts standby power to the PCIe slots and the M.2 socket &mdash; the Wi-Fi card lives in that socket, and a card with no power cannot signal a wake. <code>Resume By PCI-E Device</code> decides whether that signal can travel up the PCIe tree to the root. And unless <code>Wake Up Event By</code> is set to <code>BIOS</code>, the option below it is greyed out.</p>
+
+    <p>For everything else, just ask your agent.</p>
+
+    <div class="subscribe-box">
+      <p>Enjoyed this post? Send it to your email to read later.</p>
+      <form class="subscribe-form" data-title="A Visual Generation Practitioner’s Three Machines" data-url="https://guochengqian.github.io/blog/wake-my-gpu-on-demand/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
+    </div>
+
+  </article>
+
+</div>
+<style>
+  .code-figure { position: relative; margin-left: 0; margin-right: 0; }
+  .code-figure pre { padding-top: 2.4em; }
+  .code-copy {
+    position: absolute; top: 10px; right: 10px;
+    font: 600 12px/1 var(--sans); letter-spacing: .02em;
+    color: var(--muted); background: var(--bg);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 10px; cursor: pointer;
+  }
+  .code-copy:hover { color: var(--accent); border-color: var(--accent); }
+</style>
+<script>
+  document.querySelectorAll('.code-figure').forEach(function (fig) {
+    var btn = fig.querySelector('.code-copy');
+    btn.addEventListener('click', function () {
+      var text = fig.querySelector('pre code').innerText;
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+        .then(function () { btn.textContent = 'Copied ✓'; })
+        .catch(function () {
+          var ta = document.createElement('textarea');
+          ta.value = text; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); ta.remove(); btn.textContent = 'Copied ✓';
+        })
+        .then(function () { setTimeout(function () { btn.textContent = 'Copy'; }, 1600); });
+    });
+  });
+</script>
+</body>
+</html>
