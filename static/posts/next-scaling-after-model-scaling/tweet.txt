@@ -1,0 +1,4 @@
+What Is the Next Scaling After Model Scaling? — Gordon Qian's Blog
+https://guochengqian.github.io/blog/next-scaling-after-model-scaling/
+
+My thesis: after raw model capability becomes good enough, the next axes are context scaling + agent scaling. Both are memory/HBM hungry.
