@@ -141,7 +141,6 @@
 
     <p class="ls-eyebrow">第三节 · 玩家总览</p>
     <h2>卡量与功率，逐家对照</h2>
-    <p>公开报道里这两个数几乎从不用同一把尺子量：有人报物理卡数，有人报 H100 当量；有人报单个园区的功率，有人报三年后的目标。下面两列<strong>强行统一了口径</strong> &mdash; GPU 一律折成 H100 当量，功率一律是<strong>现在插着电的</strong>，目标单独拎出一列。</p>
     <figure class="ls-chart" aria-labelledby="ls-pair-t">
       <h3 id="ls-pair-t" class="sr-only">左右两个共享同一行序的区间条面板，左为 GPU H100 当量、右为在线功率。</h3>
       <p class="ls-head">卡量与功率的分布</p>
@@ -151,7 +150,7 @@
         <span class="item"><span class="ls-sw" style="background:var(--c-live);opacity:.6"></span>预估区间（下沿&ndash;上沿）</span>
         <span class="item"><span class="ls-sw" style="background:var(--c-live);width:3px;height:16px;border-radius:1px"></span>区间中值</span>
       </div>
-      <p class="ls-note"><b>两个面板的形状几乎一样，这不是巧合，是交叉验证。</b>按 PUE 1.2、系统级 1.2–1.4 kW/卡折算，约 <b>60 万 H100 当量 &asymp; 1 GW</b>。六家里五家都落在这条关系上；唯一的例外是 <b>OpenAI</b> &mdash; 它卡少、电也少，因为它的算力主要是<b>租</b>来的，不在自己账上。Google 的功率取了区间下沿，因为 TPU 每当量的能耗低于 Nvidia。<br><b>为什么不画饼图：</b>这些区间的误差都可能达 2 倍，把中值加总算占比会制造出根本不存在的精度。</p>
+      <p class="ls-note"><b>两个面板的形状几乎一样，这不是巧合，是交叉验证。</b>按 PUE 1.2、系统级 1.2–1.4 kW/卡折算，约 <b>60 万 H100 当量 &asymp; 1 GW</b>。六家里五家都落在这条关系上；唯一的例外是 <b>OpenAI</b> &mdash; 它卡少、电也少，因为它的算力主要是<b>租</b>来的，不在自己账上。Google 的功率取了区间下沿，因为 TPU 每当量的能耗低于 Nvidia。</p>
     </figure>
 
     <div class="ls-tablewrap">
