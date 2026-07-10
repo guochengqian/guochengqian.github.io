@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>1GW 不再是天花板，是入场券 — Gordon's Blog</title>
+  <meta name="description" content="2024 年全世界没有一座数据中心跑到 1 吉瓦，2026 年五座同时上线、各属一家。一份把「谁有多少电、多少卡、Nvidia 卖了多少」放在一起、并逐项标注可信度的算力负载表。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../img/favicon.png?v=202607072">
+  <link rel="stylesheet" href="../blog.css?v=202607070200">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607101400" defer></script>
+  <style>
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    :root { --c-live: #b76531; --c-plan: #2f7d92; --c-book: #5f7d1f; --c-grid: var(--border); --c-axis: var(--faint); --c-txt: var(--text); }
+    html.dark { --c-live: #d68a5a; --c-plan: #57aec4; --c-book: #93b84a; }
+    .ls-meta { font-family: var(--sans); font-size: 12px; color: var(--faint); letter-spacing: .04em; display: flex; flex-wrap: wrap; gap: 4px 18px; margin: -6px 0 2px; }
+    .ls-eyebrow { font-family: var(--sans); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin: 8px 0 -10px; }
+    .ls-readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 26px 0; }
+    .ls-readout > div { background: var(--soft); padding: 18px; }
+    .ls-readout .k { font-family: var(--sans); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+    .ls-readout .v { font-family: var(--sans); font-size: 28px; font-weight: 700; color: var(--text); margin: 6px 0 7px; letter-spacing: -.01em; }
+    .ls-readout .v.sm { font-size: 22px; }
+    .ls-readout .v em { font-style: normal; color: var(--c-live); }
+    .ls-readout .s { font-family: var(--sans); font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+    .ls-chart { margin: 30px 0; padding: 20px 18px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); }
+    .ls-chart .ls-head { font-family: var(--sans); margin: 0 0 4px; font-size: 15px; font-weight: 650; color: var(--text); }
+    .ls-chart .ls-sub { font-family: var(--sans); margin: 0 0 14px; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--faint); }
+    .ls-scroll { overflow-x: auto; }
+    .ls-scroll svg { display: block; width: 100%; min-width: 560px; height: auto; }
+    .ls-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 12px 0 0; font-size: 12px; color: var(--muted); align-items: center; font-family: var(--sans); }
+    .ls-legend span.item { display: inline-flex; align-items: center; gap: 7px; }
+    .ls-sw { width: 13px; height: 13px; border-radius: 3px; flex: none; }
+    .ls-note { margin: 12px 0 0; color: var(--muted); font-size: 13px; line-height: 1.6; font-family: var(--sans); border-top: 1px solid var(--border); padding-top: 11px; }
+    .ls-note b { color: var(--text); }
+    .ls-note em { font-style: normal; color: var(--text); }
+    .ls-prose-note { font-family: var(--sans); font-size: 13.5px; color: var(--muted); line-height: 1.7; margin: 16px 0; }
+    .ls-prose-note b { color: var(--text); }
+    .ls-prose-note em { font-style: normal; color: var(--text); font-weight: 600; }
+    .ls-tablewrap { overflow-x: auto; margin: 22px 0; border: 1px solid var(--border); border-radius: 8px; }
+    table.ls-table { border-collapse: collapse; width: 100%; min-width: 780px; font-family: var(--sans); font-size: 13.5px; }
+    .ls-table th, .ls-table td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .ls-table thead th { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); font-weight: 600; white-space: nowrap; }
+    .ls-table thead .th-sub { display: block; font-size: 9px; letter-spacing: .03em; text-transform: none; color: var(--faint); margin-top: 3px; font-weight: 400; }
+    .ls-table tbody tr:last-child td { border-bottom: none; }
+    .ls-table td.lst-co { font-weight: 700; white-space: nowrap; color: var(--text); }
+    .ls-table td.lst-n { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--text); }
+    .ls-table td.lst-goal { color: var(--muted); font-size: 12.5px; max-width: 130px; }
+    .ls-table td.lst-note { color: var(--muted); font-size: 12.5px; line-height: 1.55; }
+    .ls-table td.lst-note b { color: var(--text); }
+    .ls-derive { background: var(--soft); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; margin: 22px 0; font-family: var(--sans); }
+    .ls-derive .lbl-head { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-bottom: 12px; }
+    .ls-derive .row { display: flex; justify-content: space-between; gap: 16px; font-size: 13.5px; align-items: baseline; padding: 5px 0; color: var(--muted); }
+    .ls-derive .row .val { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; color: var(--text); }
+    .ls-derive .sep { height: 1px; background: var(--border); margin: 6px 0; }
+    .ls-derive .row.out { font-size: 14.5px; font-weight: 650; color: var(--text); }
+    .ls-derive .row.out .val { color: var(--c-live); font-size: 15.5px; }
+    .ls-derive .row.dim { font-size: 12px; color: var(--faint); }
+    .ls-derive .row.dim .val { color: var(--faint); font-weight: 500; }
+    .ls-caveat { border-left: 3px solid var(--c-live); padding: 2px 0 2px 16px; margin: 18px 0; }
+    .ls-caveat h4 { font-family: var(--sans); font-size: 14px; margin: 0 0 7px; color: var(--text); }
+    .ls-caveat p { font-family: var(--sans); font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 0; }
+    .ls-caveat p b { color: var(--text); }
+    .ls-sources { display: flex; flex-direction: column; gap: 6px; font-family: var(--sans); font-size: 13px; margin-top: 6px; }
+    .ls-sources a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 2px; width: fit-content; }
+    .ls-sources a:hover { color: var(--c-live); }
+    .ls-tip { position: fixed; pointer-events: none; opacity: 0; transition: opacity .1s ease; background: var(--text); color: var(--bg); padding: 8px 11px; border-radius: 5px; font-size: 12px; line-height: 1.5; max-width: 260px; z-index: 60; font-family: var(--sans); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+    .ls-tip.on { opacity: 1; }
+    .ls-tip .ls-tip-note { opacity: .72; }
+    @media (prefers-reduced-motion: reduce) { .ls-tip { transition: none; } }
+  </style>
+</head>
+<body data-blog-slug="ai-compute-load-sheet">
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
+    <p class="article-tag">AI</p>
+    <h1>1GW 不再是天花板，是入场券</h1>
+    <p class="subtitle">2024 年，全世界没有一座数据中心跑到 1 吉瓦。2026 年，五座同时上线，各属一家。这份表把「谁有多少电、谁有多少卡、Nvidia 卖了多少」放在一起 &mdash; 并且明确标出哪些数字有出处、哪些是估算、哪些根本无人公开。</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">2026 年 7 月 9 日 &middot; 阅读约 8 分钟</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="1GW 不再是天花板，是入场券" data-url="https://guochengqian.github.io/blog/ai-compute-load-sheet/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+    </div>
+
+    <div class="ls-meta"><span>截至 2026-07</span><span>单位：GW · 张 · 十亿美元</span><span>16 个来源</span></div>
+
+    <div class="ls-readout">
+      <div>
+        <div class="k">1 吉瓦 相当于</div>
+        <div class="v sm"><em>1</em> 座核电机组</div>
+        <div class="s">一台 AP1000 满发约 1.1GW。或约 70–100 万户美国家庭的用电。</div>
+      </div>
+      <div>
+        <div class="k">2026 上线的 1GW+ 站点</div>
+        <div class="v">5 座</div>
+        <div class="s">Amazon、xAI、Microsoft、Meta、OpenAI 各一座，一月到七月依次通电。</div>
+      </div>
+      <div>
+        <div class="k">四大云厂已签电力协议</div>
+        <div class="v">133 GW</div>
+        <div class="s">Amazon + Google + Microsoft + Meta，截至 2026 Q1。约等于 120 座核电机组。</div>
+      </div>
+      <div>
+        <div class="k">Nvidia 在手订单</div>
+        <div class="v">$1 万亿</div>
+        <div class="s">Blackwell + Vera Rubin，覆盖到 2027 年底。黄仁勋 2026 年 3 月 GTC 口径。</div>
+      </div>
+    </div>
+
+    <p class="ls-eyebrow">第一节 · 2026 通电时刻表</p>
+    <h2>吉瓦俱乐部在七个月内从零开到五</h2>
+    <p>这是理解「1GW 是什么水平」最快的方式：<strong>它在 2024 年闻所未闻，在 2026 年成了头部五家各自的最低配置。</strong></p>
+    <figure class="ls-chart" aria-labelledby="ls-timeline-t">
+      <h3 id="ls-timeline-t" class="sr-only">2026 年五座吉瓦级 AI 数据中心依次上线的时间线：1 月 New Carlisle（Amazon/Anthropic）、2 月 Colossus 2（xAI）、3 月 Fayetteville（Microsoft）、5 月 Prometheus（Meta）、7 月 Stargate Abilene（OpenAI/Oracle）。</h3>
+      <p class="ls-head">吉瓦俱乐部在七个月内从零开到五</p>
+      <p class="ls-sub">2026 &middot; 每座站点跨过 1GW 的月份</p>
+      <div class="ls-scroll" id="ls-timeline"></div>
+      <p class="ls-note">每座站点在标注月份跨过 1GW 门槛。<b>xAI 的 Colossus 2 是公认第一个真正意义上的 1GW 级 AI 数据中心</b> &mdash; Meta 常被称为「第一」，指的是第一个 1GW+ 的<em>训练集群</em>口径，不是同一件事。</p>
+    </figure>
+
+    <p class="ls-eyebrow">第二节 · 单站功率</p>
+    <h2>大玩家数据中心安排</h2>
+    <figure class="ls-chart" aria-labelledby="ls-sites-t">
+      <h3 id="ls-sites-t" class="sr-only">横向条形图，对比七座数据中心园区的已上线功率与规划功率，单位吉瓦。</h3>
+      <p class="ls-head">单座园区功率：已上线 vs 规划上限</p>
+      <p class="ls-sub">GW &middot; 2026 年中</p>
+      <div class="ls-scroll" id="ls-sites"></div>
+      <div class="ls-legend">
+        <span class="item"><span class="ls-sw" style="background:var(--c-live)"></span>已上线 / 在建确认</span>
+        <span class="item"><span class="ls-sw" style="background:var(--c-plan)"></span>规划上限（含估算）</span>
+        <span class="item" style="color:var(--faint)">斜纹 = 数字为三方估算或推导</span>
+      </div>
+      <p class="ls-note">Prometheus 的 1GW <b>不是一栋楼</b>：SemiAnalysis 说它是 6 个园区、27 个数据中心组成的星座，5 个挤在 6 公里内，1 个在 75–80 公里外，靠自研 AI-Backbone 连起来（全集群双向带宽约 22 Pb/s），跨园区光速延迟就有 500+ 微秒，所以训练必须走异步策略。文章称它两年内已从 1GW 扩到 3GW+。</p>
+    </figure>
+
+    <p class="ls-eyebrow">第三节 · 玩家总览</p>
+    <h2>卡量与功率，逐家对照</h2>
+    <p>公开报道里这两个数几乎从不用同一把尺子量：有人报物理卡数，有人报 H100 当量；有人报单个园区的功率，有人报三年后的目标。下面两列<strong>强行统一了口径</strong> &mdash; GPU 一律折成 H100 当量，功率一律是<strong>现在插着电的</strong>，目标单独拎出一列。</p>
+    <figure class="ls-chart" aria-labelledby="ls-pair-t">
+      <h3 id="ls-pair-t" class="sr-only">左右两个共享同一行序的区间条面板，左为 GPU H100 当量、右为在线功率。</h3>
+      <p class="ls-head">卡量与功率的分布</p>
+      <p class="ls-sub">左：GPU（H100 当量·万） &middot; 右：当前在线功率（GW） &middot; 同一行序</p>
+      <div class="ls-scroll" id="ls-pair"></div>
+      <div class="ls-legend">
+        <span class="item"><span class="ls-sw" style="background:var(--c-live);opacity:.6"></span>预估区间（下沿&ndash;上沿）</span>
+        <span class="item"><span class="ls-sw" style="background:var(--c-live);width:3px;height:16px;border-radius:1px"></span>区间中值</span>
+      </div>
+      <p class="ls-note"><b>两个面板的形状几乎一样，这不是巧合，是交叉验证。</b>按 PUE 1.2、系统级 1.2–1.4 kW/卡折算，约 <b>60 万 H100 当量 &asymp; 1 GW</b>。六家里五家都落在这条关系上；唯一的例外是 <b>OpenAI</b> &mdash; 它卡少、电也少，因为它的算力主要是<b>租</b>来的，不在自己账上。Google 的功率取了区间下沿，因为 TPU 每当量的能耗低于 Nvidia。<br><b>为什么不画饼图：</b>这些区间的误差都可能达 2 倍，把中值加总算占比会制造出根本不存在的精度。</p>
+    </figure>
+
+    <div class="ls-tablewrap">
+      <table class="ls-table">
+        <thead>
+          <tr>
+            <th>玩家</th>
+            <th>GPU<span class="th-sub">H100 当量 · 万</span></th>
+            <th>在线功率<span class="th-sub">GW · 现在插着电的</span></th>
+            <th>公开目标</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody id="ls-players"></tbody>
+      </table>
+    </div>
+
+    <p class="ls-prose-note"><b>Google 和 Amazon 的算力大部分不来自 Nvidia GPU</b>，而是自研的 TPU 和 Trainium &mdash; 严格说它们是 ASIC 而非 GPU，本表按 H100 当量统一折算。所以「谁的卡多」和「谁给 Nvidia 的钱多」不是一回事。</p>
+    <p class="ls-prose-note"><b>GPU 区间怎么推的（一律折成 H100 当量）。</b> <em>Google</em>：Epoch AI 2024-10 估 &gt;100 万当量；2026 年 TPU 出货预测约 430 万颗（含对外销售），按每颗 1.0–1.5 当量折算 → 250–450 万。<em>Meta</em>：扎克伯格 2025-01 称 2025 年底超 130 万张物理卡，加 2026 上半年 Prometheus 的 1GW（每 GW 约 50–60 万张 GB200 级）→ 180–250 万张，按混合代际 ×1.2 → 220–300 万当量。<em>Microsoft</em>：Nvidia 2023–2025 累计数据中心收入约 $3560 亿，微软长期约占其收入 15%（10-Q「Customer A」口径）→ 约 $530 亿，按 $30k–40k 系统级均价 → 130–180 万张物理卡，Blackwell 按 2–2.5× 折算 → 200–300 万当量。<em>Amazon</em>：三代 Trainium 累计约 140 万颗（0.7–0.9 当量/颗）＋ Nvidia 机队（约占 Nvidia 收入 6%）→ 180–260 万当量。<em>xAI</em>：55.5 万张物理卡，含 H100/H200/GB200，混合折算 → 100–130 万当量。<em>OpenAI</em>：自有极少，按 Abilene 实跑 0.3GW 反推 → 20–40 万当量。</p>
+    <p class="ls-prose-note"><b>在线功率怎么推的。</b>除 xAI（2GW 为报道值）和 OpenAI（Abilene 实跑 0.3GW）外，其余四家的公司级 AI 功率<b>无人披露</b>。我用「约 60 万 H100 当量 &asymp; 1 GW」从卡量反推，再与各家已披露的建设速率对齐（微软 2025 年新建约 2GW、FY26 Q2/Q3 各再加约 1GW；Amazon 2025 年新增 3.8GW；Meta 的 Prometheus 已扩至 3GW+）。<b>所以卡量和功率这两列不是独立证据，它们互相校准过。</b>两者一致只能说明内部自洽，不能证明绝对值正确。</p>
+    <p class="ls-prose-note"><b>三个让这些数字不可靠的原因，必须说清楚。</b> <em>一</em>、Nvidia 10-Q 里的「直接客户」常常是 ODM／代工厂而非终端云厂，把 Customer A 认定为微软本身就是推断；且数据中心收入里有一到两成是网络设备，不是 GPU。<em>二</em>、<b>「H100 当量」这个单位本身就不稳定</b>：同一块 GB300，按 FP16 训练算和按 FP4 推理算，当量能差三倍以上。跨公司比较的可比性远比看上去差。<em>三</em>、各家口径不一，且没有一家做审计披露。<b>所以这些区间的真实误差都可能达到 2 倍。当量级看，别当精确值。</b></p>
+
+    <p class="ls-eyebrow">第四节 · Nvidia 的账本</p>
+    <h2>NVIDIA 收入及卖卡量</h2>
+    <figure class="ls-chart" aria-labelledby="ls-rev-t">
+      <h3 id="ls-rev-t" class="sr-only">Nvidia 数据中心分部收入柱状图，自然年，单位十亿美元，2026 为推算值。</h3>
+      <p class="ls-head">Nvidia 数据中心「分部」收入（自然年）</p>
+      <p class="ls-sub">十亿美元 &middot; 含 GPU 与网络设备，不是纯卖卡收入</p>
+      <div class="ls-scroll" id="ls-rev"></div>
+      <div class="ls-legend">
+        <span class="item"><span class="ls-sw" style="background:var(--c-live)"></span>10-K 披露实际值</span>
+        <span class="item"><span class="ls-sw" style="background:var(--c-live);opacity:.55"></span>推算值（未完整披露）</span>
+      </div>
+      <p class="ls-note"><b>「数据中心」是报告分部，不等于卖卡。</b>它同时包含 Compute（GPU）和 Networking（源自 Mellanox 的 InfiniBand、Spectrum-X、NVLink Switch、DPU）。Nvidia 在分部内再拆两项：FY2026 Q4 为 GPU $513 亿 + 网络 $110 亿，网络占 <b>17.7%</b>；而一年前的 FY2025 Q4 只占 8.4%。换言之柱子里约<b>八成是卡，两成是网络，而网络这一块正在快速变重</b>。<br>财年 1 月底结束，故 FY2020 &asymp; 自然年 2019，依此类推。<b>2026 为推算</b>：FY2027 Q1 数据中心收入 $75.2B，Q2 全公司指引 $91B，按此年化。</p>
+    </figure>
+    <figure class="ls-chart" aria-labelledby="ls-units-t">
+      <h3 id="ls-units-t" class="sr-only">Nvidia 数据中心 GPU 出货量柱状图，自然年，仅 2022、2023、2025 有数据，其余空缺。</h3>
+      <p class="ls-head">数据中心 GPU 出货量（自然年）</p>
+      <p class="ls-sub">百万张 &middot; 空缺 = 无可信公开数据</p>
+      <div class="ls-scroll" id="ls-units"></div>
+      <div class="ls-legend">
+        <span class="item"><span class="ls-sw" style="background:var(--c-live)"></span>三方实测（Omdia）</span>
+        <span class="item"><span class="ls-sw" style="background:var(--c-plan)"></span>三方估算（Jefferies）</span>
+        <span class="item" style="color:var(--faint)">虚线框 = 无人公开</span>
+      </div>
+      <p class="ls-note">Omdia：2022 年 264 万张，2023 年 376 万张（占市场 98%）。Jefferies 估 2025 年约 600 万张。<b>2019、2020、2021、2024 四年我找不到任何可信的一手或三方单位数据</b> &mdash; 与其推一个假精度的数，不如留白。</p>
+    </figure>
+
+    <p class="ls-eyebrow">第五节 · 订单簿</p>
+    <h2>9 个月内，NVIDIA 订单量翻倍</h2>
+    <p>Nvidia 从不公布未来五年的单位预测，能拿到的只有订单金额。</p>
+    <figure class="ls-chart" aria-labelledby="ls-book-t">
+      <h3 id="ls-book-t" class="sr-only">两条柱：Nvidia 订单可见性从 5000 亿增至 1 万亿美元。</h3>
+      <p class="ls-head">在手订单 / 可见收入</p>
+      <p class="ls-sub">十亿美元 &middot; 累计口径</p>
+      <div class="ls-scroll" id="ls-book"></div>
+      <p class="ls-note">2025 年 10 月：Blackwell + Rubin 累计可见收入 <b>$500B</b>（自然年 2025 初 → 2026 底）。2026 年 3 月 GTC：黄仁勋称 Blackwell + Vera Rubin 采购订单将达 <b>$1T</b>（覆盖到 2027 年底）。另有报道称 B200/GB200 已<b>售罄至 2026 年年中</b>，积压订单约 360 万张。</p>
+    </figure>
+    <div class="ls-derive">
+      <div class="lbl-head">我的推导 · 不是官方数字</div>
+      <div class="row"><span class="lbl">在手订单（2025 初 → 2027 底）</span><span class="val">$1,000B</span></div>
+      <div class="row"><span class="lbl">单卡系统级均价（含机架、网络、供电）</span><span class="val">$40k – $60k</span></div>
+      <div class="sep"></div>
+      <div class="row out"><span class="lbl">→ 隐含三年累计出货</span><span class="val">约 1,700 万 – 2,500 万张</span></div>
+      <div class="row dim"><span class="lbl">对照：2022 + 2023 两年实测合计</span><span class="val">640 万张</span></div>
+    </div>
+    <p class="ls-prose-note">这个区间宽得离谱，因为 ASP 假设主导一切。<b>把它当量级感，别当预测。</b>交叉验证：$1T ÷ 3 年 &asymp; $333B/年，与上面 2026 年推算的 ~$340B 数据中心收入同量级，说明订单基本等于「产能已经卖光」，而不是超额预定。</p>
+
+    <p class="ls-eyebrow">附录 · 这份表哪里靠不住</p>
+    <h2>这份表哪里靠不住</h2>
+    <div class="ls-caveat">
+      <h4>有硬来源的</h4>
+      <p>Nvidia 各财年数据中心收入（10-K / 8-K）；$500B 与 $1T 订单口径（公司公开表述）；Omdia 的 2022/2023 出货量；四大云厂 133GW 电力协议；五座 1GW+ 站点的上线月份与规划功率；Meta 2025 年底 130 万张 GPU（扎克伯格 2025-01）；Project Rainier 近 50 万颗 Trainium2 上线、扩至 100 万颗（AWS 官方）。</p>
+    </div>
+    <div class="ls-caveat">
+      <h4>是估算或我的推导</h4>
+      <p><b>玩家总览表里的 GPU 与在线功率两列，六家全部是我按上文方法推的预估值，误差可能达 2 倍，且两列互相校准过、并非独立证据</b>；各站点「已上线」功率（除少数披露外多为报道估计）；2026 年收入推算；订单金额反推的卡量区间；xAI 的 2GW / 55.5 万卡为 2026 年 1 月报道值；Trainium 累计 140 万颗为报道值。</p>
+    </div>
+    <div class="ls-caveat">
+      <h4>无人公开的</h4>
+      <p>Nvidia 2019、2020、2021、2024 四年的数据中心 GPU 单位出货量。任何声称给出这些数字的图表，来源大概率是从收入除以一个假设 ASP 推的 &mdash; 包括我如果那么做的话。</p>
+    </div>
+
+    <hr>
+    <p class="ls-eyebrow" style="margin-bottom:8px;">来源</p>
+    <div class="ls-sources">
+      <a href="https://newsletter.semianalysis.com/p/the-future-of-meta-superintelligence" target="_blank" rel="noopener">SemiAnalysis — The Future of Meta Superintelligence</a>
+      <a href="https://newsletter.semianalysis.com/p/xais-colossus-2-first-gigawatt-datacenter" target="_blank" rel="noopener">SemiAnalysis — xAI's Colossus 2: First Gigawatt Datacenter In The World</a>
+      <a href="https://www.cnbc.com/2026/03/16/nvidia-gtc-2026-ceo-jensen-huang-keynote-blackwell-vera-rubin.html" target="_blank" rel="noopener">CNBC — GTC 2026：黄仁勋称 Blackwell 与 Vera Rubin 订单达 $1T</a>
+      <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026" target="_blank" rel="noopener">NVIDIA — FY2026 第四季度及全年财报</a>
+      <a href="https://www.hpcwire.com/2024/06/10/nvidia-shipped-3-76-million-data-center-gpus-in-2023-according-to-study/" target="_blank" rel="noopener">HPCwire / Omdia — 2023 年出货 376 万张数据中心 GPU</a>
+      <a href="https://www.nextbigfuture.com/2025/11/first-five-ai-data-center-with-over-one-gigawatt-of-power-arriving-in-2026-2027.html" target="_blank" rel="noopener">NextBigFuture — 2026 年首批五座 1GW+ 数据中心</a>
+      <a href="https://epoch.ai/data-insights/computing-capacity" target="_blank" rel="noopener">Epoch AI — 各大 AI 公司的算力保有量估算</a>
+      <a href="https://techcrunch.com/2025/01/24/mark-zuckerberg-says-meta-will-have-1-3m-gpus-for-ai-by-year-end/" target="_blank" rel="noopener">TechCrunch — 扎克伯格：Meta 2025 年底将有 130 万张 GPU</a>
+      <a href="https://www.aboutamazon.com/news/aws/aws-project-rainier-ai-trainium-chips-compute-cluster" target="_blank" rel="noopener">AWS — Project Rainier 上线，近 50 万颗 Trainium2</a>
+      <a href="https://newsletter.semianalysis.com/p/tpuv7-google-takes-a-swing-at-the" target="_blank" rel="noopener">SemiAnalysis — Google TPUv7 与 TPU 出货预测</a>
+      <a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000019/q4fy26cfocommentary.htm" target="_blank" rel="noopener">NVIDIA CFO Commentary FY2026 Q4 — Compute 与 Networking 收入拆分</a>
+      <a href="https://www.datacenterdynamics.com/en/news/aws-added-38gw-of-data-center-capacity-in-the-last-year/" target="_blank" rel="noopener">DCD — AWS 过去一年新增 3.8GW 数据中心容量</a>
+      <a href="https://introl.com/blog/hyperscaler-capex-690-billion-microsoft-azure-power-bottleneck-2026" target="_blank" rel="noopener">Introl — 超大规模厂商资本开支与微软的电力瓶颈</a>
+      <a href="https://www.nextplatform.com/cloud/2026/04/30/aws-will-be-an-oem-just-like-google-and-maybe-microsoft/5219100" target="_blank" rel="noopener">The Next Platform — AWS 的 Trainium 部署规模</a>
+      <a href="https://epoch.ai/publications/openai-stargate-where-the-us-sites-stand" target="_blank" rel="noopener">Epoch AI — OpenAI Stargate 各站点进度</a>
+      <a href="https://www.datacenterknowledge.com/hyperscalers/hyperscalers-in-2026-what-s-next-for-the-world-s-largest-data-center-operators-" target="_blank" rel="noopener">Data Center Knowledge — 2026 年超大规模厂商与电力瓶颈</a>
+    </div>
+  </article>
+</div>
+<script src="charts.js?v=202607091300"></script>
+</body>
+</html>
