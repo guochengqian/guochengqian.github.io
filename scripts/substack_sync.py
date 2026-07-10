@@ -363,7 +363,8 @@ DRAFT_IDS = {
 SLUGS = ['hermes-agent', 'elorian-ai', 'agent-for-finance', 'visual-generation-chatbot-accessory',
          'post-training-market', 'opd', 'gemini-omni-architecture', 'research-labs-shutdown',
          'next-scaling-after-model-scaling', 'stock-inspiration-20260701', 'claude-hosted-blog',
-         'squirrel-rime', 'sync-skills-across-agents', 'wake-my-gpu-on-demand']  # oldest -> newest
+         'squirrel-rime', 'sync-skills-across-agents', 'wake-my-gpu-on-demand',
+         'ai-compute-load-sheet', 'meta-missing-culture']  # oldest -> newest
 
 if __name__ == '__main__':
     mode = sys.argv[1] if len(sys.argv) > 1 else 'dry'  # dry | push | update
