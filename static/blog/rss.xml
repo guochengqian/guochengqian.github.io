@@ -6,8 +6,22 @@
   <atom:link href="https://guochengqian.github.io/blog/rss.xml" rel="self" type="application/rss+xml"/>
   <description>Essays on AI research, model scaling, agents, and markets by Gordon Guocheng Qian.</description>
   <language>en-us</language>
-  <lastBuildDate>Wed, 08 Jul 2026 12:00:00 +0000</lastBuildDate>
+  <lastBuildDate>Fri, 10 Jul 2026 12:00:00 +0000</lastBuildDate>
 
+  <item>
+    <title>Meta 什么都有了，唯独缺了文化</title>
+    <link>https://guochengqian.github.io/blog/meta-missing-culture/</link>
+    <guid>https://guochengqian.github.io/blog/meta-missing-culture/</guid>
+    <pubDate>Fri, 10 Jul 2026 12:00:00 +0000</pubDate>
+    <description>SemiAnalysis 复盘 Meta 超级智能一周年：数据、算力、人才、全球一半人口的用户，它全有了，唯独缺了最难补的那一样——文化。</description>
+  </item>
+  <item>
+    <title>1 Gigawatt Is No Longer the Ceiling — It’s the Cover Charge</title>
+    <link>https://guochengqian.github.io/blog/ai-compute-load-sheet/</link>
+    <guid>https://guochengqian.github.io/blog/ai-compute-load-sheet/</guid>
+    <pubDate>Thu, 09 Jul 2026 12:00:00 +0000</pubDate>
+    <description>In 2024 no datacenter ran at a gigawatt. In 2026 five switch on, one per hyperscaler. A load sheet of who has how much power, how many chips, and how much Nvidia has actually sold — every number tagged by how far you can trust it.</description>
+  </item>
   <item>
     <title>A Visual Generation Practitioner’s Three Machines</title>
     <link>https://guochengqian.github.io/blog/wake-my-gpu-on-demand/</link>

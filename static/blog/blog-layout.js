@@ -112,7 +112,21 @@
       dek: 'A roaming laptop, a Mac mini running my agents around the clock, and an RTX 5090 that sleeps until something wakes it in 30 seconds.',
       zh: { file: 'cn.html', title: '视觉生成从业者的三台机器',
         date: '2026 年 7 月 8 日', read: '阅读约 2 分钟', tag: 'Tools',
-        dek: '到处跑的笔记本、24 小时跑 agent 的 Mac mini，以及一台默认睡着、30 秒就能被叫醒的 5090。' } }
+        dek: '到处跑的笔记本、24 小时跑 agent 的 Mac mini，以及一台默认睡着、30 秒就能被叫醒的 5090。' } },
+    { slug: 'ai-compute-load-sheet',
+      title: '1 Gigawatt Is No Longer the Ceiling — It’s the Cover Charge',
+      date: 'July 9, 2026', read: '8 min read', tag: 'AI', image: 'preview.png',
+      dek: 'In 2024 no datacenter ran at a gigawatt. In 2026 five switch on, one per hyperscaler. A load sheet of who has how much power, how many chips, and how much Nvidia has actually sold — every number tagged by how far you can trust it.',
+      zh: { file: 'cn.html', title: '1GW 不再是天花板，是入场券',
+        date: '2026 年 7 月 9 日', read: '阅读约 8 分钟', tag: 'AI',
+        dek: '2024 年全世界没有一座数据中心跑到 1 吉瓦，2026 年五座同时上线、各属一家。一份把「谁有多少电、多少卡、Nvidia 卖了多少」放在一起、并逐项标注可信度的算力负载表。' } },
+    { slug: 'meta-missing-culture',
+      title: 'Meta 什么都有了，唯独缺了文化',
+      date: '2026 年 7 月 10 日', read: '阅读约 3 分钟', tag: 'AI', image: 'preview.png',
+      dek: 'SemiAnalysis 复盘 Meta 超级智能一周年：数据、算力、人才、全球一半人口的用户，它全有了，唯独缺了最难补的那一样——文化。',
+      en: { file: 'en.html', title: 'Meta Has Everything — Except a Culture',
+        date: 'July 10, 2026', read: '3 min read', tag: 'AI',
+        dek: 'A one-year review of Meta Superintelligence: data, compute, talent, and half the planet’s users — Meta has it all, except the one thing hardest to buy: culture.' } }
   ];
 
   var ACTIONS_VERSION = '202607081900'; // blog-actions.js cache-buster, managed here only.

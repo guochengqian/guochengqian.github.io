@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>What Is the Next Scaling After Model Scaling? — Gordon's Blog</title>
-  <meta name="description" content="Context scaling and agent scaling are the next product frontier — and both demand far more memory bandwidth. The HBM shortage is far from over.">
+  <meta name="description" content="Context scaling and agent scaling are the next product frontier — and both demand far more memory bandwidth. The shortage in HBM, CPU scheduling, and GPU compute is far from over.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="../img/favicon.png?v=202607072">
   <link rel="stylesheet" href="../blog.css?v=202607070200">
   <script src="../blog-theme.js?v=202607051748"></script>
-  <script src="../blog-layout.js?v=202607081900" defer></script>
+  <script src="../blog-layout.js?v=202607101400" defer></script>
   <style>
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     .token-chart { margin: 30px 0; padding: 20px 18px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); }
@@ -27,7 +27,7 @@
     <div class="lang-row"><a class="lang-switch" href="cn.html" lang="zh-CN" hreflang="zh-CN">🌐 中文版</a></div>
     <p class="article-tag">AI</p>
     <h1>What Is the Next Scaling After Model Scaling?</h1>
-    <p class="subtitle">For daily users, the knowledge layer of top-tier chatbots like ChatGPT and Claude is already good enough for many jobs. The next product frontier is cheaper, faster, more agentic, larger-scale automation &mdash; and that means context scaling and agent scaling. Both demand significantly more memory bandwidth, which means the HBM shortage is far from over.</p>
+    <p class="subtitle">For daily users, the knowledge layer of top-tier chatbots like ChatGPT and Claude is already good enough for many jobs. The next product frontier is cheaper, faster, more agentic, larger-scale automation &mdash; and that means context scaling and agent scaling. Both demand significantly more memory bandwidth, which means the shortage in HBM, CPU scheduling, and GPU compute is far from over.</p>
     <div class="byline">
       <img src="../img/avatar.jpg" alt="">
       <div>
@@ -52,6 +52,7 @@
 
     <figure>
       <img src="context_overflow.jpg" alt="Context overflow illustration">
+      <figcaption>Context forgetting in practice: once the window fills up, earlier turns get evicted or compressed and the agent loses the thread.</figcaption>
     </figure>
 
     <p>But there is a deeper reason, and it is more important.</p>
@@ -83,6 +84,7 @@
 
     <p><strong>Customization requires no training &mdash; only larger context.</strong></p>
     <p>This is also why larger context windows matter for enterprise and personalized LLMs. Instead of fine-tuning a separate model for every customer, you can condition a single strong model on a rich, persistent context: user preferences, company knowledge base, interaction history, domain-specific instructions. Personalization becomes a context-engineering problem rather than a training problem.</p>
+    <p>All of which reduces to one judgment: <strong>the longer the context, the more an agent can actually do.</strong> Mainstream models today top out around 1M tokens, which is exactly why an agent starts forgetting once you feed it a lot of images or video frames, or once a task fans out into many sub-tasks. Over the next two years I expect context windows to grow by orders of magnitude &mdash; 10M, then 100M tokens &mdash; and the set of tasks an agent can hold in its head to grow with them.</p>
 
     <hr>
 
@@ -129,7 +131,7 @@
     <p>Model scaling still matters. But for daily users, the practical bottleneck is shifting: the chatbot already knows enough for many tasks, while the product still does too little on the user&rsquo;s behalf.</p>
     <p><strong>Context scaling</strong> is the next scaling law because context can act as an inference-time learning substrate &mdash; not by updating weights, but by carrying examples, memory, tests, and feedback that manipulate behavior during inference.</p>
     <p><strong>Agent scaling</strong> is the obvious next step: from one chatbot response to hundreds or thousands of automated actions, each handled by cheaper, faster, specialized agents running in parallel.</p>
-    <p>Both demand dramatically more memory and much more infrastructure around the model. The bottleneck shifts from pure FLOPS to HBM bandwidth and capacity, inference ASICs, networking, optical interconnect, and scale-up systems. So the conclusion of this blog is simple:</p>
+    <p>Both demand dramatically more memory and much more infrastructure around the model. The bottleneck shifts from pure FLOPS to HBM bandwidth and capacity, inference ASICs, networking, optical interconnect, and scale-up systems. And the squeeze is not only HBM: keeping hundreds of agents fed also strains <strong>CPU scheduling</strong> and raw <strong>GPU compute</strong>, and both stay in shortage alongside memory. So the conclusion of this blog is simple:</p>
     <blockquote><p><strong>Buy more SK Hynix &amp; Micron. 😂</strong></p></blockquote>
     <p>This is not really a joke. In the context-scaling + agent-scaling thesis, memory / HBM is the most upstream constraint, and the leaders are clear: SK Hynix is the HBM leader with roughly 50&ndash;60% share; Micron is the cleanest U.S.-listed HBM / DRAM vehicle, competing for the second or third position in HBM and recently overtaking Samsung in DRAM; Samsung is the third major HBM player.</p>
     <p>But the beneficiary map is broader than HBM. By category, the leaders look like this:</p>

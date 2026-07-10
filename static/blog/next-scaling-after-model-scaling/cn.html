@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>模型 Scaling 之后，下一个 Scaling 是什么？ — Gordon's Blog</title>
-  <meta name="description" content="Context scaling 与 agent scaling 是下一个产品前沿——两者都需要远超以往的内存带宽。HBM 短缺远未结束。">
+  <meta name="description" content="Context scaling 与 agent scaling 是下一个产品前沿——两者都需要远超以往的内存带宽。HBM、CPU 调度与 GPU 算力的短缺都远未结束。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="../img/favicon.png?v=202607072">
   <link rel="stylesheet" href="../blog.css?v=202607070200">
   <script src="../blog-theme.js?v=202607051748"></script>
-  <script src="../blog-layout.js?v=202607081900" defer></script>
+  <script src="../blog-layout.js?v=202607101400" defer></script>
   <style>
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     .token-chart { margin: 30px 0; padding: 20px 18px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--soft); }
@@ -52,6 +52,7 @@
 
     <figure>
       <img src="context_overflow.jpg" alt="Context overflow illustration">
+      <figcaption>真实的 context forgetting：窗口一旦被填满，早先的内容就被逐出或压缩，agent 开始丢失前文。</figcaption>
     </figure>
 
     <p>但还有一个更深层的理由，而且更加重要。</p>
@@ -83,6 +84,7 @@
 
     <p><strong>定制化不需要训练 &mdash; 只需要更大的 context。</strong></p>
     <p>这也是为什么更大的 context 窗口对企业级和个性化 LLM 如此重要。你不必为每个客户单独微调一个模型，而是可以让同一个强模型基于一份丰富、持久的 context 来工作：用户偏好、公司知识库、交互历史、领域专属指令。个性化从一个训练问题，变成了一个 context 工程问题。</p>
+    <p>这些最后都归到一个判断上：<strong>context 越长，agent 能做的事情就越多。</strong>现在主流模型的上下文只有 1M 左右，所以你会发现，一旦图片、视频流一多，或者一个任务展开成很多子任务，agent 就开始忘掉前面的上下文。未来两年，我预计会看到上下文长一个数量级、乃至两个数量级的模型 &mdash; 10M，然后是 100M token &mdash; agent 能一次性装进脑子里的任务量，也会跟着一起涨。</p>
 
     <hr>
 
@@ -129,7 +131,7 @@
     <p>模型 scaling 仍然重要。但对日常用户来说，实际的瓶颈正在转移：聊天机器人懂得的知识已经足够应付许多任务，而产品替用户做的事仍然太少。</p>
     <p><strong>Context scaling</strong> 是下一条 scaling law，因为 context 可以充当推理时的学习基质 &mdash; 不是通过更新权重，而是携带示例、memory、测试和反馈，在推理过程中改变模型的行为。</p>
     <p><strong>Agent scaling</strong> 是显而易见的下一步：从一次聊天回复，走向成百上千个自动化动作，每个动作由更便宜、更快、更专精的 agent 并行完成。</p>
-    <p>两者都需要多得多的内存，以及围绕模型的多得多的基础设施。瓶颈正从纯粹的 FLOPS 转向 HBM 带宽与容量、推理 ASIC、网络，光互连和 scale-up 系统。所以这篇博客的结论很简单：</p>
+    <p>两者都需要多得多的内存，以及围绕模型的多得多的基础设施。瓶颈正从纯粹的 FLOPS 转向 HBM 带宽与容量、推理 ASIC、网络，光互连和 scale-up 系统。而且吃紧的不只是 HBM：要把成百上千个 agent 同时喂饱，<strong>CPU 调度</strong>和<strong>GPU 算力</strong>同样会被拉满，和内存一起继续短缺。所以这篇博客的结论很简单：</p>
     <blockquote><p><strong>多买点 SK 海力士和美光。😂</strong></p></blockquote>
     <p>这并不完全是玩笑。在 context scaling + agent scaling 这套逻辑里，内存 / HBM 是最上游的约束，而领先者很清晰：SK 海力士是 HBM 龙头，份额约 50&ndash;60%；美光是美股中表达 HBM / DRAM 逻辑最纯粹的标的，在 HBM 上争夺第二或第三的位置，并且在 DRAM 上最近超越了三星；三星是第三大 HBM 玩家。</p>
     <p>但受益者版图比 HBM 更广。按品类来看，各领域的领先者如下：</p>
