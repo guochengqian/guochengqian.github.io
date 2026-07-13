@@ -1,0 +1,37 @@
+Title: 我用 Claude 20 分钟免费搭了个博客
+
+不用 Medium，不用 WordPress，也没有服务器。
+
+我只是一句一句告诉 Claude Code：
+
+「帮我托管博客，要干净」→「加评论和点赞」→「支持分享到 X、微信、小红书」→「适配手机」。
+
+它自己写代码、用无头浏览器截图自测、部署到 GitHub Pages，还盯着部署直到变绿。
+
+现在这个博客有：
+
+✅ 极简阅读 + 深色模式
+
+写作和阅读都不被 UI 打扰。
+
+✅ 点赞 + 评论
+
+基于 GitHub Issues，免费而且不容易被垃圾信息淹没。
+
+✅ 一键分享与邮件稍后读
+
+X、微信、小红书、知乎都在同一个菜单里。
+
+✅ 自动同步到 Substack
+
+写一处，其他渠道也跟上。
+
+2026 年写博客：你只管写字，agent 负责整个技术栈。
+
+原文：
+
+https://guochengqian.github.io/blog/claude-hosted-blog/cn.html
+
+Tags: #ClaudeCode #AI编程 #独立开发 #博客 #智能体
+
+Visibility: 仅自己可见

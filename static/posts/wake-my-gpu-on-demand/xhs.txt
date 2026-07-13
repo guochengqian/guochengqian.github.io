@@ -1,0 +1,37 @@
+Title: 5090 平时睡着，30 秒叫醒
+
+做视觉生成，我需要一张大显卡，但不需要它 24 小时开着烧电、吹风扇。
+
+所以我的桌面是三台机器，各司其职：
+
+✅ 笔记本
+
+到处跑，只负责写代码和发指令。
+
+✅ Mac mini
+
+24 小时开着跑 agent，也是永远在线的那个中继。
+
+✅ 5090 工作站
+
+默认睡着。要跑训练的时候，Mac mini 替我发一个网络唤醒包，30 秒它就起来了。
+
+关键在中间那台。Wake-on-LAN 出不了子网，所以必须有一台永远在线的机器待在同一个局域网里帮你转发——Mac mini 正好又安静又省电。
+
+软件部分 agent 全能替你搞定，坑都在 BIOS 里，三项必须设对：
+
+✅ ErP Ready → Disabled（它会切断 PCIe 和 M.2 的待机供电，网卡断了电自然发不出唤醒信号）
+
+✅ Wake Up Event By → BIOS
+
+✅ Resume By PCI-E Device → Enabled
+
+跑完任务它自己睡回去。电费和噪音都省了。
+
+原文：
+
+https://guochengqian.github.io/blog/wake-my-gpu-on-demand/
+
+Tags: #人工智能 #装机 #生产力 #远程办公 #深度学习
+
+Visibility: 仅自己可见
