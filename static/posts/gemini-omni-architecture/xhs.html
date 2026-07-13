@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <title>Gemini-Omni 是怎么做出来的</title>
+</head>
+<body>
+  <article class="xiaohongshu-note">
+    <h1>Gemini-Omni 是怎么做出来的</h1>
+
+    <p>Google 最新的视频编辑/生成模型 Gemini-Omni 没有公开架构。我按自己的理解推测了三条可能的路线。</p>
+
+    <p>✅ <strong>路线一：Transfusion 式统一模型</strong><br>
+    一个模型同时做自回归的文本和扩散的图像/视频，不分家。</p>
+
+    <p>✅ <strong>路线二：Gemini 当编码器，DiT 当渲染解码器</strong><br>
+    Gemini 负责理解多模态输入，后面接一个扩散模型把视频画出来。</p>
+
+    <p>✅ <strong>路线三：自回归出粗粒度 token，再用扩散精修</strong><br>
+    先把大结构定下来，再补细节。</p>
+
+    <p>我目前押路线一。Transfusion 式的统一模型是最有可能的那个——「Omni」这个名字本身就在指统一化，而整个领域也明显在往「更少胶水层、更多跨模态共享建模」走：文本、图像、视频、音频，接下来几个月大概还会加上用于世界建模的动作模态。</p>
+
+    <p>纯属高层推测，欢迎打脸。</p>
+
+    <p>原文：<br>
+    https://guochengqian.github.io/blog/gemini-omni-architecture/</p>
+
+    <p><strong>标签：</strong>#人工智能 #大模型 #视频生成 #多模态 #技术推测</p>
+    <p><strong>可见性：</strong>仅自己可见</p>
+  </article>
+</body>
+</html>
