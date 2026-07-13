@@ -1,0 +1,27 @@
+Title: Prompt2Effect results card
+
+Prompt2Effect • ECCV 2026
+
+LoRA specialization without per-effect training
+
+Generate effect-specific I2V LoRA weights in one hypernetwork forward pass.
+
+56 GPU-h → 3.3s
+
+Per-effect cost: conventional LoRA training vs. Prompt2Effect inference
+
+IID56.93 VLM overall, close to full LoRA (57.57)
+
+OOD48.87 zero-shot vs. base (42.46)
+
+Init-10056.33 VLM overall vs. 1000-step LoRA (56.70)
+
+What changes?
+
+1Condition the hypernetwork on frozen base weights W₀
+
+2Predict SVD-canonicalized LoRA factors instead of raw ambiguous BA
+
+3Apply generated weights directly, or use them as a fast LoRA initialization
+
+Numbers from arXiv:2606.13971 / project page tables.

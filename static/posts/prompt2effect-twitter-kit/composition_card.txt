@@ -1,0 +1,19 @@
+Title: Prompt2Effect composition card
+
+Effect composition
+
+Generated LoRAs can mix in weight space
+
+Two predicted effect adapters → interpolate weights → one coherent combined behavior, no new LoRA training.
+
+A Magic Train
+
+Lean from a moving train in a snowy forest.
+
+B Brain Eat
+
+Surreal jelly-like brain interaction.
+
+A+B Interpolated
+
+The combined video blends both behaviors.

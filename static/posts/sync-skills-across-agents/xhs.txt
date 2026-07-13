@@ -1,0 +1,31 @@
+Title: 一个 Git 仓库同步所有 Agent
+
+我同时用 Claude、Codex 和 Hermes，分布在三台机器上。以前给其中一个写了新 skill，另外两个根本不知道。
+
+现在它们共用同一套 skills，我需要敲的命令只有 git pull 和 git push。
+
+✅ 痛点
+
+同一个工作流，在三个 agent 家目录里各存一份，改一次要同步三次，迟早不一致。
+
+✅ 设计逻辑：合并，而不是覆盖
+
+一个私有仓库，里面每个 agent 一个快照目录（claude / codex / hermes）。每台设备为每个 skill 记一个 base hash（只存本地，不提交）。仓库变了家目录没变，就快进到家目录；反过来也一样。两边都变了才叫我处理。
+
+✅ 结果
+
+在笔记本上写完一个 skill，push；工作站上 pull，Codex 和 Hermes 立刻都会用了。
+
+✅ 怎么拿到它
+
+整个设计就一段话，直接贴给你的 agent，让它自己搭。
+
+agent 越多，这个问题越疼。与其记住「我在哪台机器上教过它什么」，不如让 git 记。
+
+原文：
+
+https://guochengqian.github.io/blog/sync-skills-across-agents/
+
+Tags: #人工智能 #智能体 #效率工具 #Git #AI工作流
+
+Visibility: 仅自己可见
