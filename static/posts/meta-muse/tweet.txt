@@ -1,0 +1,5 @@
+Meta Superintelligence Labs dropped Muse Image + Muse Video (preview).
+
+Muse Image isn't text-to-image, it's an agent: it writes code for exact plots/QR codes, web-searches for facts, and critiques + fixes its own output. #2 on the image arena.
+
+Live in Meta AI, IG & WhatsApp.

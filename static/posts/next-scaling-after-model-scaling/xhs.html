@@ -2,20 +2,19 @@
 <html lang="zh-Hans">
 <head>
   <meta charset="utf-8">
-  <title>模型之后怎么扩</title>
+  <title>HBM 短缺远没结束，这才刚开始</title>
 </head>
 <body>
   <article class="xiaohongshu-note">
-    <h1>模型之后怎么扩</h1>
-
-    <p>我把这篇 blog 改成一个更短的判断：</p>
+    <h1>HBM 短缺远没结束，这才刚开始</h1>
 
     <p>模型 scaling 当然还会继续，但对很多日常用户来说，顶级聊天机器人的“知识层”已经够用了。下一步的产品瓶颈，不是“它还知道得不够多”，而是“它还替我做得不够多”。</p>
 
     <p>所以我觉得下一个 scaling 主要是两条：</p>
 
     <p>✅ <strong>Context scaling</strong><br>
-    context 不只是长记忆窗口，它更像推理时的临时学习基质。示例、文档、测试、失败记录、工具输出，都能在不更新权重的情况下改变模型行为。</p>
+    context 不只是长记忆窗口，它更像推理时的临时学习基质。示例、文档、测试、失败记录、工具输出，都能在不更新权重的情况下改变模型行为。<br>
+    还有一个更重要的判断：context 越长，能做的事情就越多。现在主流模型的上下文只有 1M，所以你会发现，图片、视频流一多，或者子任务一多，agent 就开始忘事。未来两年一定会看到上下文更长的模型，10M，甚至 100M。</p>
 
     <p>✅ <strong>Agent scaling</strong><br>
     从一个聊天机器人，变成几十、几百、甚至上千个 agent 并行工作：读代码、写测试、查文献、跑实验、监控日志、执行任务。</p>
@@ -29,7 +28,7 @@
 
     <p>一句话：上一轮是模型 scaling 拉动 GPU；下一轮可能是 context + agent scaling 拉动 HBM、网络、ASIC 和全栈 AI infra。</p>
 
-    <p>所以结论很直白：HBM 短缺还远没结束。不是投资建议，只是我的 AI infra thesis。😂</p>
+    <p>所以结论很直白：短缺的不只是 HBM，CPU 调度和 GPU 算力也都会继续紧张。不是投资建议，只是我的 AI infra thesis。😂</p>
 
     <p>原文：<br>
     https://guochengqian.github.io/blog/next-scaling-after-model-scaling/</p>

@@ -300,7 +300,13 @@ def insert_subscribe_widgets(blocks):
     blocks.append(copy.deepcopy(SUBSCRIBE_WIDGET))
 
 def build_post(slug, dry=True):
-    html = (BLOG / slug / 'index.html').read_text()
+    # Substack always gets the English version. For zh-primary posts an
+    # `en.html` translation sits beside index.html — prefer it. En-primary
+    # posts have no en.html, so their English index.html is used as-is.
+    folder = BLOG / slug
+    src = folder / 'en.html' if (folder / 'en.html').exists() else folder / 'index.html'
+    web_path = f'{SITE}/{slug}/' + (src.name if src.name != 'index.html' else '')
+    html = src.read_text()
     root = parse(html)
     art = root.find_all('article')[0]
     title = art.find_all('h1')[0].text().strip()
@@ -317,7 +323,7 @@ def build_post(slug, dry=True):
     blocks.append({'type': 'horizontal_rule'})
     blocks.append({'type': 'paragraph', 'content': [
         {'type': 'text', 'text': 'Originally published on '},
-        {'type': 'text', 'text': 'my blog', 'marks': [{'type': 'link', 'attrs': {'href': f'{SITE}/{slug}/'}}]},
+        {'type': 'text', 'text': 'my blog', 'marks': [{'type': 'link', 'attrs': {'href': web_path}}]},
         {'type': 'text', 'text': f' on {date}.' if date else '.'},
     ]})
     doc = {'type': 'doc', 'attrs': {'schemaVersion': 'v1'}, 'content': blocks}
@@ -334,10 +340,13 @@ def draft_payload(post, slug, dry=False):
         'draft_section_id': None,
         'section_chosen': False,
     }
-    # a preview.* file next to the post becomes the Substack cover image
-    for ext in ('jpg', 'jpeg', 'png'):
-        p = BLOG / slug / f'preview.{ext}'
-        if p.exists():
+    # a preview.* file next to the post becomes the Substack cover image.
+    # Since Substack always gets the English post, prefer an English cover
+    # (`preview-en.*`, present for zh-primary posts) over the default preview.*.
+    for stem in ('preview-en', 'preview'):
+        p = next((BLOG / slug / f'{stem}.{ext}' for ext in ('jpg', 'jpeg', 'png')
+                  if (BLOG / slug / f'{stem}.{ext}').exists()), None)
+        if p:
             payload['cover_image'] = f'local:{p}' if dry else upload_image(p)
             break
     return payload
@@ -358,6 +367,7 @@ DRAFT_IDS = {
     'agent-for-finance': 205424275, 'visual-generation-chatbot-accessory': 205424278,
     'next-scaling-after-model-scaling': 205424280, 'claude-hosted-blog': 205711895,
     'squirrel-rime': 205713056, 'sync-skills-across-agents': 205717419,
+    'meta-missing-culture': 206504871,
 }
 
 SLUGS = ['hermes-agent', 'elorian-ai', 'agent-for-finance', 'visual-generation-chatbot-accessory',
