@@ -1,8 +1,8 @@
-Title: 视觉生成正在沦为配件
+Title: 视觉生成沦为配件
 
-曾经有一段时间，图像和视频生成看起来是一个独立的平台品类。Stable Diffusion、Midjourney、Runway、Pika、Luma，都想把「生成视觉内容」做成一个独立的目的地。
+曾经有一段时间，图像和视频生成看起来是一个独立的平台品类。Stable Diffusion、Midjourney、Runway、Pika、Luma，都想把「生成视觉内容」做成一个独立的目的地，现在要么下台，要么转型做 医药、机器人等领域。 
 
-现在这个目的地正在被吸收进 chatbot。
+原因是独立的视觉生成平台已经被吸收进 chatbot，沦为配件
 
 ✅ 独立入口在收窄
 
