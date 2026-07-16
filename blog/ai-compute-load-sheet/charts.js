@@ -40,7 +40,7 @@
     });
     node.addEventListener("blur", hideTip);
   }
-  var LIVE = "var(--c-live)", PLAN = "var(--c-plan)", BOOK = "var(--c-book)";
+  var LIVE = "var(--c-live)", PLAN = "var(--c-plan)", BOOK_COLOR = "var(--c-book)";
   var GRID = "var(--c-grid)", AXIS = "var(--c-axis)", TXT = "var(--c-txt)";
 
   /* ============================ DATA ============================ */
@@ -63,24 +63,27 @@
   ];
 
   var PLAYERS = [
-    { co: "Google", accLo: 250, accHi: 450, pwLo: 3.0, pwHi: 6.0, goal: t("未披露", "undisclosed"), pill: t("预估值", "estimate"),
-      note: t("绝大部分是自研 TPU，不是 Nvidia 卡。锚点：Epoch AI 2024-10 估 >100 万 H100e；2026 年 TPU 出货预测约 430 万颗（含对外销售）。TPU 每当量能效优于 Nvidia，故功率取区间下沿。",
-              "Mostly its own TPUs, not Nvidia cards. Anchor: Epoch AI (Oct 2024) &gt;1M H100e; 2026 TPU shipments forecast ~4.3M (incl. external sales). TPUs are more efficient per equivalent, so power takes the low end of the range.") },
-    { co: "Meta", accLo: 220, accHi: 300, pwLo: 3.0, pwHi: 4.0, goal: t("2026 部署 6.5GW", "6.5GW deployed in 2026"), pill: t("预估值", "estimate"),
-      note: t("物理卡约 180–250 万张（扎克伯格 2025-01 称 2025 年底超 130 万张），按混合代际 ×1.2 折成当量。在线功率＝Prometheus（已扩 3GW+）＋ Hyperion 部分投产。Meta 指引 2026 全年部署约 6.5GW（下半年 5.5GW），是目标，不是现在插着电的。",
-              "~1.8–2.5M physical cards (Zuckerberg, Jan 2025: over 1.3M by end-2025), folded to equivalents at ×1.2 for mixed generations. Online power = Prometheus (past 3GW+) plus part of Hyperion. Meta guides ~6.5GW of compute deployed across 2026 (5.5GW in H2) — a target, not what&rsquo;s plugged in now.") },
-    { co: "Microsoft", accLo: 200, accHi: 300, pwLo: 3.5, pwHi: 5.0, goal: t("2027 前产能翻倍", "double by 2027"), pill: t("预估值", "estimate"),
-      note: t("常被引用的「50 万 H100e」是 Epoch AI 2024-10 的快照，已严重过时。2025 年新建约 2GW，FY26 Q2、Q3 各再加约 1GW，AI 容量同比 +80%。Fairwater（威斯康星）规划 2GW。",
-              "The often-quoted &ldquo;500k H100e&rdquo; is an Oct-2024 Epoch AI snapshot, badly outdated. ~2GW built in 2025, ~1GW each in FY26 Q2 and Q3, AI capacity +80% YoY. Fairwater (Wisconsin) planned for 2GW.") },
-    { co: "Amazon", accLo: 180, accHi: 260, pwLo: 3.0, pwHi: 4.0, goal: t("2027 年底总功率翻倍", "double power by end-2027"), pill: t("预估值", "estimate"),
-      note: t("三代 Trainium 累计约 140 万颗，另有 AWS 对外出租的 Nvidia 机队。Project Rainier 是 AWS 为 Anthropic 专建的集群（近 50 万颗 Trainium2），只是其中一部分。2025 年新增 3.8GW 电力容量。",
-              "~1.4M Trainium chips across three generations, plus the Nvidia fleet AWS rents out. Project Rainier is AWS&rsquo;s dedicated cluster for Anthropic (~500k Trainium2), only one part of the whole. Added 3.8GW of power capacity in 2025.") },
-    { co: "xAI", accLo: 100, accHi: 130, pwLo: 1.8, pwHi: 2.2, goal: t("2026 年底 200 万张卡", "2M cards by end-2026"), pill: t("报道值", "reported"),
-      note: t("Colossus 1+2（孟菲斯）。55.5 万张物理卡（2026-01 报道），含 H100/H200/GB200，按混合代际折成当量。Colossus 1 自 2026 年 5 月起租给 Anthropic。",
-              "Colossus 1+2 (Memphis). 555k physical cards (reported Jan 2026), a mix of H100/H200/GB200, folded to equivalents. Colossus 1 leased to Anthropic from May 2026.") },
-    { co: "OpenAI / Oracle", accLo: 20, accHi: 40, pwLo: 0.3, pwHi: 0.7, goal: t("Stargate 10 GW", "Stargate 10 GW"), pill: t("预估值", "estimate"),
-      note: t("自有算力最少，因为它主要<b>租用</b>微软、Oracle、CoreWeave 的机房，而不是自己持有。Abilene 实跑约 0.3GW（8 栋楼中约 4 栋）。45 万张 GB200 是 Abilene 满配后的规划量，不是已上线量。",
-              "The least self-owned compute, because it mostly <b>rents</b> from Microsoft, Oracle and CoreWeave rather than holding its own. Abilene runs ~0.3GW live (~4 of 8 halls). The 450k GB200 figure is Abilene&rsquo;s fully-built plan, not what&rsquo;s online.") }
+    { co: "Google", accLo: 404, accHi: 613, pwLo: 6.7, pwHi: 10.2, source: "Epoch AI", pill: t("模型区间", "model range"),
+      note: t("2025 年底中值约 505 万 H100e，包含 Google TPU 与 Nvidia GPU。TPU 是 Google 排名第一的主要原因。",
+              "End-2025 median: ~5.05M H100e, including Google TPUs and Nvidia GPUs. TPUs are the main reason Google ranks first.") },
+    { co: "Microsoft", accLo: 262, accHi: 443, pwLo: 4.4, pwHi: 7.4, source: "Epoch AI", pill: t("模型区间", "model range"),
+      note: t("2025 年底中值约 342 万 H100e，包含 Nvidia 与 AMD。OpenAI 租用的微软算力记在微软名下。",
+              "End-2025 median: ~3.42M H100e, including Nvidia and AMD. Microsoft capacity rented by OpenAI remains attributed to Microsoft.") },
+    { co: "Amazon", accLo: 201, accHi: 300, pwLo: 3.4, pwHi: 5.0, source: t("Epoch AI + AWS", "Epoch AI + AWS"), pill: t("模型 + 官宣", "model + official"),
+      note: t("2025 年底中值约 245 万 H100e，包含 Trainium 与 Nvidia。AWS 官方披露 Project Rainier 已上线近 50 万颗 Trainium2。",
+              "End-2025 median: ~2.45M H100e, including Trainium and Nvidia. AWS officially disclosed nearly 500k Trainium2 chips live in Project Rainier.") },
+    { co: "Meta", accLo: 177, accHi: 300, pwLo: 3.0, pwHi: 5.0, source: t("Epoch AI + Meta", "Epoch AI + Meta"), pill: t("模型 + 官宣", "model + official"),
+      note: t("2025 年底中值约 230 万 H100e，包含 Nvidia 与 AMD。Meta 对自建 H100 集群和 2024 年底约 60 万 H100e 组合目标有官方披露。",
+              "End-2025 median: ~2.30M H100e, including Nvidia and AMD. Meta has official disclosures for its H100 clusters and its end-2024 portfolio target of ~600k H100e.") },
+    { co: "Oracle", accLo: 85, accHi: 156, pwLo: 1.4, pwHi: 2.6, source: "Epoch AI", pill: t("宽模型区间", "wide model range"),
+      note: t("2025 年底中值约 114 万 H100e，包含 Nvidia 与 AMD；七家中不确定性最大。Oracle 为 OpenAI 等客户提供的云算力仍记在 Oracle 名下。",
+              "End-2025 median: ~1.14M H100e, including Nvidia and AMD; this is the widest interval here. Oracle cloud capacity serving customers such as OpenAI remains attributed to Oracle.") },
+    { co: "CoreWeave", accLo: 79, accHi: 88, pwLo: 1.3, pwHi: 1.5, source: t("Epoch AI + 财报", "Epoch AI + filings"), pill: t("模型 + 官宣", "model + official"),
+      note: t("2025 年底中值约 83 万 H100e，对应 1.3–1.5GW 的 H100 等效设施负载。公司披露 2026 Q1 实际在线功率超过 1GW；因其包含 B200/B300，两者不应强行相等。",
+              "End-2025 median: ~0.83M H100e, equal to 1.3–1.5GW of H100-equivalent facility load. CoreWeave reported over 1GW actually active in Q1 2026; its B200/B300 mix means the two figures should not be forced to match.") },
+    { co: "xAI", accLo: 139, accHi: 139, accLabel: t("约 139", "~139"), pwLo: 2.3, pwHi: 2.3, pwLabel: t("约 2.3", "~2.3"), source: t("Epoch AI + SpaceX S-1", "Epoch AI + SpaceX S-1"), pill: t("2026 年 7 月点估计", "Jul 2026 point estimate"),
+      note: t("2026 年 7 月 Epoch 估算约 139 万 H100e，对应约 2.3GW 的 H100 等效设施负载；站点实际约 1.29GW IT，正说明 H100e 不是物理 H100 张数。接近 2GW 是扩建目标。",
+              "Epoch&rsquo;s July 2026 estimate is ~1.39M H100e, equal to ~2.3GW of H100-equivalent facility load. The site actually draws ~1.29GW IT, precisely why H100e must not be read as a physical H100 count. Nearly 2GW is the expansion target.") }
   ];
 
   var REV = [
@@ -173,11 +176,11 @@
     var panelW = (W - labelW - gap - valGut * 2) / 2;
     var H = padT + PLAYERS.length * rowH + padB;
     var svg = el("svg", { viewBox: "0 0 " + W + " " + H, width: W, height: H, role: "img" });
-    svg.setAttribute("aria-label", t("六家公司 GPU 保有量与在线功率的预估区间对比", "Estimated GPU stock and online power ranges for six companies"));
+    svg.setAttribute("aria-label", t("七家算力所有者的 H100 当量保有量与 H100 等效设施负载区间对比", "H100-equivalent ownership and H100-equivalent facility load for seven compute owners"));
     hatch(svg, "ls-hpair", LIVE);
     var panels = [
-      { x0: labelW, max: 500, ticks: [0, 100, 200, 300, 400, 500], unit: t("万", ""), title: t("GPU · H100 当量（万）", "GPUs · H100-equiv (10k)"), lo: function (d) { return d.accLo; }, hi: function (d) { return d.accHi; } },
-      { x0: labelW + panelW + valGut + gap, max: 6.5, ticks: [0, 2, 4, 6], unit: "GW", title: t("当前在线功率（GW）", "Online power (GW)"), lo: function (d) { return d.pwLo; }, hi: function (d) { return d.pwHi; } }
+      { x0: labelW, max: 650, ticks: [0, 100, 200, 300, 400, 500, 600], unit: t("万", ""), title: t("算力保有量 · H100e（万）", "Compute owned · H100e (10k)"), lo: function (d) { return d.accLo; }, hi: function (d) { return d.accHi; }, label: function (d) { return d.accLabel || d.accLo + "–" + d.accHi; } },
+      { x0: labelW + panelW + valGut + gap, max: 11, ticks: [0, 2, 4, 6, 8, 10], unit: "GW", title: t("H100 等效设施负载（GW）", "H100-equivalent facility load (GW)"), lo: function (d) { return d.pwLo; }, hi: function (d) { return d.pwHi; }, label: function (d) { return d.pwLabel || d.pwLo + "–" + d.pwHi; } }
     ];
     panels.forEach(function (pn) {
       var x = function (v) { return pn.x0 + (v / pn.max) * panelW; };
@@ -194,7 +197,7 @@
         svg.appendChild(el("rect", { x: x(lo), y: by, width: Math.max(2, x(hi) - x(lo)), height: bh, rx: 3, fill: "url(#ls-hpair)" }));
         svg.appendChild(el("rect", { x: x(mid) - 1.25, y: by - 3, width: 2.5, height: bh + 6, rx: 1, fill: LIVE }));
         var vt = el("text", { x: pn.x0 + panelW + 8, y: by + 10, fill: AXIS, "font-size": 9, "text-anchor": "start", "font-family": "var(--sans)" });
-        vt.textContent = lo + "–" + hi; svg.appendChild(vt);
+        vt.textContent = pn.label(d); svg.appendChild(vt);
       });
     });
     PLAYERS.forEach(function (d, i) {
@@ -202,7 +205,7 @@
       var nm = el("text", { x: labelW - 12, y: y + rowH / 2 + 2, fill: TXT, "text-anchor": "end", "font-size": 11, "font-weight": 600, "font-family": "var(--sans)" });
       nm.textContent = d.co; svg.appendChild(nm);
       var hit = el("rect", { x: 0, y: y, width: W, height: rowH, fill: "transparent", tabindex: 0, style: "cursor:crosshair" });
-      attachTip(hit, "<b>" + d.co + "</b><br>" + t("GPU ", "GPUs ") + d.accLo + "–" + d.accHi + t(" 万 H100e", "0k H100e") + "<br>" + t("在线功率 ", "Online ") + d.pwLo + "–" + d.pwHi + " GW<br><span class='ls-tip-note'>" + t("公开目标：", "Stated goal: ") + d.goal + "</span>");
+      attachTip(hit, "<b>" + d.co + "</b><br>" + t("算力保有量 ", "Compute owned ") + (d.accLabel || d.accLo + "–" + d.accHi) + t(" 万 H100e", "0k H100e") + "<br>" + t("H100 等效设施负载 ", "H100-equivalent facility load ") + (d.pwLabel || d.pwLo + "–" + d.pwHi) + " GW<br><span class='ls-tip-note'>" + t("按 60 万 H100e/GW 折算；主来源：", "Converted at 600k H100e/GW; primary source: ") + d.source + "</span>");
       svg.appendChild(hit);
     });
     box.appendChild(svg);
@@ -216,9 +219,9 @@
       var tr = document.createElement("tr");
       tr.innerHTML =
         '<td class="lst-co">' + p.co + '</td>' +
-        '<td class="lst-n">' + p.accLo + "–" + p.accHi + '</td>' +
-        '<td class="lst-n">' + p.pwLo + "–" + p.pwHi + '</td>' +
-        '<td class="lst-goal">' + p.goal + '</td>' +
+        '<td class="lst-n">' + (p.accLabel || p.accLo + "–" + p.accHi) + '</td>' +
+        '<td class="lst-n">' + (p.pwLabel || p.pwLo + "–" + p.pwHi) + '</td>' +
+        '<td class="lst-goal">' + p.source + '</td>' +
         '<td class="lst-note">' + p.note + '</td>';
       tb.appendChild(tr);
     });
@@ -303,13 +306,13 @@
       t1.textContent = d.d; svg.appendChild(t1);
       var t2 = el("text", { x: padL - 12, y: y + 25, fill: AXIS, "text-anchor": "end", "font-size": 9, "font-family": "var(--sans)" });
       t2.textContent = d.label; svg.appendChild(t2);
-      svg.appendChild(el("rect", { x: padL, y: y, width: x(d.v) - padL, height: bh, rx: 3, fill: BOOK, "fill-opacity": i === 0 ? .42 : 1 }));
+      svg.appendChild(el("rect", { x: padL, y: y, width: x(d.v) - padL, height: bh, rx: 3, fill: BOOK_COLOR, "fill-opacity": i === 0 ? .42 : 1 }));
       var v = el("text", { x: x(d.v) + 9, y: y + 18, fill: TXT, "font-size": 13, "font-weight": 700, "font-family": "var(--sans)" });
       v.textContent = "$" + (d.v >= 1000 ? "1.0T" : d.v + "B"); svg.appendChild(v);
       var s = el("text", { x: padL + 9, y: y + bh + 13, fill: AXIS, "font-size": 9, "font-family": "var(--sans)" });
       s.textContent = d.sub; svg.appendChild(s);
     });
-    var a = el("text", { x: padL, y: H - 6, fill: BOOK, "font-size": 10.5, "font-weight": 600, "font-family": "var(--sans)" });
+    var a = el("text", { x: padL, y: H - 6, fill: BOOK_COLOR, "font-size": 10.5, "font-weight": 600, "font-family": "var(--sans)" });
     a.textContent = t("↑ 九个月内翻倍", "↑ doubled in nine months"); svg.appendChild(a);
     box.appendChild(svg);
   })();
