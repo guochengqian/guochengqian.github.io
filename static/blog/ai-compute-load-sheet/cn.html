@@ -83,12 +83,12 @@
       <img src="../img/avatar.jpg" alt="">
       <div>
         <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
-        <div class="byline-sub">2026 年 7 月 9 日 &middot; 阅读约 8 分钟</div>
+        <div class="byline-sub">2026 年 7 月 9 日 &middot; 7 月 13 日更新 &middot; 阅读约 8 分钟</div>
       </div>
       <form class="subscribe-form subscribe-compact byline-subscribe" data-title="1GW 不再是天花板，是入场券" data-url="https://guochengqian.github.io/blog/ai-compute-load-sheet/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
     </div>
 
-    <div class="ls-meta"><span>截至 2026-07</span><span>单位：GW · 张 · 十亿美元</span><span>17 个来源</span></div>
+    <div class="ls-meta"><span>截至 2026-07</span><span>单位：GW · H100e · 十亿美元</span><span>27 个来源</span></div>
 
     <div class="ls-readout">
       <div>
@@ -139,28 +139,28 @@
       <p class="ls-note">Prometheus 的 1GW <b>不是一栋楼</b>：SemiAnalysis 说它是 6 个园区、27 个数据中心组成的星座，5 个挤在 6 公里内，1 个在 75–80 公里外，靠自研 AI-Backbone 连起来（全集群双向带宽约 22 Pb/s），跨园区光速延迟就有 500+ 微秒，所以训练必须走异步策略。文章称它两年内已从 1GW 扩到 3GW+。</p>
     </figure>
 
-    <p class="ls-eyebrow">第三节 · 玩家总览</p>
-    <h2>卡量与功率，逐家对照</h2>
+    <p class="ls-eyebrow">第三节 · 算力所有者总览</p>
+    <h2>谁控制算力，以及换成 H100 要多少设施电力</h2>
     <figure class="ls-chart" aria-labelledby="ls-pair-t">
-      <h3 id="ls-pair-t" class="sr-only">左右两个共享同一行序的区间条面板，左为 GPU H100 当量、右为在线功率。</h3>
-      <p class="ls-head">卡量与功率的分布</p>
-      <p class="ls-sub">左：GPU（H100 当量·万） &middot; 右：当前在线功率（GW） &middot; 同一行序</p>
+      <h3 id="ls-pair-t" class="sr-only">左右两个共享同一行序的区间条面板，左为算力所有者的 H100 性能当量，右为按每 GW 六十万张物理 H100 折算的等效设施负载。</h3>
+      <p class="ls-head">H100 性能当量与 H100 等效设施负载</p>
+      <p class="ls-sub">最新公开估算 &middot; 超大云厂截至 2025 年底，xAI 更新至 2026 年 7 月</p>
       <div class="ls-scroll" id="ls-pair"></div>
       <div class="ls-legend">
-        <span class="item"><span class="ls-sw" style="background:var(--c-live);opacity:.6"></span>预估区间（下沿&ndash;上沿）</span>
-        <span class="item"><span class="ls-sw" style="background:var(--c-live);width:3px;height:16px;border-radius:1px"></span>区间中值</span>
+        <span class="item"><span class="ls-sw" style="background:var(--c-live);opacity:.6"></span>Epoch 模型 5%&ndash;95% 区间</span>
+        <span class="item"><span class="ls-sw" style="background:var(--c-live);width:3px;height:16px;border-radius:1px"></span>区间中点（仅视觉标记）</span>
       </div>
-      <p class="ls-note"><b>两个面板的形状几乎一样，这不是巧合，是交叉验证。</b>按 PUE 1.2、系统级 1.2–1.4 kW/卡折算，约 <b>60 万 H100 当量 &asymp; 1 GW</b>。六家里五家都落在这条关系上；唯一的例外是 <b>OpenAI</b> &mdash; 它卡少、电也少，因为它的算力主要是<b>租</b>来的，不在自己账上。Google 的功率取了区间下沿，因为 TPU 每当量的能耗低于 Nvidia。</p>
+      <p class="ls-note"><b>右图是统一的 H100 等效换算，不是各家实际电表读数。</b>NVIDIA 的 DGX H100 为 8 张卡、整机最大 10.2kW；Epoch 再计入其余 IT 开销后采用约 1.45&ndash;1.47kW / H100。若按设施侧 PUE 约 1.15，1GW 大致容纳 <b>60 万张物理 H100</b>。因此本图直接用 H100e &divide; 60 万/GW，避免此前功率下界偏低；TPU、Trainium、Blackwell 的真实功耗可以因能效不同而更低。</p>
     </figure>
 
     <div class="ls-tablewrap">
       <table class="ls-table">
         <thead>
           <tr>
-            <th>玩家</th>
-            <th>GPU<span class="th-sub">H100 当量 · 万</span></th>
-            <th>在线功率<span class="th-sub">GW · 现在插着电的</span></th>
-            <th>公开目标</th>
+            <th>所有者 / 运营商</th>
+            <th>算力保有量<span class="th-sub">H100e · 万 · 5%–95%</span></th>
+            <th>H100 等效设施负载<span class="th-sub">GW · 60 万 H100e / GW</span></th>
+            <th>主来源</th>
             <th>说明</th>
           </tr>
         </thead>
@@ -168,10 +168,10 @@
       </table>
     </div>
 
-    <p class="ls-prose-note"><b>Google 和 Amazon 的算力大部分不来自 Nvidia GPU</b>，而是自研的 TPU 和 Trainium &mdash; 严格说它们是 ASIC 而非 GPU，本表按 H100 当量统一折算。所以「谁的卡多」和「谁给 Nvidia 的钱多」不是一回事。</p>
-    <p class="ls-prose-note"><b>GPU 区间怎么推的（一律折成 H100 当量）。</b> <em>Google</em>：Epoch AI 2024-10 估 &gt;100 万当量；2026 年 TPU 出货预测约 430 万颗（含对外销售），按每颗 1.0–1.5 当量折算 → 250–450 万。<em>Meta</em>：扎克伯格 2025-01 称 2025 年底超 130 万张物理卡，加 2026 上半年 Prometheus 的 1GW（每 GW 约 50–60 万张 GB200 级）→ 180–250 万张，按混合代际 ×1.2 → 220–300 万当量。<em>Microsoft</em>：Nvidia 2023–2025 累计数据中心收入约 $3560 亿，微软长期约占其收入 15%（10-Q「Customer A」口径）→ 约 $530 亿，按 $30k–40k 系统级均价 → 130–180 万张物理卡，Blackwell 按 2–2.5× 折算 → 200–300 万当量。<em>Amazon</em>：三代 Trainium 累计约 140 万颗（0.7–0.9 当量/颗）＋ Nvidia 机队（约占 Nvidia 收入 6%）→ 180–260 万当量。<em>xAI</em>：55.5 万张物理卡，含 H100/H200/GB200，混合折算 → 100–130 万当量。<em>OpenAI</em>：自有极少，按 Abilene 实跑 0.3GW 反推 → 20–40 万当量。</p>
-    <p class="ls-prose-note"><b>在线功率怎么推的。</b>除 xAI（2GW 为报道值）和 OpenAI（Abilene 实跑 0.3GW）外，其余四家的公司级 AI 功率<b>无人披露</b>。我用「约 60 万 H100 当量 &asymp; 1 GW」从卡量反推，再与各家已披露的建设速率对齐（微软 2025 年新建约 2GW、FY26 Q2/Q3 各再加约 1GW；Amazon 2025 年新增 3.8GW；Meta 的 Prometheus 已扩至 3GW+）。<b>所以卡量和功率这两列不是独立证据，它们互相校准过。</b>两者一致只能说明内部自洽，不能证明绝对值正确。</p>
-    <p class="ls-prose-note"><b>三个让这些数字不可靠的原因，必须说清楚。</b> <em>一</em>、Nvidia 10-Q 里的「直接客户」常常是 ODM／代工厂而非终端云厂，把 Customer A 认定为微软本身就是推断；且数据中心收入里有一到两成是网络设备，不是 GPU。<em>二</em>、<b>「H100 当量」这个单位本身就不稳定</b>：同一块 GB300，按 FP16 训练算和按 FP4 推理算，当量能差三倍以上。跨公司比较的可比性远比看上去差。<em>三</em>、各家口径不一，且没有一家做审计披露。<b>所以这些区间的真实误差都可能达到 2 倍。当量级看，别当精确值。</b></p>
+    <p class="ls-prose-note"><b>这版换了底表。</b>不再用 Nvidia 收入占比、单站功率和新闻目标拼出我自己的区间，而是直接采用 Epoch AI 2026 年发布的 <em>AI Chip Owners</em> 原始数据库。超大云厂采用最后一个完整共同截点 <b>2025-12-31</b>，xAI 单独更新到 Epoch 2026 年 7 月站点估算；表中区间适合看量级，不是审计值。</p>
+    <p class="ls-prose-note"><b>这里的“所有权”更接近控制权，而不是会计资产。</b>Epoch 明确规定：云厂商出租给 AI 实验室的算力记在云厂商名下。因此 <em>OpenAI 不再单列</em>；它使用的大部分算力分布在 Microsoft、Oracle 和 CoreWeave 等供应商行里。Oracle 与 CoreWeave 也因此必须独立列出。合资、项目融资或客户供卡仍可能让法律所有权更复杂。</p>
+    <p class="ls-prose-note"><b>H100e 不是“物理卡数”。</b>Epoch 以 dense 8-bit 峰值算力折算；例如 1 颗 TPUv7 约等于 2.3 颗 H100。右列只是回答“如果用物理 H100 提供同等峰值算力，大致需要多少设施电力”，不能当作 Google、Amazon 或 xAI 的实际用电。</p>
+    <p class="ls-prose-note"><b>xAI 最能说明两种口径的差别。</b>Epoch 2026 年 7 月估算 Colossus 1 + 2 当前约 <em>139 万 H100e / 1.29GW IT 功率</em>；若全部换成物理 H100，则对应约 <em>2.3GW 设施负载</em>。两者不同并非违反能量守恒，而是因为 H100e 包含 Blackwell 等更高性能芯片。媒体所说的接近 <em>2GW</em> 则是第三栋楼完成后的规划供电目标。</p>
 
     <p class="ls-eyebrow">第四节 · Nvidia 的账本</p>
     <h2>NVIDIA 收入及卖卡量</h2>
@@ -223,11 +223,11 @@
     <h2>这份表哪里靠不住</h2>
     <div class="ls-caveat">
       <h4>有硬来源的</h4>
-      <p>Nvidia 各财年数据中心收入（10-K / 8-K）；$500B 与 $1T 订单口径（公司公开表述）；Omdia 的 2022/2023 出货量；四大云厂 133GW 电力协议；五座 1GW+ 站点的上线月份与规划功率；Meta 2025 年底 130 万张 GPU（扎克伯格 2025-01）；Project Rainier 近 50 万颗 Trainium2 上线、扩至 100 万颗（AWS 官方）。</p>
+      <p>Nvidia 各财年数据中心收入（10-K / 8-K）；$500B 与 $1T 订单口径（公司公开表述）；Omdia 的 2022/2023 出货量；四大云厂 133GW 电力协议；五座 1GW+ 站点的上线月份与规划功率；Meta 的自建 H100 集群披露；Project Rainier 近 50 万颗 Trainium2（AWS 官方）；CoreWeave 2025 年底 850MW、2026 Q1 超过 1GW 的在线容量（公司财报）。</p>
     </div>
     <div class="ls-caveat">
       <h4>是估算或我的推导</h4>
-      <p><b>玩家总览表里的 GPU 与在线功率两列，六家全部是我按上文方法推的预估值，误差可能达 2 倍，且两列互相校准过、并非独立证据</b>；各站点「已上线」功率（除少数披露外多为报道估计）；2026 年收入推算；订单金额反推的卡量区间；xAI 的 2GW / 55.5 万卡为 2026 年 1 月报道值；Trainium 累计 140 万颗为报道值。</p>
+      <p><b>所有者总览表的 H100e 区间来自 Epoch AI 模型，不是公司审计披露；右列只是按 60 万 H100e / GW 得出的 H100 等效设施负载，不是各家实际功耗</b>；Oracle 的证据尤其稀疏、区间最宽；各站点「已上线」功率（除少数披露外多为报道估计）；2026 年收入推算；订单金额反推的卡量区间。</p>
     </div>
     <div class="ls-caveat">
       <h4>无人公开的</h4>
@@ -243,7 +243,18 @@
       <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026" target="_blank" rel="noopener">NVIDIA — FY2026 第四季度及全年财报</a>
       <a href="https://www.hpcwire.com/2024/06/10/nvidia-shipped-3-76-million-data-center-gpus-in-2023-according-to-study/" target="_blank" rel="noopener">HPCwire / Omdia — 2023 年出货 376 万张数据中心 GPU</a>
       <a href="https://www.nextbigfuture.com/2025/11/first-five-ai-data-center-with-over-one-gigawatt-of-power-arriving-in-2026-2027.html" target="_blank" rel="noopener">NextBigFuture — 2026 年首批五座 1GW+ 数据中心</a>
-      <a href="https://epoch.ai/data-insights/computing-capacity" target="_blank" rel="noopener">Epoch AI — 各大 AI 公司的算力保有量估算</a>
+      <a href="https://epoch.ai/data/ai-chip-owners?tab=h100_equivalents&amp;view=graph" target="_blank" rel="noopener">Epoch AI — AI Chip Owners 统一算力所有权数据库</a>
+      <a href="https://epoch.ai/data/ai-chip-owners-documentation/methodology" target="_blank" rel="noopener">Epoch AI — AI Chip Owners 方法论（含 Oracle、CoreWeave）</a>
+      <a href="https://epoch.ai/data/ai-chip-owners-documentation/faq" target="_blank" rel="noopener">Epoch AI — 所有权、H100e、功率与不确定性定义</a>
+      <a href="https://docs.nvidia.com/dgx/dgxh100-user-guide/introduction-to-dgxh100.html" target="_blank" rel="noopener">NVIDIA — DGX H100/H200 整机最大功率 10.2kW（8 张 GPU）</a>
+      <a href="https://epoch.ai/data/ai_chip_owners.zip" target="_blank" rel="noopener">Epoch AI — AI Chip Owners 原始数据下载</a>
+      <a href="https://www.sec.gov/Archives/edgar/data/1181412/000162828026036936/spaceexplorationtechnologi.htm" target="_blank" rel="noopener">SpaceX S-1（SEC）— Colossus 1+2 合计约 1.0GW，含分阶段卡量与功率</a>
+      <a href="https://epoch.ai/data/ai-data-centers/directory/colossus-1" target="_blank" rel="noopener">Epoch AI — Colossus 1：约 27.6 万 H100e / 340MW IT</a>
+      <a href="https://epoch.ai/data/ai-data-centers/directory/colossus-2" target="_blank" rel="noopener">Epoch AI — Colossus 2：约 111.2 万 H100e / 946MW IT</a>
+      <a href="https://engineering.fb.com/2024/03/12/data-center-engineering/building-metas-genai-infrastructure/" target="_blank" rel="noopener">Meta Engineering — 两座 24,576-H100 集群与 60 万 H100e 组合目标</a>
+      <a href="https://www.sec.gov/Archives/edgar/data/1769628/000176962826000104/crwv-20251231.htm" target="_blank" rel="noopener">CoreWeave 10-K（SEC）— 2025 年底在线功率超过 850MW</a>
+      <a href="https://www.sec.gov/Archives/edgar/data/1769628/000176962826000220/coreweave1q26earningspress.htm" target="_blank" rel="noopener">CoreWeave 8-K 附件（SEC）— 2026 Q1 在线功率超过 1GW</a>
+      <a href="https://www.oracle.com/news/announcement/q4fy26-earnings-release-2026-06-10/" target="_blank" rel="noopener">Oracle — FY2026 业绩与 AI 基础设施融资口径</a>
       <a href="https://techcrunch.com/2025/01/24/mark-zuckerberg-says-meta-will-have-1-3m-gpus-for-ai-by-year-end/" target="_blank" rel="noopener">TechCrunch — 扎克伯格：Meta 2025 年底将有 130 万张 GPU</a>
       <a href="https://www.aboutamazon.com/news/aws/aws-project-rainier-ai-trainium-chips-compute-cluster" target="_blank" rel="noopener">AWS — Project Rainier 上线，近 50 万颗 Trainium2</a>
       <a href="https://newsletter.semianalysis.com/p/tpuv7-google-takes-a-swing-at-the" target="_blank" rel="noopener">SemiAnalysis — Google TPUv7 与 TPU 出货预测</a>
@@ -257,6 +268,6 @@
     </div>
   </article>
 </div>
-<script src="charts.js?v=202607101700"></script>
+<script src="charts.js?v=202607140445"></script>
 </body>
 </html>

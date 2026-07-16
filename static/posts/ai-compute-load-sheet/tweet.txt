@@ -4,31 +4,47 @@ Title: 1GW went from impossible to table stakes
 
 2024: no datacenter on Earth ran at a gigawatt. 2026: five switch on, one per hyperscaler.
 
-Who actually has the compute — H100-equivalents + online power (estimates, ±2x):
+Who controls the compute now — H100e performance plus H100-equivalent facility load at 600k H100e/GW:
 
-Google — 2.5–4.5M · 3–6 GW
+⚡ Current (2026):
 
-Meta — 2.2–3.0M · 3–4 GW
+Google — 4.04–6.13M · 6.7–10.2 GW
 
-Microsoft — 2.0–3.0M · 3.5–5 GW
+Microsoft — 2.62–4.43M · 4.4–7.4 GW
 
-Amazon — 1.8–2.6M · 3–4 GW
+Amazon — 2.01–3.00M · 3.4–5.0 GW
 
-xAI/SpaceX — 1.0–1.3M · 1.8–2.2 GW
+Meta — 1.77–3.00M · 3.0–5.0 GW
 
-OpenAI — 0.2–0.4M · 0.3–0.7 GW
+Oracle — 0.85–1.56M · 1.4–2.6 GW
 
-⏳ Once built (targets, not yet online):
+CoreWeave — 0.79–0.88M · 1.3–1.5 GW
 
-Meta (end-2026) — ~4M · 6.5 GW
+xAI — ~1.39M · ~2.3 GW
+
+⏳ Once built (targets, not live):
+
+Meta (end-2026) — ~4M · ~6.7 GW
 
 OpenAI Stargate — ~6M · 10 GW
 
-Google & Amazon: mostly own TPU/Trainium, not Nvidia. OpenAI looks light because it mostly rents.
+OpenAI is no longer a row: Epoch attributes rented cloud compute to Microsoft, Oracle and CoreWeave. Google/Amazon include TPU/Trainium, so H100e is not a physical-card count.
+
+The GW column is not actual meter load. It asks how much facility power an all-H100 fleet would need for the same peak performance, using ~600k physical H100s/GW.
+
+xAI shows why H100e ≠ cards: ~1.39M H100e converts to ~2.3GW of H100-equivalent facility load, while its mixed modern fleet is estimated at ~1.29GW IT. “Nearly 2GW” is the planned supply target.
+
+References:
+
+1. Epoch AI — H100e FAQ / AI Chip Owners
+
+2. NVIDIA — DGX H100 power specification
+
+3. SpaceX S-1 — SEC
 
 Full sheet + sources: https://guochengqian.github.io/blog/ai-compute-load-sheet/
 
-Weighted length: 642 — exceeds the 280 free-tier cap, so post it as an X Premium long-form post (or as a thread: hook → current table → targets → takeaway + link).
+Format: exceeds the 280 free-tier cap, so post it as an X Premium long-form post (or as a thread: hook → owner table → methodology caveat → takeaway + link).
 
 Images: 1.jpg (cover) + 2–6.jpg (charts).
 

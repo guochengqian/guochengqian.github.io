@@ -1,0 +1,19 @@
+Title: 视频推理还没卷爆
+
+video generation inference 是个不错的研究题。
+
+LLM 这边已经有 vLLM、SGLang 这种标杆系统，影响力很大；但 video generation 这边，模型越来越强，inference / serving stack 还明显滞后。
+
+没有大厂实习？没有很多卡？研究生别慌，这个方向依然包有活：
+
+✅ training-free 加速：少训甚至不训，优化采样、cache、scheduler
+
+✅ serving 加速：吞吐、延迟、batching、多用户队列
+
+✅ context management：长视频、多镜头、一致性、历史帧怎么管
+
+这个赛道还没像 training-free agent 那样卷爆。问题真实，需求明确，适合小团队切进去。
+
+Tags: #视频生成 #AI系统 #研究方向 #研究生科研 #AIGC
+
+Visibility: 仅自己可见
