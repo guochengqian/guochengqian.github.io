@@ -2,7 +2,7 @@ Title: 全球大玩家都有多少卡？
 
 Meta 的 Prometheus 数据中心是 1GW，这到底算什么水平？
 
-18 个月前闻所未闻，现在成了头部五家的“入场券”。而且它已经不是最大的了，xAI 的 Colossus 2 已经干到 2GW。
+18 个月前闻所未闻，现在成了头部五家的“入场券”。xAI 的 Colossus 1+2 当前约 1.0–1.3GW，扩建目标接近 2GW。
 
 先给几个直观换算：
 
@@ -14,27 +14,57 @@ Meta 的 Prometheus 数据中心是 1GW，这到底算什么水平？
 
 ✅ 四大云厂已经签了 133GW 电力协议，约等于 120 座核电站
 
-把六家都换算成等效 H100（万张）和在线功率（GW）——都是估算，误差可能 2 倍，看量级就好：
+截至 2026 年 7 月，按最新公开信息把七家统一换算成 H100e（万）。右列不再冒充实际用电，而是按“1GW ≈ 60 万张物理 H100”计算 H100 等效设施负载。这里只保留两层：2026 当前，以及尚未通电的规划目标。
 
-玩家｜等效 H100｜在线功率
+⚡ 2026 当前：
 
-Google｜250–450 万｜3–6 GW
+所有者｜H100e（5%–95%）｜H100 等效设施负载
 
-Meta｜220–300 万｜3–4 GW
+Google｜404–613 万｜6.7–10.2 GW
 
-微软｜200–300 万｜3.5–5 GW
+微软｜262–443 万｜4.4–7.4 GW
 
-Amazon｜180–260 万｜3–4 GW
+Amazon｜201–300 万｜3.4–5.0 GW
 
-SpaceX｜100–130 万｜1.8–2.2 GW
+Meta｜177–300 万｜3.0–5.0 GW
 
-OpenAI｜20–40 万｜0.3–0.7 GW
+Oracle｜85–156 万｜1.4–2.6 GW
+
+CoreWeave｜79–88 万｜1.3–1.5 GW
+
+xAI｜约 139 万｜约 2.3 GW
 
 ⏳ 建成后（规划目标，还没通电）：
 
-Meta（2026 年底）｜约 400 万｜6.5 GW
+Meta（2026 年底）｜约 400 万｜约 6.7 GW
 
 OpenAI 星际之门｜约 600 万｜10 GW
+
+三个关键口径：
+
+1）OpenAI 不再单列，因为它主要租用微软、Oracle、CoreWeave 的算力；
+
+2）Google / Amazon 包含 TPU / Trainium，H100e 不是物理卡数；
+
+3）功率列按 60 万 H100e / GW 统一折算，是 H100 等效负载，不是各家真实电表读数。
+
+为什么实际功率可能更低？因为 H100e 是性能当量，不是物理卡数。TPUv7、Trainium、Blackwell 每张卡可对应多个 H100e；因此 H100 等效负载只适合统一比较，不能代替园区实际功率。
+
+⚠️ xAI 正好说明两者的区别：当前约 139 万 H100e，对应约 2.3GW 的 H100 等效设施负载；但混合新卡的实际 IT 功率约 1.29GW。媒体说的“接近 2GW”是第三栋楼完成后的规划目标。
+
+References：
+
+1. Epoch AI — H100e 定义与 AI Chip Owners
+
+https://epoch.ai/data/ai-chip-owners-documentation/faq
+
+2. NVIDIA — DGX H100/H200 功率规格
+
+https://docs.nvidia.com/dgx/dgxh100-user-guide/introduction-to-dgxh100.html
+
+3. SpaceX S-1 — SEC
+
+https://www.sec.gov/Archives/edgar/data/1181412/000162828026036936/spaceexplorationtechnologi.htm
 
 原文：
 

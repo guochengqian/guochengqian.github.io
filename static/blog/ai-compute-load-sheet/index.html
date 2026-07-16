@@ -83,12 +83,12 @@
       <img src="../img/avatar.jpg" alt="">
       <div>
         <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
-        <div class="byline-sub">July 9, 2026 &middot; 8 min read</div>
+        <div class="byline-sub">July 9, 2026 &middot; Updated July 13 &middot; 8 min read</div>
       </div>
       <form class="subscribe-form subscribe-compact byline-subscribe" data-title="1 Gigawatt Is No Longer the Ceiling — It’s the Cover Charge" data-url="https://guochengqian.github.io/blog/ai-compute-load-sheet/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
     </div>
 
-    <div class="ls-meta"><span>As of 2026-07</span><span>Units: GW · cards · $B</span><span>17 sources</span></div>
+    <div class="ls-meta"><span>As of 2026-07</span><span>Units: GW · H100e · $B</span><span>27 sources</span></div>
 
     <div class="ls-readout">
       <div>
@@ -139,28 +139,28 @@
       <p class="ls-note">Prometheus’ 1GW <b>isn’t one building</b>: SemiAnalysis describes it as a constellation of 27 datacenters across 6 campuses, five within 6km of each other, one 75–80km away, stitched together by a home-grown AI-Backbone (~22 Pb/s bisection). Light-speed latency between campuses alone is 500+ microseconds, so training must run asynchronously. The piece says it has already grown from 1GW past 3GW+ in two years.</p>
     </figure>
 
-    <p class="ls-eyebrow">Part 3 · Player overview</p>
-    <h2>Cards and power, company by company</h2>
+    <p class="ls-eyebrow">Part 3 · Compute-owner overview</p>
+    <h2>Who controls the compute—and the facility load of an H100-equivalent fleet</h2>
     <figure class="ls-chart" aria-labelledby="ls-pair-t">
-      <h3 id="ls-pair-t" class="sr-only">Two side-by-side range-bar panels sharing one row order: GPUs in H100-equivalents on the left, online power on the right.</h3>
-      <p class="ls-head">The distribution of cards and power</p>
-      <p class="ls-sub">left: GPUs (H100-equiv, 10k) &middot; right: online power (GW) &middot; same row order</p>
+      <h3 id="ls-pair-t" class="sr-only">Two side-by-side range-bar panels sharing one row order: H100-equivalent performance controlled by each compute owner on the left, and facility load converted at six hundred thousand physical H100s per gigawatt on the right.</h3>
+      <p class="ls-head">H100-equivalent performance and facility load</p>
+      <p class="ls-sub">latest public estimates &middot; hyperscalers to end-2025, xAI updated Jul 2026</p>
       <div class="ls-scroll" id="ls-pair"></div>
       <div class="ls-legend">
-        <span class="item"><span class="ls-sw" style="background:var(--c-live);opacity:.6"></span>Estimated range (low&ndash;high)</span>
-        <span class="item"><span class="ls-sw" style="background:var(--c-live);width:3px;height:16px;border-radius:1px"></span>Range midpoint</span>
+        <span class="item"><span class="ls-sw" style="background:var(--c-live);opacity:.6"></span>Epoch model 5th&ndash;95th percentile</span>
+        <span class="item"><span class="ls-sw" style="background:var(--c-live);width:3px;height:16px;border-radius:1px"></span>Range midpoint (visual marker only)</span>
       </div>
-      <p class="ls-note"><b>The two panels have almost the same shape, and that’s not a coincidence — it’s a cross-check.</b> At PUE 1.2 and 1.2–1.4 kW per card, roughly <b>600k H100-equivalents &asymp; 1 GW</b>. Five of six sit on that line; the one exception is <b>OpenAI</b> &mdash; light on both, because its compute is mostly <b>rented</b>, not on its own books. Google’s power takes the low end of its range, because TPUs use less energy per equivalent than Nvidia.</p>
+      <p class="ls-note"><b>The right panel is a standardized H100-equivalent conversion, not anyone’s meter reading.</b> An NVIDIA DGX H100 holds eight GPUs and draws up to 10.2kW; Epoch’s method reaches roughly 1.45&ndash;1.47kW of IT power per H100 after other IT overhead. At a facility PUE near 1.15, 1GW supports roughly <b>600k physical H100s</b>. The panel therefore divides H100e by 600k/GW. Real TPU, Trainium and Blackwell fleets can draw less because their performance per watt differs.</p>
     </figure>
 
     <div class="ls-tablewrap">
       <table class="ls-table">
         <thead>
           <tr>
-            <th>Player</th>
-            <th>GPUs<span class="th-sub">H100-equiv · 10k</span></th>
-            <th>Online power<span class="th-sub">GW · plugged in now</span></th>
-            <th>Stated goal</th>
+            <th>Owner / operator</th>
+            <th>Compute owned<span class="th-sub">H100e · 10k · 5th–95th</span></th>
+            <th>H100-equivalent facility load<span class="th-sub">GW · 600k H100e / GW</span></th>
+            <th>Primary source</th>
             <th>Notes</th>
           </tr>
         </thead>
@@ -168,10 +168,10 @@
       </table>
     </div>
 
-    <p class="ls-prose-note"><b>Google and Amazon’s compute mostly doesn’t come from Nvidia GPUs</b> — it’s their own TPUs and Trainium, which are technically ASICs, not GPUs, folded into H100-equivalents here. So &ldquo;who has the most cards&rdquo; and &ldquo;who pays Nvidia the most&rdquo; are not the same question.</p>
-    <p class="ls-prose-note"><b>How the GPU ranges are derived (all folded into H100-equivalents).</b> <em>Google</em>: Epoch AI (Oct 2024) estimates &gt;1M equivalents; 2026 TPU shipments are forecast at ~4.3M (incl. external sales), folded at 1.0–1.5 equivalents each → 2.5–4.5M. <em>Meta</em>: Zuckerberg (Jan 2025) says over 1.3M physical cards by end-2025, plus H1-2026 Prometheus at 1GW (~500–600k GB200-class per GW) → 1.8–2.5M cards, ×1.2 for mixed generations → 2.2–3.0M equivalents. <em>Microsoft</em>: Nvidia’s 2023–2025 cumulative data-center revenue ~$356B, Microsoft long ~15% of it (the 10-Q &ldquo;Customer A&rdquo;) → ~$53B, at $30k–40k system-level ASP → 1.3–1.8M physical cards, Blackwell folded at 2–2.5× → 2.0–3.0M equivalents. <em>Amazon</em>: ~1.4M Trainium across three generations (0.7–0.9 equiv/chip) plus the Nvidia fleet (~6% of Nvidia revenue) → 1.8–2.6M equivalents. <em>xAI</em>: 555k physical cards, H100/H200/GB200 mixed → 1.0–1.3M equivalents. <em>OpenAI</em>: very little self-owned, back-solved from Abilene’s 0.3GW live → 0.2–0.4M equivalents.</p>
-    <p class="ls-prose-note"><b>How the online-power figures are derived.</b> Except xAI (2GW is reported) and OpenAI (Abilene runs 0.3GW live), the company-level AI power for the other four is <b>undisclosed by anyone</b>. I back-solve it from card counts using &ldquo;~600k H100-equivalents &asymp; 1 GW,&rdquo; then reconcile with each company’s disclosed build rate (Microsoft ~2GW built in 2025 plus ~1GW each in FY26 Q2/Q3; Amazon +3.8GW in 2025; Meta’s Prometheus past 3GW+). <b>So the cards and power columns aren’t independent evidence — they’re cross-calibrated.</b> Their agreement only shows internal consistency, not that the absolute numbers are right.</p>
-    <p class="ls-prose-note"><b>Three reasons these numbers are unreliable, said plainly.</b> <em>One</em>: Nvidia’s 10-Q &ldquo;direct customer&rdquo; is often an ODM/contract manufacturer, not the end cloud, so identifying Customer A as Microsoft is itself an inference; and one-fifth-ish of data-center revenue is networking gear, not GPUs. <em>Two</em>: <b>&ldquo;H100-equivalent&rdquo; is itself an unstable unit</b> — the same GB300 counts three-plus times as much under FP4 inference as under FP16 training. Cross-company comparisons are far shakier than they look. <em>Three</em>: every company measures differently, and none of it is audited. <b>So the true error on these ranges could reach a factor of two. Read the magnitude, not the digits.</b></p>
+    <p class="ls-prose-note"><b>This version replaces the old bottom-up sheet.</b> Instead of combining Nvidia revenue shares, campus power and press targets into my own ranges, it uses Epoch AI’s 2026 <em>AI Chip Owners</em> raw database. Hyperscalers use the latest complete common cutoff, <b>2025-12-31</b>, while xAI is updated separately to Epoch’s July 2026 site estimate. The figures are useful for scale, not audited asset counts.</p>
+    <p class="ls-prose-note"><b>&ldquo;Ownership&rdquo; here is closer to control than accounting title.</b> Epoch explicitly attributes cloud compute to the cloud provider, not the AI lab renting it. That removes <em>OpenAI as a standalone row</em>: most of its capacity sits under providers such as Microsoft, Oracle and CoreWeave. It also makes Oracle and CoreWeave necessary standalone rows. Joint ventures, project finance and customer-supplied hardware can still complicate legal ownership.</p>
+    <p class="ls-prose-note"><b>H100e is not a physical card count.</b> Epoch converts dense 8-bit peak throughput; for example, one TPUv7 is about 2.3 H100e. The right column only asks how much facility power a physical-H100 fleet would need to provide the same peak performance; it is not Google’s, Amazon’s or xAI’s actual electricity use.</p>
+    <p class="ls-prose-note"><b>xAI makes the distinction concrete.</b> Epoch’s July 2026 estimate puts Colossus 1 + 2 at roughly <em>1.39M H100e / 1.29GW of IT power</em>. Replacing that mixed fleet with physical H100s would imply about <em>2.3GW of facility load</em>. The difference reflects Blackwell and other higher-performance chips inside the H100e total. The reported <em>nearly 2GW</em> is the planned supply target after the third building is completed.</p>
 
     <p class="ls-eyebrow">Part 4 · Nvidia’s ledger</p>
     <h2>Nvidia’s revenue, and its card sales</h2>
@@ -223,11 +223,11 @@
     <h2>Where this sheet is shaky</h2>
     <div class="ls-caveat">
       <h4>Has a hard source</h4>
-      <p>Nvidia’s data-center revenue by fiscal year (10-K / 8-K); the $500B and $1T order figures (company statements); Omdia’s 2022/2023 unit counts; the big-four clouds’ 133GW power deals; the on-line months and planned power of the five 1GW+ sites; Meta’s 1.3M GPUs by end-2025 (Zuckerberg, Jan 2025); Project Rainier’s ~500k Trainium2 live and scaling to 1M (AWS official).</p>
+      <p>Nvidia’s data-center revenue by fiscal year (10-K / 8-K); the $500B and $1T order figures (company statements); Omdia’s 2022/2023 unit counts; the big-four clouds’ 133GW power deals; the on-line months and planned power of the five 1GW+ sites; Meta’s disclosed H100 clusters; Project Rainier’s nearly 500k Trainium2 (AWS official); CoreWeave’s 850MW active at end-2025 and more than 1GW in Q1 2026 (company results).</p>
     </div>
     <div class="ls-caveat">
       <h4>Estimate or my own derivation</h4>
-      <p><b>The GPU and online-power columns of the overview table — all six are my estimates by the methods above, possibly off by a factor of two, and the two columns are cross-calibrated rather than independent</b>; each site’s &ldquo;live&rdquo; power (mostly reported estimates outside a few disclosures); the 2026 revenue estimate; the card range back-solved from the order value; xAI’s 2GW / 555k cards are a January 2026 report; Trainium’s cumulative 1.4M is a reported figure.</p>
+      <p><b>The compute-owner table’s H100e ranges are Epoch AI model estimates, not audited company disclosures; the right column is merely an H100-equivalent facility-load conversion at 600k H100e/GW, not each owner’s actual power draw</b>; Oracle has the sparsest evidence and widest interval; each site’s &ldquo;live&rdquo; power (mostly reported estimates outside a few disclosures); the 2026 revenue estimate; and the card range back-solved from order value.</p>
     </div>
     <div class="ls-caveat">
       <h4>Nobody published it</h4>
@@ -243,7 +243,18 @@
       <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026" target="_blank" rel="noopener">NVIDIA — Q4 and Fiscal 2026 results</a>
       <a href="https://www.hpcwire.com/2024/06/10/nvidia-shipped-3-76-million-data-center-gpus-in-2023-according-to-study/" target="_blank" rel="noopener">HPCwire / Omdia — 3.76M data-center GPUs shipped in 2023</a>
       <a href="https://www.nextbigfuture.com/2025/11/first-five-ai-data-center-with-over-one-gigawatt-of-power-arriving-in-2026-2027.html" target="_blank" rel="noopener">NextBigFuture — First five 1GW+ AI datacenters, 2026</a>
-      <a href="https://epoch.ai/data-insights/computing-capacity" target="_blank" rel="noopener">Epoch AI — Computing capacity of major AI companies</a>
+      <a href="https://epoch.ai/data/ai-chip-owners?tab=h100_equivalents&amp;view=graph" target="_blank" rel="noopener">Epoch AI — AI Chip Owners unified ownership database</a>
+      <a href="https://epoch.ai/data/ai-chip-owners-documentation/methodology" target="_blank" rel="noopener">Epoch AI — AI Chip Owners methodology, including Oracle and CoreWeave</a>
+      <a href="https://epoch.ai/data/ai-chip-owners-documentation/faq" target="_blank" rel="noopener">Epoch AI — Definitions of ownership, H100e, power and uncertainty</a>
+      <a href="https://docs.nvidia.com/dgx/dgxh100-user-guide/introduction-to-dgxh100.html" target="_blank" rel="noopener">NVIDIA — DGX H100/H200 maximum system power: 10.2kW for eight GPUs</a>
+      <a href="https://epoch.ai/data/ai_chip_owners.zip" target="_blank" rel="noopener">Epoch AI — AI Chip Owners raw data download</a>
+      <a href="https://www.sec.gov/Archives/edgar/data/1181412/000162828026036936/spaceexplorationtechnologi.htm" target="_blank" rel="noopener">SpaceX S-1 (SEC) — Colossus 1+2 at ~1.0GW, with phased chip and power disclosures</a>
+      <a href="https://epoch.ai/data/ai-data-centers/directory/colossus-1" target="_blank" rel="noopener">Epoch AI — Colossus 1: ~276k H100e / 340MW IT</a>
+      <a href="https://epoch.ai/data/ai-data-centers/directory/colossus-2" target="_blank" rel="noopener">Epoch AI — Colossus 2: ~1.112M H100e / 946MW IT</a>
+      <a href="https://engineering.fb.com/2024/03/12/data-center-engineering/building-metas-genai-infrastructure/" target="_blank" rel="noopener">Meta Engineering — two 24,576-H100 clusters and ~600k H100e portfolio target</a>
+      <a href="https://www.sec.gov/Archives/edgar/data/1769628/000176962826000104/crwv-20251231.htm" target="_blank" rel="noopener">CoreWeave 10-K (SEC) — more than 850MW active at end-2025</a>
+      <a href="https://www.sec.gov/Archives/edgar/data/1769628/000176962826000220/coreweave1q26earningspress.htm" target="_blank" rel="noopener">CoreWeave 8-K exhibit (SEC) — more than 1GW active in Q1 2026</a>
+      <a href="https://www.oracle.com/news/announcement/q4fy26-earnings-release-2026-06-10/" target="_blank" rel="noopener">Oracle — FY2026 results and AI-infrastructure funding disclosures</a>
       <a href="https://techcrunch.com/2025/01/24/mark-zuckerberg-says-meta-will-have-1-3m-gpus-for-ai-by-year-end/" target="_blank" rel="noopener">TechCrunch — Zuckerberg: Meta to have 1.3M GPUs by end-2025</a>
       <a href="https://www.aboutamazon.com/news/aws/aws-project-rainier-ai-trainium-chips-compute-cluster" target="_blank" rel="noopener">AWS — Project Rainier online, ~500k Trainium2</a>
       <a href="https://newsletter.semianalysis.com/p/tpuv7-google-takes-a-swing-at-the" target="_blank" rel="noopener">SemiAnalysis — Google TPUv7 and TPU shipment forecast</a>
@@ -257,6 +268,6 @@
     </div>
   </article>
 </div>
-<script src="charts.js?v=202607101700"></script>
+<script src="charts.js?v=202607140445"></script>
 </body>
 </html>

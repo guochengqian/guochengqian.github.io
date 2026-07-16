@@ -1,0 +1,18 @@
+Title: Agent不再靠人手调了
+
+Meta-Harness 的想法很直接：让 Claude Code 充当外层优化器，自己读历代 harness 的代码、分数和完整运行轨迹，再写出下一版 harness。
+
+✅ 每个候选先跑 search set
+
+✅ 代码、得分、提示词、模型输出、工具调用和状态变化全部存进 filesystem
+
+✅ 历史最多可达约 10M tokens，放不进上下文就用 grep、cat、diff 按需读取
+
+✅ 旧版本不覆盖，可以局部修改、完全重写，也可以合并成功方案
+
+真正的 insight 不是新搜索算法，而是：别急着把历史压成一段 summary。原始轨迹虽然检索不完美，却保留了长程因果信息。
+
+模型权重不更新，本质上是 full-history code search。
+
+Tags: #人工智能 #智能体 #大模型 #论文阅读 #ClaudeCode
+Visibility: 仅自己可见

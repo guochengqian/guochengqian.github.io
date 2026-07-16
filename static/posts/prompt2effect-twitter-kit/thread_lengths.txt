@@ -1,9 +1,0 @@
-Main tweet.txt: 276/280
-Tweet 1: 276/280
-Tweet 2: 234/280
-Tweet 3: 242/280
-Tweet 4: 231/280
-Tweet 5: 214/280
-Tweet 6: 230/280
-Tweet 7: 214/280
-Tweet 8: 219/280
