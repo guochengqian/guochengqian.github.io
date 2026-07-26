@@ -213,6 +213,8 @@ def convert_blocks(parent, slug, dry, warnings):
         elif c.tag == 'pre':
             blocks.append({'type': 'code_block', 'attrs': {'language': None},
                            'content': [{'type': 'text', 'text': c.text().strip('\n')}]})
+        elif c.tag == 'table':
+            blocks += convert_table(c, slug)
         elif c.tag == 'figure':
             blocks.append(convert_figure(c, slug, dry, warnings))
         elif c.tag == 'div':
@@ -230,6 +232,29 @@ def convert_blocks(parent, slug, dry, warnings):
             continue
         else:
             warnings.append(f'{slug}: unhandled <{c.tag} class={cls}>')
+    return blocks
+
+def convert_table(table, slug):
+    """Flatten an HTML table into readable Substack paragraphs."""
+    blocks = []
+    for row in table.find_all('tr'):
+        cells = [c for c in row.children
+                 if isinstance(c, Node) and c.tag in ('th', 'td')]
+        if not cells:
+            continue
+        content = []
+        for i, cell in enumerate(cells):
+            cell_content = inline_nodes(cell, slug)
+            if not cell_content:
+                continue
+            if i:
+                content.append({'type': 'text', 'text': ' — '})
+            if i == 0:
+                for item in cell_content:
+                    item['marks'] = item.get('marks', []) + [{'type': 'strong'}]
+            content += cell_content
+        if content:
+            blocks.append({'type': 'paragraph', 'content': content})
     return blocks
 
 def convert_list(node, slug, dry, warnings):
@@ -273,7 +298,7 @@ def convert_figure(fig, slug, dry, warnings):
     capnodes = [c for c in fig.children if isinstance(c, Node) and c.tag == 'figcaption']
     caption = inline_nodes(capnodes[0], slug) if capnodes else None
     if imgs:
-        src = imgs[0].attrs.get('src', '')
+        src = imgs[0].attrs.get('src', '').split('?', 1)[0].split('#', 1)[0]
         fspath = (BLOG / slug / src).resolve()
         if src.endswith('.svg'):
             fspath = rasterize_svg(fspath)
