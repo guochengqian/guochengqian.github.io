@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transformer Parallelism — Gordon's Blog</title>
+  <meta name="description" content="A visual guide to data, tensor, pipeline, sequence/context, and expert parallelism — including the exact tensor layouts behind TP MLPs, Ring Attention, and Ulysses.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../img/favicon.png?v=202607072">
+  <link rel="stylesheet" href="../blog.css?v=202607070200">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607181902" defer></script>
+  <style>
+    .parallel-table { width: 100%; border-collapse: collapse; margin: 24px 0 32px; font-family: var(--sans); font-size: 14px; line-height: 1.45; }
+    .parallel-table th, .parallel-table td { padding: 11px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+    .parallel-table th { color: var(--muted); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+    .parallel-table td:first-child { font-weight: 600; white-space: nowrap; }
+    .equation { margin: 18px 0; padding: 18px 20px; border-left: 3px solid var(--accent); background: var(--soft); font-family: var(--sans); font-size: 16px; line-height: 1.8; overflow-x: auto; }
+    .equation strong { font-weight: 600; }
+    .layout { margin: 24px 0; padding: 17px 18px; background: var(--soft); border: 1px solid var(--border); border-radius: 7px; font: 13px/1.55 var(--sans); overflow-x: auto; white-space: pre; }
+    .note { margin: 22px 0; padding: 15px 18px; border-left: 3px solid #b76531; background: #faf6ee; color: #3d3028; font-family: var(--sans); font-size: 15px; line-height: 1.55; }
+    html.dark .note { background: #30251f; color: #eadfd5; }
+    .comparison-figure { margin: 32px -58px; }
+    .comparison-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .comparison-figure figcaption { margin: 10px 58px 0; color: var(--muted); font: 13px/1.45 var(--sans); }
+    @media (max-width: 780px) { .comparison-figure { margin-left: 0; margin-right: 0; } .comparison-figure figcaption { margin-left: 0; margin-right: 0; } }
+    @media (max-width: 560px) { .parallel-table { font-size: 12px; } .parallel-table th, .parallel-table td { padding: 9px 6px; } .parallel-table td:first-child { white-space: normal; } .equation { font-size: 14px; padding: 14px; } }
+  </style>
+</head>
+<body>
+<div class="page">
+  <article>
+    <div class="lang-row"><a class="lang-switch" href="cn.html" lang="zh-CN" hreflang="zh-CN">🌐 中文</a></div>
+    <p class="article-tag">AI</p>
+    <h1>Transformer Parallelism</h1>
+    <p class="subtitle">What each parallelism dimension partitions: model state, a Linear layer's channels, layers, tokens, or MoE experts.</p>
+    <div class="byline">
+      <img src="../img/avatar.jpg" alt="">
+      <div>
+        <div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div>
+        <div class="byline-sub">July 17, 2026 &middot; 13 min read</div>
+      </div>
+      <form class="subscribe-form subscribe-compact byline-subscribe" data-title="Transformer Parallelism" data-url="https://guochengqian.github.io/blog/parallelism-from-first-principles/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
+    </div>
+
+    <figure>
+      <img src="preview.png?v=202607181930" alt="A schematic of data, tensor, pipeline, context, and expert parallelism across a GPU cluster">
+      <figcaption>There is no single “multi-GPU training” trick. Each parallelism dimension cuts a different object: data, parameters, layers, tokens, or experts.</figcaption>
+    </figure>
+
+    <p>Large-model training becomes much easier to reason about once you stop treating parallelism as a bag of acronyms. Every technique answers one question: <em>what is too large for one GPU, and along which independent dimension can I split it?</em></p>
+
+    <table class="parallel-table">
+      <thead><tr><th>Method</th><th>What is partitioned?</th><th>Primary purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Data Parallel / FSDP</td><td>Data / model states</td><td>Increase batch scale; reduce memory for parameters, gradients, and optimizer states.</td></tr>
+        <tr><td>Tensor Parallel</td><td>Hidden or head channels inside one Linear / attention layer</td><td>Shard that layer's weights, channel-direction activations, and computation across GPUs.</td></tr>
+        <tr><td>Pipeline Parallel</td><td>Contiguous network blocks</td><td>Split a model that is too deep for one GPU or node.</td></tr>
+        <tr><td>Sequence / Context Parallel</td><td>Sequence / token dimension</td><td>Make long contexts and their activations or attention fit.</td></tr>
+        <tr><td>Expert Parallel</td><td>MoE experts</td><td>Increase total model capacity without activating every parameter for every token.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Data parallelism and FSDP: split examples vs. split model state</h2>
+    <p>In ordinary data parallelism, every GPU has a complete model but receives a different mini-batch. Gradients are all-reduced, so every replica applies the same update. This is the natural way to improve throughput once one model replica fits.</p>
+    <p><a href="https://pytorch.org/docs/stable/fsdp.html">Fully Sharded Data Parallel (FSDP)</a> shards <strong>model state</strong>, not a layer's computation: each rank stores only its parameters, gradients, and optimizer-state shard; it all-gathers parameters before a wrapped unit and reduce-scatters gradients after backward. FSDP does not shard that unit's activations or split its Linear operations across GPUs. Its primary purpose is model-state memory.</p>
+
+    <h3>Why DDP overlaps gradient communication with backward, not forward</h3>
+    <p>For ordinary DDP, the communicated object is the <em>gradient</em>. A gradient bucket becomes available only when backward has produced it. As soon as, say, the final layers have produced a bucket, DDP can launch its all-reduce while the GPU continues backpropagating through earlier layers. The useful overlap is therefore communication from already-finished layers hidden under computation from layers that remain.</p>
+
+    <div class="layout">Backward compute:  [layer N] [layer N−1] [layer N−2] [layer N−3]
+Gradient all-reduce:     [ bucket N ] [ bucket N−1 ]
+
+The all-reduce of a ready bucket runs while backward computes earlier layers.</div>
+
+    <p>Forward cannot hide that same gradient all-reduce: this iteration has no gradients until backward starts. Nor can a standard synchronous-SGD job simply begin the <em>next</em> forward pass while the previous iteration's reduction is outstanding. The dependency is <code>forward → backward → gradient all-reduce → optimizer step → next forward</code>; the next forward needs the newly synchronized parameters. Techniques that break or relax that ordering exist, but change the scheduling or optimization semantics.</p>
+
+    <p>This rule is specific to <strong>gradient</strong> communication in DDP. FSDP/ZeRO can prefetch parameter all-gathers under either forward or backward; tensor parallel has collectives in both directions; and pipeline parallel interleaves forward and backward micro-batches to reduce bubbles. The general rule is simpler: overlap a communication operation with any independent computation that remains after its inputs are ready.</p>
+
+    <h3>FSDP, frozen modules, and the hidden lifetime of GPU memory</h3>
+    <p>FSDP makes parameters look smaller in steady state, but it does not eliminate their full-size lifetime. A wrapped unit all-gathers a full parameter buffer before it computes, uses that buffer in forward or backward, then reshards it so only each rank's shard remains. In a multi-component video-training job, this matters: a Text Encoder, DiT, VAE, and reward model may take turns borrowing the same GPU memory pool. The dangerous number is often the <strong>transient peak</strong>, not the memory reported after an iteration finishes.</p>
+
+    <p>CUDA makes this more subtle because NCCL collectives run on communication streams separate from the user-facing compute stream. If a tensor is freed by Python while NCCL might still read it, the caching allocator must not hand its storage to a new tensor too early. The traditional solution is <code>recordStream()</code>: it associates that allocation with the communication stream and holds it back from reuse until the stream's pending work completes.</p>
+
+    <div class="layout">Python reference disappears
+        ↓
+allocator sees the block as logically free
+        ↓
+recordStream says a NCCL stream may still use it
+        ↓
+block becomes reusable only after that stream's queued work completes</div>
+
+    <p>This is correct, but conservative. With many asynchronous all-gathers, reduce-scatters, and variable-sized activation buffers, those delayed returns can create a long tail of temporarily unavailable memory and aggravate fragmentation. PyTorch's FSDP design discussion describes the trade-off directly: <code>recordStream</code> delegates cross-stream safety to the allocator, while explicit stream/event synchronization can make memory use more deterministic.</p>
+
+    <h3>What <code>TORCH_NCCL_AVOID_RECORD_STREAMS</code> changes</h3>
+    <p>In older PyTorch configurations, setting <code>TORCH_NCCL_AVOID_RECORD_STREAMS=1</code> asks ProcessGroupNCCL to avoid this <code>recordStream</code>-based path. Instead of marking allocations as in-use on the NCCL stream, it retains references to the collective's participating tensors until the user stream has rejoined the communication stream. That still prevents unsafe reuse, but it narrows the lifetime to an explicit synchronization boundary rather than an allocator-managed stream association.</p>
+
+    <p>The important nuance is that this does <em>not</em> free a buffer before NCCL has finished using it. It aims to remove the unpredictable <em>post-collective reuse delay</em>. In workloads with frequent cross-stream communication, that can lower peak allocated/reserved memory and reduce allocator churn; in other workloads it may make little measurable difference.</p>
+
+    <div class="note"><strong>Do not cargo-cult this flag.</strong> It is a PyTorch implementation switch, not an NCCL-wide best practice. In current PyTorch documentation, setting it to <code>0</code> enables the record-streams fallback, indicating that newer releases have moved toward avoidance by default. Older releases may need an explicit <code>=1</code>. Always check the exact PyTorch version and compare a warm profiling run with and without it; a 2025 PyTorch forum case confirmed the flag as a fix for allocator memory thrashing, but that is evidence for a workload class, not a universal tuning rule.</div>
+
+    <h3>Why frozen parameters need a separate FSDP path</h3>
+    <p>A trainable FSDP unit has a natural backward lifecycle: gradients appear, a post-backward path can reduce-scatter them, and the full parameter buffer can be reshared. A frozen unit has <code>requires_grad=False</code>, so it may not traverse the same parameter-gradient and post-backward machinery even though its full parameters were temporarily materialized for forward. If release work is implicitly tied to that normal backward path, those full buffers can remain resident longer than intended.</p>
+
+    <p>This explains the otherwise cryptic implementation notes in the <a href="https://arxiv.org/abs/2506.09113">Seedance 1.0 report</a>. The authors say they manually managed an FSDP <code>free_event_queue</code> and used <code>register_post_backward_reshard_only_hook</code> under frozen mode. Read this as a scheduling intervention:</p>
+
+    <div class="layout">default frozen path:   full parameter stays live ────────────────┐
+                                                                  peak overlaps next allocation
+
+custom reshard-only hook:  full parameter → safe backward point → reshard → return storage
+                                                           └──── then allocate later activations / comm buffers</div>
+
+    <p>A <em>reshard-only</em> hook does not need to reduce or synchronize a nonexistent parameter gradient. Its job is to put the full parameter buffer back into its sharded representation at a safe, deliberately chosen point in backward. Managing the pending CUDA-event queue serves the same goal: once an event proves the asynchronous use has completed, advance the queue so the storage can actually become reusable.</p>
+
+    <p>These last two names should be treated carefully. <code>free_event_queue</code> and <code>register_post_backward_reshard_only_hook</code> are not stable public FSDP APIs documented for ordinary users; the report does not publish their implementation. They are best understood as custom or internal hooks for an unusual regime: frozen and trainable components coexisting, dynamic component swapping, and tight memory headroom. Reproducing the exact behavior requires auditing the FSDP version and its stream/event invariants, not merely copying a method name.</p>
+
+    <p>The general lesson is more durable than the workaround: profile memory <em>over time</em>, including the distinction between allocated, reserved, and non-reusable blocks; then optimize the lifetime boundary responsible for the peak. For long-video jobs, choosing different sequence-parallel degrees per component is part of the same exercise. A long-sequence DiT may benefit from a large SP group because activations dominate, while a short-context text encoder may lose more to communication than it saves in memory.</p>
+
+    <p>Sources: <a href="https://docs.pytorch.org/docs/stable/cuda_environment_variables.html">PyTorch CUDA environment variables</a>; <a href="https://github.com/pytorch/pytorch/blob/main/torch/csrc/distributed/c10d/ProcessGroupNCCL.hpp">ProcessGroupNCCL source comments</a>; <a href="https://github.com/pytorch/pytorch/issues/114299">PyTorch FSDP stream and memory design discussion</a>; <a href="https://discuss.pytorch.org/t/torch-distributed-all-reduce-causes-memory-trashing/215024">allocator-thrashing case study</a>.</p>
+
+    <h2>Tensor parallelism: split one layer without breaking the math</h2>
+    <p>Tensor parallelism is for when <strong>one layer itself is too large</strong>. It shards the weights and channel-direction intermediate activations of that layer, so each GPU computes one channel shard. Consider a Transformer MLP, folding batch and sequence into one token dimension:</p>
+
+    <div class="equation">
+      <strong>T = B × S</strong>, &nbsp; X ∈ ℝ<sup>T × D</sup><br>
+      W<sub>1</sub> ∈ ℝ<sup>D × H</sup>, &nbsp; W<sub>2</sub> ∈ ℝ<sup>H × D</sup><br>
+      H = GELU(XW<sub>1</sub>), &nbsp; Y = HW<sub>2</sub>
+    </div>
+
+    <p>For tensor-parallel degree <em>t</em>, the standard Megatron-style arrangement is:</p>
+
+    <div class="layout">W₁ is column-parallel:  W₁ = [W₁⁽⁰⁾  W₁⁽¹⁾  …  W₁⁽ᵗ⁻¹⁾]     each W₁⁽ⁱ⁾: [D, H/t]
+W₂ is row-parallel:     W₂ = [W₂⁽⁰⁾; W₂⁽¹⁾; …; W₂⁽ᵗ⁻¹⁾]     each W₂⁽ⁱ⁾: [H/t, D]
+
+GPU i:  Hᵢ = GELU(X W₁⁽ⁱ⁾)         [T, H/t]     no communication
+GPU i:  Yᵢ = Hᵢ W₂⁽ⁱ⁾               [T, D]       partial output
+         Y = Σᵢ Yᵢ                                  one all-reduce</div>
+
+    <p>In this layout, <strong>X is replicated inside the TP group</strong>, while W<sub>1</sub>, H, and the channel-direction computation are sharded. The first projection creates disjoint hidden features, so GELU is local; the second produces partial outputs that require one sum. This is the distinction from FSDP: FSDP reconstructs full parameters for an unsplit layer computation, while TP keeps the layer's channel shards distributed.</p>
+
+    <div class="note"><strong>The tempting but wrong split:</strong> if X is split along its hidden dimension, then XW = X₀W₀ + X₁W₁. You must sum before GELU, because GELU(a + b) ≠ GELU(a) + GELU(b). The column-W₁ / row-W₂ pairing is valuable precisely because it postpones this communication until after the second linear layer.</div>
+
+    <p>The same idea applies to attention: Q/K/V projections are typically split by heads, each rank computes its local heads, and the output projection combines the partial results. This layout is the foundation of <a href="https://arxiv.org/abs/1909.08053">Megatron-LM</a>.</p>
+
+    <h2>Pipeline parallelism: split the model by depth</h2>
+    <p>Pipeline parallelism assigns consecutive layers to different stages: for example, layers 1–8 on GPU group 0, 9–16 on group 1, and so on. Micro-batches move through those stages like work through a factory. Its drawback is the pipeline bubble: some stages are temporarily idle at the beginning and end of each batch. More micro-batches reduce the bubble, but increase scheduling complexity.</p>
+
+    <h2>Context parallelism: long sequences are a different scaling axis</h2>
+    <p>Sequence or context parallelism splits tokens across GPUs. Token-wise operations such as LayerNorm, dropout, and residual connections can run locally. Attention is harder: a query needs to interact with keys and values from the whole sequence.</p>
+
+    <figure class="comparison-figure">
+      <img src="ring-vs-sequence.svg" alt="Comparison of ordinary all-gather sequence-parallel attention, which materializes full K/V on each GPU, and Ring Attention, which passes K/V blocks around a ring while each GPU keeps its local queries">
+      <figcaption>Two exact-attention strategies after splitting a sequence across four GPUs. Ring Attention does not approximate attention; it streams remote K/V blocks and combines them with an online softmax.</figcaption>
+    </figure>
+
+    <p>The straightforward baseline is to all-gather the sequence so every rank has full K/V, then compute its assigned work. It is simple, but each rank materializes the full context. <a href="https://arxiv.org/abs/2310.01889">Ring Attention</a> keeps local query blocks fixed and circulates K/V blocks around a ring. At each hop, a rank attends to one more K/V shard and updates a running softmax state. After <em>p − 1</em> hops, every local query has seen all K/V without one GPU ever storing every K/V block at once.</p>
+
+    <h2>Regular sequence parallelism vs. Ring Attention vs. Ulysses</h2>
+    <p>“Sequence parallelism” is an umbrella term, so it helps to state the implementation rather than rely on the name alone. Here, “regular” means the simple all-gather baseline.</p>
+
+    <table class="parallel-table">
+      <thead><tr><th></th><th>Regular SP baseline</th><th>Ring Attention</th><th>Ulysses</th></tr></thead>
+      <tbody>
+        <tr><td>Before attention</td><td>Token shards are all-gathered; ranks materialize full K/V.</td><td>Each rank retains local Q/K/V token blocks.</td><td>Starts token-sharded; an all-to-all converts it to full sequence + head shards.</td></tr>
+        <tr><td>Communication</td><td>All-gather, then usually scatter/reduce later.</td><td><em>p − 1</em> K/V ring hops, which can overlap with blockwise attention.</td><td>All-to-all before attention and another all-to-all after it.</td></tr>
+        <tr><td>Local attention work</td><td>Assigned heads or tensor shards over gathered context.</td><td>Local query tokens attend to streamed K/V blocks.</td><td>Full sequence, but only N<sub>h</sub>/p attention heads.</td></tr>
+        <tr><td>Key constraint</td><td>Full K/V must fit per rank.</td><td>More communication steps as p grows.</td><td>Usually p must divide and not exceed the number of attention heads.</td></tr>
+        <tr><td>Best fit</td><td>Simple implementations and moderate context.</td><td>Very long context; avoid full K/V materialization.</td><td>Fast all-to-all fabrics and enough attention heads.</td></tr>
+      </tbody>
+    </table>
+
+    <p>Ulysses is a particularly elegant layout transform. It begins with <code>[sequence shard, all heads]</code>. An all-to-all changes it to <code>[full sequence, head shard]</code>, so each GPU can run ordinary local attention on a subset of heads. A second all-to-all restores the original sequence-sharded layout. That is why Ulysses is fundamentally different from Ring Attention: it exchanges the <em>sharding axis</em>, rather than streaming K/V through a ring. See the <a href="https://www.deepspeed.ai/tutorials/ds-sequence/">DeepSpeed Ulysses overview</a> for the implementation view.</p>
+
+    <h2>Expert parallelism: scale capacity sparsely</h2>
+    <p>Mixture-of-Experts replaces one dense MLP with many experts. A router chooses a small top-k set for each token:</p>
+
+    <div class="equation">y = Σ<sub>e ∈ TopK(g(x))</sub> g<sub>e</sub>(x) · Expert<sub>e</sub>(x)</div>
+
+    <p>Expert parallelism places different experts on different GPUs. Tokens are dispatched to the GPUs that host their selected experts with an all-to-all; those expert outputs are then sent back with another all-to-all. With <em>E</em> experts, total capacity is roughly <em>E</em> times one expert, while a top-2 router activates only two experts per token.</p>
+
+    <div class="layout">Dense TP:  every token needs every TP rank to cooperate on one split MLP.
+MoE EP:    every rank holds whole experts; each token visits only its selected expert ranks.
+
+tokens → router → all-to-all dispatch → local experts → all-to-all return → original token order</div>
+
+    <p>The price is routing imbalance. If too many tokens choose the same expert, one GPU becomes the bottleneck. MoE systems therefore use capacity limits and auxiliary load-balancing losses.</p>
+
+    <h2>The practical hybrid: each axis solves a different bottleneck</h2>
+    <p>Large training jobs combine these strategies rather than choose one. A common topology keeps TP inside an NVLink/NVSwitch island because TP communicates at almost every layer. FSDP or data parallelism then scales copies of that island across nodes. Pipeline parallelism adds a depth axis; context parallelism handles long sequences; and expert parallelism distributes sparse MoE capacity.</p>
+
+    <div class="equation">FSDP / DP × TP × PP × CP/SP × EP</div>
+
+    <p>The interview-ready summary is simple: <strong>FSDP shards model state; TP shards dense computation; PP shards layers; CP shards tokens; EP shards MoE experts.</strong> Once you identify the object being split, the communication pattern and the purpose stop being mysterious.</p>
+
+    <div class="subscribe-box">
+      <p>Enjoyed this post? Send it to your email to read later.</p>
+      <form class="subscribe-form" data-title="Transformer Parallelism" data-url="https://guochengqian.github.io/blog/parallelism-from-first-principles/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
+    </div>
+  </article>
+</div>
+</body>
+</html>

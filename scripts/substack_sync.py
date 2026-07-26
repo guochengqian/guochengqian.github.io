@@ -374,7 +374,8 @@ SLUGS = ['hermes-agent', 'elorian-ai', 'agent-for-finance', 'visual-generation-c
          'post-training-market', 'opd', 'gemini-omni-architecture', 'research-labs-shutdown',
          'next-scaling-after-model-scaling', 'stock-inspiration-20260701', 'claude-hosted-blog',
          'squirrel-rime', 'sync-skills-across-agents', 'wake-my-gpu-on-demand',
-         'ai-compute-load-sheet', 'meta-missing-culture']  # oldest -> newest
+         'ai-compute-load-sheet', 'meta-missing-culture', 'parallelism-from-first-principles',
+         'fault-tolerance-at-10k-gpu-training']  # oldest -> newest
 
 if __name__ == '__main__':
     mode = sys.argv[1] if len(sys.argv) > 1 else 'dry'  # dry | push | update
