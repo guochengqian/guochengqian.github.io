@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Regular sequence parallel attention versus Ring Attention</title>
+  <desc id="desc">The left panel shows full K and V tensors gathered on every GPU. The right panel shows each GPU keeping its local queries while K and V blocks travel around a ring.</desc>
+  <style>
+    .bg { fill: #faf6ee; } .panel { fill: #fffdf8; stroke: #dfd4c5; stroke-width: 2; }
+    .title { font: 600 27px Arial, sans-serif; fill: #2b211b; } .sub { font: 16px Arial, sans-serif; fill: #65584d; }
+    .gpu { fill: #fff; stroke: #8f7e6e; stroke-width: 2; } .gpu-title { font: 600 15px Arial, sans-serif; fill: #2b211b; }
+    .small { font: 13px Arial, sans-serif; fill: #65584d; } .full { fill: #e5c7ad; } .local { fill: #c8d9ef; }
+    .kv { fill: #dca16f; } .q { fill: #709dce; } .arrow { stroke: #b76531; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    .soft { fill: #f2e9dc; stroke: #d9c7b4; stroke-width: 1.5; } .tag { font: 600 12px Arial, sans-serif; fill: #4e392d; }
+  </style>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#b76531"/></marker></defs>
+  <rect class="bg" width="1200" height="720"/>
+  <rect class="panel" x="34" y="34" width="548" height="652" rx="14"/>
+  <rect class="panel" x="618" y="34" width="548" height="652" rx="14"/>
+  <text class="title" x="68" y="82">Regular Sequence Parallelism</text>
+  <text class="sub" x="68" y="109">The simple all-gather baseline</text>
+  <text class="title" x="652" y="82">Ring Attention</text>
+  <text class="sub" x="652" y="109">Stream K/V blocks; keep Q local</text>
+
+  <g transform="translate(68 150)">
+    <rect class="gpu" width="205" height="118" rx="8"/><text class="gpu-title" x="14" y="24">GPU 0</text><rect class="local" x="14" y="42" width="38" height="45" rx="3"/><rect class="full" x="59" y="42" width="128" height="45" rx="3"/><text class="small" x="14" y="107">local tokens + full K/V</text>
+  </g>
+  <g transform="translate(337 150)">
+    <rect class="gpu" width="205" height="118" rx="8"/><text class="gpu-title" x="14" y="24">GPU 1</text><rect class="local" x="14" y="42" width="38" height="45" rx="3"/><rect class="full" x="59" y="42" width="128" height="45" rx="3"/><text class="small" x="14" y="107">local tokens + full K/V</text>
+  </g>
+  <g transform="translate(68 390)">
+    <rect class="gpu" width="205" height="118" rx="8"/><text class="gpu-title" x="14" y="24">GPU 2</text><rect class="local" x="14" y="42" width="38" height="45" rx="3"/><rect class="full" x="59" y="42" width="128" height="45" rx="3"/><text class="small" x="14" y="107">local tokens + full K/V</text>
+  </g>
+  <g transform="translate(337 390)">
+    <rect class="gpu" width="205" height="118" rx="8"/><text class="gpu-title" x="14" y="24">GPU 3</text><rect class="local" x="14" y="42" width="38" height="45" rx="3"/><rect class="full" x="59" y="42" width="128" height="45" rx="3"/><text class="small" x="14" y="107">local tokens + full K/V</text>
+  </g>
+  <rect class="soft" x="154" y="292" width="308" height="52" rx="8"/><text class="tag" x="183" y="323">All-gather: every rank materializes K/V</text>
+  <path class="arrow" d="M170 268 L210 292"/><path class="arrow" d="M438 268 L398 292"/><path class="arrow" d="M170 390 L210 344"/><path class="arrow" d="M438 390 L398 344"/>
+  <text class="sub" x="76" y="590">Simple, but full context K/V must fit on every rank.</text>
+
+  <g transform="translate(652 150)">
+    <rect class="gpu" width="205" height="118" rx="8"/><text class="gpu-title" x="14" y="24">GPU 0</text><rect class="q" x="14" y="42" width="80" height="45" rx="3"/><rect class="kv" x="101" y="42" width="48" height="45" rx="3"/><text class="small" x="14" y="107">Q₀ stays; K/V block moves</text>
+  </g>
+  <g transform="translate(921 150)">
+    <rect class="gpu" width="205" height="118" rx="8"/><text class="gpu-title" x="14" y="24">GPU 1</text><rect class="q" x="14" y="42" width="80" height="45" rx="3"/><rect class="kv" x="101" y="42" width="48" height="45" rx="3"/><text class="small" x="14" y="107">Q₁ stays; K/V block moves</text>
+  </g>
+  <g transform="translate(652 390)">
+    <rect class="gpu" width="205" height="118" rx="8"/><text class="gpu-title" x="14" y="24">GPU 2</text><rect class="q" x="14" y="42" width="80" height="45" rx="3"/><rect class="kv" x="101" y="42" width="48" height="45" rx="3"/><text class="small" x="14" y="107">Q₂ stays; K/V block moves</text>
+  </g>
+  <g transform="translate(921 390)">
+    <rect class="gpu" width="205" height="118" rx="8"/><text class="gpu-title" x="14" y="24">GPU 3</text><rect class="q" x="14" y="42" width="80" height="45" rx="3"/><rect class="kv" x="101" y="42" width="48" height="45" rx="3"/><text class="small" x="14" y="107">Q₃ stays; K/V block moves</text>
+  </g>
+  <path class="arrow" d="M857 208 L920 208"/><path class="arrow" d="M1024 268 L1024 389"/><path class="arrow" d="M920 449 L858 449"/><path class="arrow" d="M755 389 L755 269"/>
+  <rect class="soft" x="756" y="292" width="268" height="52" rx="8"/><text class="tag" x="784" y="315">At each hop: local Q attends</text><text class="tag" x="793" y="333">to one more K/V shard</text>
+  <text class="sub" x="660" y="590">Exact attention via an online softmax; no full K/V on one rank.</text>
+  <rect class="q" x="92" y="640" width="18" height="18" rx="3"/><text class="small" x="117" y="654">local query/token shard</text><rect class="kv" x="336" y="640" width="18" height="18" rx="3"/><text class="small" x="361" y="654">K/V shard</text>
+</svg>

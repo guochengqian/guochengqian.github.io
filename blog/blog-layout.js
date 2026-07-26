@@ -126,7 +126,21 @@
       dek: 'SemiAnalysis 复盘 Meta 超级智能一周年：数据、算力、人才、全球一半人口的用户，它全有了，唯独缺了最难补的那一样——文化。',
       en: { file: 'en.html', title: 'Meta Has Everything — Except a Culture',
         date: 'July 10, 2026', read: '3 min read', tag: 'AI',
-        dek: 'A one-year review of Meta Superintelligence: data, compute, talent, and half the planet’s users — Meta has it all, except the one thing hardest to buy: culture.' } }
+        dek: 'A one-year review of Meta Superintelligence: data, compute, talent, and half the planet’s users — Meta has it all, except the one thing hardest to buy: culture.' } },
+    { slug: 'parallelism-from-first-principles',
+      title: 'Transformer Parallelism',
+      date: 'July 17, 2026', read: '13 min read', tag: 'AI', image: 'preview.png',
+      dek: 'What data, tensor, pipeline, context, and expert parallelism actually partition.',
+      zh: { file: 'cn.html', title: '大模型训练的并行策略：基础必备知识你都知道吗？',
+        date: '2026 年 7 月 17 日', read: '阅读约 7 分钟', tag: 'AI',
+        dek: 'FSDP、TP、PP、CP 和 EP 的区别：它们各自切分什么。' } },
+    { slug: 'fault-tolerance-at-10k-gpu-training',
+      title: 'When 10,000-GPU Training Fails, How Does It Keep Going?',
+      date: 'July 18, 2026', read: '6 min read', tag: 'AI Systems', image: 'preview.png',
+      dek: 'A visual map of stragglers, hard failures, slow recovery, and silent data corruption — with the response for each.',
+      zh: { file: 'cn.html', title: '万卡训练平均三小时就有一次硬件错误，怎么解决的？',
+        date: '2026 年 7 月 18 日', read: '阅读约 6 分钟', tag: 'AI Systems',
+        dek: '一张图看懂万卡训练的四类问题：慢卡、硬故障、慢恢复、静默算错，以及每一类的处理方法。' } }
   ];
 
   var ACTIONS_VERSION = '202607081900'; // blog-actions.js cache-buster, managed here only.

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>When 10,000-GPU Training Fails, How Does It Keep Going? — Gordon's Blog</title>
+  <meta name="description" content="The four failure paths in 10,000-GPU training: stragglers, hard failures, slow recovery, and silent data corruption.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../img/favicon.png?v=202607072">
+  <link rel="stylesheet" href="../blog.css?v=202607070200">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607181902" defer></script>
+  <style>
+    .failure-map { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin:22px 0 14px; }
+    .failure-card { padding:15px; border:1px solid var(--border); border-radius:9px; background:var(--soft); }
+    .failure-card b { display:block; color:var(--accent); font:700 13px/1.2 var(--sans); letter-spacing:.03em; }
+    .failure-card h3 { margin:5px 0 8px; font:700 21px/1.1 var(--serif); }
+    .failure-card p { margin:5px 0; font:13px/1.5 var(--sans); }
+    .failure-card strong { color:var(--muted); font-size:11px; letter-spacing:.04em; }
+    .repair-loop { display:flex; align-items:stretch; gap:6px; margin:0 0 26px; }
+    .repair-loop span { flex:1; padding:9px 7px; border-radius:7px; background:var(--ink); color:var(--bg); text-align:center; font:700 11px/1.35 var(--sans); }
+    .repair-loop i { align-self:center; color:var(--accent); font-style:normal; }
+    .note { margin:18px 0; padding:13px 15px; border-left:3px solid var(--accent); background:var(--soft); }
+    .compact { margin:8px 0 0; padding-left:19px; }
+    .compact li { margin:7px 0; }
+    @media (max-width:640px) { .failure-map { grid-template-columns:1fr; } .repair-loop { flex-wrap:wrap; } .repair-loop span { min-width:28%; } .repair-loop i { display:none; } }
+  </style>
+</head>
+<body data-blog-slug="fault-tolerance-at-10k-gpu-training">
+<div class="page"><article>
+  <div class="lang-row"><a class="lang-switch" href="cn.html" lang="zh-CN" hreflang="zh-CN">🌐 中文版</a></div>
+  <p class="article-tag">AI Systems</p>
+  <h1>When 10,000-GPU Training Fails, How Does It Keep Going?</h1>
+  <p class="subtitle">Not with perfect machines: with a fast loop for detecting, fencing, replacing, restoring, and verifying faults.</p>
+  <div class="byline">
+    <img src="../img/avatar.jpg" alt=""><div><div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div><div class="byline-sub">July 18, 2026 &middot; 6 min read</div></div>
+    <form class="subscribe-form subscribe-compact byline-subscribe" data-title="When 10,000-GPU Training Fails, How Does It Keep Going?" data-url="https://guochengqian.github.io/blog/fault-tolerance-at-10k-gpu-training/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form>
+  </div>
+
+  <figure><img src="preview.png" alt="At 10,000 GPUs, failure is not an exception"><figcaption>At cluster scale, keep every fault inside a recoverable loop.</figcaption></figure>
+
+  <h2>Start here: four problems, four responses</h2>
+  <div class="failure-map" role="img" aria-label="Four failure paths in 10,000-GPU training: stragglers, hard failures, slow recovery, and silent data corruption">
+    <div class="failure-card"><b>01 / SLOW</b><h3>Straggler</h3><p><strong>SIGNAL</strong> A rank repeatedly trails its group median</p><p><strong>ACT</strong> Trace compute, network, or input; isolate the suspect</p><p><strong>DEFEND</strong> Per-step comparisons plus thermal, clock, NVLink, and NIC telemetry</p></div>
+    <div class="failure-card"><b>02 / GONE</b><h3>Hard failure</h3><p><strong>SIGNAL</strong> XID/ECC, device loss, or NCCL timeout</p><p><strong>ACT</strong> Fence &rarr; spare &rarr; checkpoint restore</p><p><strong>DEFEND</strong> RAS/DCGM and targeted diagnostics after suspicion</p></div>
+    <div class="failure-card"><b>03 / STUCK</b><h3>Slow recovery</h3><p><strong>SIGNAL</strong> Restore or rendezvous dominates downtime</p><p><strong>ACT</strong> Load rank-local shards; read shared state once and broadcast</p><p><strong>DEFEND</strong> Async sharded checkpoints, meta initialization, spare capacity</p></div>
+    <div class="failure-card"><b>04 / WRONG</b><h3>SDC</h3><p><strong>SIGNAL</strong> NaN, gradient outlier, or shadow replay mismatch</p><p><strong>ACT</strong> Preserve state; replay, narrow, quarantine, roll back</p><p><strong>DEFEND</strong> In-fleet tests, shadows, gradient summaries, long checkpoint history</p></div>
+  </div>
+  <div class="repair-loop" aria-label="Common recovery loop"><span>Detect</span><i>→</i><span>Fence</span><i>→</i><span>Replace</span><i>→</i><span>Restore</span><i>→</i><span>Verify</span></div>
+  <div class="note"><strong>Scale check:</strong> Llama 3&rsquo;s 16,384-GPU run saw 419 unexpected interruptions in 54 days&mdash;about one every 3.1 hours&mdash;and still exceeded 90% effective training time.</div>
+
+  <h2>1. Stragglers: one slow rank holds everyone up</h2>
+  <ul class="compact">
+    <li><strong>Detect:</strong> record every step and collective; compare only with the relevant parallel-group median.</li>
+    <li><strong>Diagnose:</strong> decide whether time is spent in compute, communication, or input. Temperature, throttling, PCIe replay, NVLink CRC, and NIC counters point the way.</li>
+    <li><strong>Act:</strong> fence persistent outliers before they become a hard failure.</li>
+  </ul>
+
+  <h2>2. Hard failures: fence, replace, restore</h2>
+  <ul class="compact">
+    <li><strong>Trigger:</strong> uncorrectable GPU/HBM errors, device loss, missing heartbeat, or an NCCL timeout.</li>
+    <li><strong>Act:</strong> stop scheduling the suspect, add a healthy spare, rebuild process groups, and restore from checkpoint.</li>
+    <li><strong>Confirm:</strong> use known-answer GEMM, HBM, PCIe/NVLink, and NCCL tests to distinguish GPU, cable, route, and software faults.</li>
+  </ul>
+  <p>Elastic does not mean hot-swapping without a pause. Workers stop, form a new world, then restart from a snapshot.</p>
+
+  <h2>3. Recovery: checkpoints, loading, and communicators all need to be fast</h2>
+  <ul class="compact">
+    <li><strong>Store:</strong> model, optimizer, data position, sampler, and RNG state. Weights alone can restart onto a different training path.</li>
+    <li><strong>Restore:</strong> each rank reads only its shard; one worker reads shared state and broadcasts it to peers.</li>
+    <li><strong>Use meta initialization:</strong> build the model skeleton without weight bytes, then stream each shard directly to its owning rank.</li>
+  </ul>
+
+  <h2>4. SDC: a matrix multiply can be wrong without failing</h2>
+  <ul class="compact">
+    <li><strong>NaNs:</strong> stop propagation, checkpoint more densely, replay, and binary-search the bad set.</li>
+    <li><strong>Finite wrong gradients:</strong> before all-reduce, report small summaries such as norm, RMS, and max. Escalate only persistent outliers.</li>
+    <li><strong>Strongest check:</strong> a shadow pool replays a sampled step from the same checkpoint and batch. A mismatch implicates both live and shadow groups; it does not instantly identify the guilty one.</li>
+    <li><strong>Hardware layer:</strong> Fleetscanner and Ripple use known-answer tests. Hardware Sentinel associates software-failure logs with suspect CPU cores; it is not a GPU-GEMM correctness proof.</li>
+  </ul>
+  <div class="note"><strong>Retention:</strong> two or three checkpoints protect against a failed write. SDC found days later requires a lower-frequency long history and immutable gold checkpoints.</div>
+
+  <h2>In one sentence</h2>
+  <p>Find faults early, keep their blast radius small, return quickly, and do not let wrong computation accumulate silently.</p>
+
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://ar5iv.labs.arxiv.org/html/2407.21783">Meta, The Llama 3 Herd of Models</a></li>
+    <li><a href="https://engineering.fb.com/2025/07/22/data-infrastructure/how-meta-keeps-its-ai-hardware-reliable/">Meta Engineering, How Meta keeps its AI hardware reliable</a></li>
+    <li><a href="https://www.usenix.org/conference/nsdi24/presentation/jiang-ziheng">MegaScale</a></li>
+    <li><a href="https://docs.pytorch.org/docs/2.9/elastic/run.html">PyTorch Elastic</a>, <a href="https://docs.pytorch.org/docs/stable/distributed.checkpoint.html">Distributed Checkpoint</a>, and <a href="https://docs.pytorch.org/docs/stable/meta.html">the meta device</a></li>
+  </ul>
+  <div class="subscribe-box"><p>Enjoyed this post? Send it to your email to read later.</p><form class="subscribe-form" data-title="When 10,000-GPU Training Fails, How Does It Keep Going?" data-url="https://guochengqian.github.io/blog/fault-tolerance-at-10k-gpu-training/"><input type="email" name="email" required placeholder="Type your email…"><button type="submit">Email this blog</button></form></div>
+</article></div>
+</body>
+</html>

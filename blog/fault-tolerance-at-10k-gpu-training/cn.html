@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>万卡训练平均三小时就有一次硬件错误，怎么解决的？ — Gordon's Blog</title>
+  <meta name="description" content="万卡训练的四类问题：慢节点、硬故障、慢恢复和静默数据损坏。对应的发现、隔离、恢复和验证方法。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../img/favicon.png?v=202607072">
+  <link rel="stylesheet" href="../blog.css?v=202607070200">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607181902" defer></script>
+  <style>
+    .failure-map { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin:22px 0 14px; }
+    .failure-card { padding:15px; border:1px solid var(--border); border-radius:9px; background:var(--soft); }
+    .failure-card b { display:block; color:var(--accent); font:700 13px/1.2 var(--sans); letter-spacing:.03em; }
+    .failure-card h3 { margin:5px 0 8px; font:700 21px/1.1 var(--serif); }
+    .failure-card p { margin:5px 0; font:13px/1.5 var(--sans); }
+    .failure-card strong { color:var(--muted); font-size:11px; letter-spacing:.04em; }
+    .repair-loop { display:flex; align-items:stretch; gap:6px; margin:0 0 26px; }
+    .repair-loop span { flex:1; padding:9px 7px; border:1px solid var(--border); border-radius:7px; background:var(--soft); color:var(--text); text-align:center; font:700 11px/1.35 var(--sans); }
+    .repair-loop i { align-self:center; color:var(--accent); font-style:normal; }
+    .note { margin:18px 0; padding:13px 15px; border-left:3px solid var(--accent); background:var(--soft); }
+    .compact { margin:8px 0 0; padding-left:19px; }
+    .compact li { margin:7px 0; }
+    @media (max-width:640px) { .failure-map { grid-template-columns:1fr; } .repair-loop { flex-wrap:wrap; } .repair-loop span { min-width:28%; } .repair-loop i { display:none; } }
+  </style>
+</head>
+<body data-blog-slug="fault-tolerance-at-10k-gpu-training">
+<div class="page"><article>
+  <div class="lang-row"><a class="lang-switch" href="index.html" lang="en" hreflang="en">🌐 English</a></div>
+  <p class="article-tag">AI Systems</p>
+  <h1>万卡训练平均三小时就有一次硬件错误，怎么解决的？</h1>
+  <p class="subtitle">答案不是永不故障，而是发现、隔离、补机、恢复、验证的闭环要足够快。</p>
+  <div class="byline">
+    <img src="../img/avatar.jpg" alt=""><div><div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div><div class="byline-sub">2026 年 7 月 18 日 &middot; 阅读约 6 分钟</div></div>
+    <form class="subscribe-form subscribe-compact byline-subscribe" data-title="万卡训练平均三小时就有一次硬件错误，怎么解决的？" data-url="https://guochengqian.github.io/blog/fault-tolerance-at-10k-gpu-training/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+  </div>
+
+  <figure><img src="preview.png" alt="万卡训练中，故障不是例外"><figcaption>万卡可靠性：把每次故障限制在一个可恢复的闭环中。</figcaption></figure>
+
+  <h2>先看图：四类问题，四条处理线</h2>
+  <div class="failure-map" role="img" aria-label="万卡训练故障图：慢节点、硬故障、慢恢复和静默数据损坏，各自对应发现、立即动作和长期防线">
+    <div class="failure-card"><b>01 / 慢</b><h3>慢节点</h3><p><strong>信号</strong> 同一并行组反复比中位数慢</p><p><strong>频率</strong> 每步/每次通信；遥测每 5 秒；连续 3 步隔离</p><p><strong>动作</strong> 排查计算、通信或数据读取；隔离卡、链路或数据源</p><p><strong>防线</strong> 温度/时钟/NVLink/网卡遥测</p></div>
+    <div class="failure-card"><b>02 / 掉</b><h3>硬故障</h3><p><strong>信号</strong> GPU 异常事件编号（XID）、错误纠正码（ECC）错误、掉卡、NCCL 超时</p><p><strong>频率</strong> XID/ECC 即时上报；遥测秒级到分钟级</p><p><strong>动作</strong> 隔离节点 &rarr; 备用节点池补健康 GPU &rarr; 检查点恢复</p><p><strong>防线</strong> 可靠性遥测（RAS）+ 数据中心 GPU 管理器（DCGM）；异常触发定向微基准</p></div>
+    <div class="failure-card"><b>03 / 堵</b><h3>恢复太慢</h3><p><strong>信号</strong> 分片读取、成员重组或通信组建立太慢</p><p><strong>频率</strong> 每 K 步或每 T 分钟存一次；故障立即恢复</p><p><strong>动作</strong> 只读本节点分片；共享状态一次读取后广播</p><p><strong>防线</strong> 异步分片检查点：训练流快照，后台落盘；元设备初始化（meta initialization）+ 分片检查点加载；预留备用容量</p></div>
+    <div class="failure-card"><b>04 / 错</b><h3>静默数据损坏（SDC）</h3><p><strong>信号</strong> 非数值（NaN）；张量/矩阵乘（GEMM）重算不一致；数据并行聚合前梯度摘要持续离群</p><p><strong>频率</strong> NaN 每微批；梯度每步；重算按 K 步抽样或异常触发</p><p><strong>动作</strong> 保留现场，重放、二分、隔离、回滚</p><p><strong>防线</strong> 机群扫描（Fleetscanner）、在线搭载测试（Ripple）、硬件哨兵（Hardware Sentinel）；影子节点池、梯度摘要</p></div>
+  </div>
+  <div class="repair-loop" aria-label="统一恢复闭环"><span>发现</span><i>→</i><span>隔离</span><i>→</i><span>补机</span><i>→</i><span>恢复</span><i>→</i><span>验证</span></div>
+  <div class="note"><strong>规模感：</strong>Llama 3 的 16,384 GPU 训练在 54 天内有 419 次非计划中断，约每 3.1 小时一次；有效训练时间仍超过 90%。</div>
+
+  <h2>1. 慢节点（Straggler）：一张慢卡拖住所有人</h2>
+  <ul class="compact">
+    <li><strong>发现（每个训练步、每次集合通信）：</strong>记录耗时；只和相同并行组的中位数比。</li>
+    <li><strong>定位（每次慢节点判定后立即开始）：</strong>看时间花在计算、通信还是数据读取。温度、降频、PCIe 重传（replay）、NVLink 循环冗余校验（CRC）、网卡（NIC）计数器<strong>每 5 秒</strong>采样一次；5 秒是常用配置，可按集群调整。</li>
+    <li><strong>处理（连续 3 个训练步离群时）：</strong>隔离（fence）：把节点从作业中摘掉、停止调度；调度器随即从备用节点池补位，不等它真的掉线。</li>
+  </ul>
+  <p><strong>最小策略（伪代码）：</strong></p>
+  <pre><code>slow_streak = slow_streak + 1 if step_ms &gt; 1.3 * peer_median else 0
+if slow_streak &gt;= 3:
+    scheduler.fence(node)                 # 停止调度到该节点
+    scheduler.replace(node, spare_pool)   # 用备用节点补位</code></pre>
+
+  <h2>2. 硬故障：先隔离，再换机恢复</h2>
+  <ul class="compact">
+    <li><strong>触发：</strong>GPU/HBM 不可纠正错误、设备消失、心跳丢失、NCCL 超时。</li>
+    <li><strong>持续体检：</strong>可靠性、可用性与可维护性（RAS）遥测记录硬件/固件的错误状态；数据中心 GPU 管理器（Data Center GPU Manager, DCGM）持续采集 GPU 异常事件编号（XID）、错误纠正码（ECC）计数、温度、功耗和时钟等指标。XID/ECC 等驱动事件即时上报；温度、功耗、时钟按监控周期轮询，常见是秒级到分钟级，具体由集群配置决定。达到规则阈值就标记节点可疑，触发隔离。</li>
+    <li><strong>动作：</strong>停止给可疑节点排作业，从备用节点池（spare pool）补入健康 GPU；重建通信组，再从检查点（checkpoint）恢复。</li>
+    <li><strong>确认：</strong>异常触发后运行定向诊断微基准（directed diagnostic microbenchmark）：对可疑机器跑答案已知的 GEMM、HBM、PCIe/NVLink、NCCL 测试，区分卡、线缆、路由和软件；它不放在每个训练步上。</li>
+  </ul>
+  <p><strong>最小策略（伪代码）：</strong></p>
+  <pre><code>health = dcgm.poll(node)                   # XID、ECC、温度等遥测
+if health.has_uncorrectable_error():
+    scheduler.fence(node)
+    restart_from(latest_checkpoint, spare_pool.take())</code></pre>
+  <h2>3. 恢复：检查点、加载和通信组都要快</h2>
+  <ul class="compact">
+    <li><strong>检查点要存：</strong>模型、优化器（optimizer）、数据位置、采样器（sampler）和随机数状态。</li>
+    <li><strong>频率：</strong>每 K 个优化器步或每 T 分钟创建一次；没有全行业固定值。K/T 由中断频率、检查点耗时和存储带宽共同决定；故障发生后只会丢失最近一个间隔的进度。</li>
+    <li><strong>怎么存：</strong>采用分片异步检查点（asynchronous sharded checkpoint）。假设模型和优化器已经用 FSDP/DTensor 切分：每个进程只持有、也只写自己的本地分片；所有进程共同提交一个可恢复版本。</li>
+    <li><strong>安全点是什么：</strong>在一次参数更新完成后，所有进程处于同一个训练步。此时先把各自 GPU 分片复制为不可变的暂存副本；训练随后可以继续改原始参数，后台只写这份副本。</li>
+    <li><strong>后台在做什么：</strong>后台工作进程等待快照复制完成，再把已固定的分片从暂存缓冲区写到本地 NVMe 或远端存储。全部分片写完后才原子提交一个元数据清单；半截写失败的检查点不会被当作可恢复版本。</li>
+    <li><strong>代价：</strong>它不阻塞主训练流，但不是零开销：快照复制和带宽仍会占资源，因此要用独立传输流、限速和足够的暂存缓冲来控制影响。</li>
+    <li><strong>恢复要快：</strong>只在首次启动、故障恢复或成员重组时发生：每个进程（rank）只加载自己的分片（shard）；同一份共享状态只由一个工作进程（worker）读取，再广播。</li>
+    <li><strong>元设备初始化（meta initialization）：</strong>只在首次加载、恢复或加载预训练权重时运行，不在训练步中运行。这是<strong>加载</strong>路径的优化，不改变保存格式：先建没有权重字节的模型骨架，再把正确分片直接流入目标进程，避免完整模型的无用初始化和双份内存。</li>
+  </ul>
+  <p><strong>异步分片检查点的最小代码：</strong>所有进程都执行；分片由分布式检查点库识别并分别写出。</p>
+  <pre><code>import torch.distributed.checkpoint as dcp
+
+state = {&quot;model&quot;: fsdp_model, &quot;optimizer&quot;: optimizer, &quot;step&quot;: step}
+future = dcp.async_save(state, checkpoint_id=f&quot;/ckpt/{step}&quot;)  # ① 先暂存，再后台写入
+
+train_one_step()                         # ② 原训练继续跑
+future.result()                          # ③ 下次轮换/删除前，确认这版真的写完</code></pre>
+  <p><strong>真正关键：</strong><code>async_save</code> 先做“训练安全”的暂存副本；否则训练更新会一边改参数、后台一边把新旧数据混着写。暂存完成后，序列化和写本地 NVMe/远端存储才交给后台线程或进程。</p>
+  <p><strong>元设备初始化的最小代码：</strong>先有形状、分片布局和空存储，再把当前 GPU 需要的参数数值填入，加速检查点加载。</p>
+  <pre><code># Meta 模型骨架初始化策略：只建形状，不分配权重
+with torch.device(&quot;meta&quot;):
+    model = Transformer(cfg)              # 只有形状，没有权重字节
+model = shard_for_this_rank(model)         # 伪代码：先按 FSDP/DTensor 布局分片
+model.to_empty(device=f&quot;cuda:{local_rank}&quot;)  # 只分配本进程分片的空存储
+dcp.load({&quot;model&quot;: model}, checkpoint_id=ckpt_dir)  # 检查点只填本进程分片</code></pre>
+
+  <h2>4. 静默数据损坏（SDC）：算错了，却没有报错</h2>
+  <ul class="compact">
+    <li><strong>非数值（NaN）：</strong>损失每个微批检查；梯度范数与混合精度溢出标志每个优化器步检查。若使用梯度累积，后两项就是每 N 个微批检查一次。发现后跳过本次参数更新或停止训练，提高检查点频率，重放并二分缩小可疑机器。</li>
+    <li><strong>有限但错误的梯度：</strong>通常每个训练步、在数据并行聚合（all-reduce）<em>之前</em>上报范数（norm）、均方根（RMS）、最大值（max）等少量摘要；持续离群才升级排查。预算紧张时可改为每 N 步或抽样张量。</li>
+    <li><strong>为什么不明显拖慢：</strong>摘要在独立 CUDA 流（CUDA stream）中计算，训练进程只把几个标量异步复制到固定页内存（pinned memory）；后台监控进程等 CUDA 事件（CUDA event）完成后再聚合、比对。主训练流不等监控结果，通常只落后 1&ndash;数个训练步。</li>
+    <li><strong>但不是所有事都能异步：</strong>NaN/溢出必须在参数更新前拦住；各进程会用一个很小的标志同步决定是否跳过更新。影子重算和定向诊断只在异常触发后运行，避免把重活放到每一步。</li>
+    <li><strong>最强验证：</strong>影子节点池（shadow pool）从同一检查点、用同一批数据（batch）重算抽样训练步。频率通常是每 K 个优化器步随机抽一次，或在异常后升级触发，不会每步重算。结果不同，就调查在线训练组（live）与影子组；不能直接认定谁错。</li>
+    <li><strong>机群扫描（Fleetscanner）：</strong>在固件升级、维修等维护窗口，对主机跑定向微基准；覆盖全机群约需 45&ndash;60 天。它用已知答案主动找缺陷，也把测试得到的异常特征沉淀为遥测信号。</li>
+    <li><strong>在线搭载测试（Ripple）：</strong>与正常工作负载共置，在核心和线程间穿插毫秒到秒级的定向测试；因此可在数天内覆盖机群，比 Fleetscanner 更快，但测试强度受在线负载约束。</li>
+    <li><strong>硬件哨兵（Hardware Sentinel）：</strong>不申请测试资源，也不重算矩阵乘。每次内核异常都会被收集和关联，按 CPU 核心聚合异常模式；某核心反复异常，就把它标为疑似 SDC 根因。这是统计性定位，不是对某一次 GPU 矩阵乘（GEMM）结果的正确性证明。</li>
+  </ul>
+  <p><strong>旁路监控（伪代码）：</strong></p>
+  <pre><code>summary = grad_summary(local_grads)         # 范数、RMS、最大值；在 GPU 上算
+monitor.enqueue_after_cuda_event(summary)  # 异步复制少量标量给后台
+dist.all_reduce(local_grads)                # 训练不等监控结果
+# 连续离群时：安排影子重算和定向诊断</code></pre>
+  <div class="note"><strong>检查点保留：</strong>最近 2&ndash;3 个版本只能防写坏；若 SDC 数天后才被发现，还需要按日/周级保留的低频长历史，以及不可删除的金牌检查点（gold checkpoint）。</div>
+
+  <h2>一句话</h2>
+  <p>万卡训练靠的不是不出故障，而是<strong>故障发现得早、影响圈得小、恢复得快、错误不悄悄积累</strong>。</p>
+
+  <h2>资料来源</h2>
+  <ul>
+    <li><a href="https://ar5iv.labs.arxiv.org/html/2407.21783">Meta, The Llama 3 Herd of Models</a></li>
+    <li><a href="https://engineering.fb.com/2025/07/22/data-infrastructure/how-meta-keeps-its-ai-hardware-reliable/">Meta Engineering, How Meta keeps its AI hardware reliable</a></li>
+    <li><a href="https://www.usenix.org/conference/nsdi24/presentation/jiang-ziheng">MegaScale</a></li>
+    <li><a href="https://docs.pytorch.org/docs/2.9/elastic/run.html">PyTorch Elastic</a>、<a href="https://docs.pytorch.org/docs/stable/distributed.checkpoint.html">Distributed Checkpoint</a>、<a href="https://docs.pytorch.org/docs/stable/meta.html">meta device</a></li>
+  </ul>
+  <div class="subscribe-box"><p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p><form class="subscribe-form" data-title="万卡训练平均三小时就有一次硬件错误，怎么解决的？" data-url="https://guochengqian.github.io/blog/fault-tolerance-at-10k-gpu-training/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form></div>
+</article></div>
+</body>
+</html>

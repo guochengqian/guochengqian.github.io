@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>大模型训练的并行策略：基础必备知识你都知道吗？ — Gordon's Blog</title>
+  <meta name="description" content="FSDP、TP、PP、CP 和 EP 是什么区别？它们分别切分什么？">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../img/favicon.png?v=202607072">
+  <link rel="stylesheet" href="../blog.css?v=202607070200">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607181902" defer></script>
+  <style>
+    .parallel-table { width: 100%; border-collapse: collapse; margin: 24px 0 32px; font: 14px/1.45 var(--sans); }
+    .parallel-table th, .parallel-table td { padding: 11px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+    .parallel-table th { color: var(--muted); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+    .parallel-table td:first-child { font-weight: 600; white-space: nowrap; }
+    .equation, .layout { margin: 18px 0; padding: 17px 18px; border-left: 3px solid var(--accent); background: var(--soft); font: 14px/1.6 var(--sans); overflow-x: auto; }
+    .layout { border: 1px solid var(--border); border-left: 0; border-radius: 7px; white-space: pre; }
+    .note { margin: 22px 0; padding: 15px 18px; border-left: 3px solid #b76531; background: #faf6ee; color: #3d3028; font: 15px/1.55 var(--sans); }
+    html.dark .note { background: #30251f; color: #eadfd5; }
+    .comparison-figure { margin: 32px -58px; }
+    .comparison-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .comparison-figure figcaption { margin: 10px 58px 0; color: var(--muted); font: 13px/1.45 var(--sans); }
+    .mechanism-figure { margin: 24px -58px 30px; }
+    .mechanism-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .mechanism-figure figcaption { margin: 10px 58px 0; color: var(--muted); font: 13px/1.45 var(--sans); }
+    @media (max-width: 780px) { .comparison-figure, .mechanism-figure { margin-left: 0; margin-right: 0; } .comparison-figure figcaption, .mechanism-figure figcaption { margin-left: 0; margin-right: 0; } }
+  </style>
+</head>
+<body data-blog-slug="parallelism-from-first-principles">
+<div class="page"><article>
+  <div class="lang-row"><a class="lang-switch" href="./" lang="en" hreflang="en">🌐 English</a></div>
+  <p class="article-tag">AI</p>
+  <h1>大模型训练的并行策略：基础必备知识你都知道吗？</h1>
+  <p class="subtitle">FSDP、TP、PP、CP 和 EP 是什么区别，它们分别切分什么。</p>
+  <div class="byline">
+    <img src="../img/avatar.jpg" alt="">
+    <div><div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div><div class="byline-sub">2026 年 7 月 17 日 &middot; 阅读约 7 分钟</div></div>
+    <form class="subscribe-form subscribe-compact byline-subscribe" data-title="大模型训练的并行策略：基础必备知识你都知道吗？" data-url="https://guochengqian.github.io/blog/parallelism-from-first-principles/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+  </div>
+  <figure><img src="parallelism-mechanisms.png?v=202607181945" alt="数据、张量、流水线、上下文和专家并行示意图"><figcaption>不同并行维度切分的是不同对象。</figcaption></figure>
+
+  <table class="parallel-table">
+    <thead><tr><th>方法</th><th>切分对象</th><th>解决的问题</th></tr></thead>
+    <tbody>
+      <tr><td>DP / FSDP</td><td>样本 / 参数、梯度、优化器状态</td><td>扩大 batch；让模型状态放得下。</td></tr>
+      <tr><td>TP</td><td>一个 Linear 或 attention 内的 hidden / head channel</td><td>把同一层的权重、activation 和计算分到多张卡。</td></tr>
+      <tr><td>PP</td><td>网络中连续的 blocks</td><td>让过深的模型按 stage 放到多组 GPU。</td></tr>
+      <tr><td>CP / SP</td><td>sequence / token</td><td>让长序列的 activation 与 attention 放得下。</td></tr>
+      <tr><td>EP</td><td>MoE experts</td><td>稀疏地扩展模型容量。</td></tr>
+    </tbody>
+  </table>
+
+  <h2>FSDP：切模型状态，不切一层计算</h2>
+  <p>DDP 每张卡都有完整模型，分不同样本，最后 all-reduce 梯度。FSDP 进一步把<strong>参数、梯度和优化器状态</strong>分片：用某个 FSDP unit 前 all-gather 完整参数，用完再 reshard，反向时 reduce-scatter 梯度。</p>
+  <p>重点：FSDP 不切该层的 activation，也不把一个 Linear 的矩阵乘拆到多卡。它改变的是模型状态的存储；计算和 activation 仍是完整的一份。DDP 的 gradient bucket 只能在反向产生后通信，因此可和更早层的反向计算重叠。</p>
+  <figure class="mechanism-figure"><img src="fsdp-mechanism.png?v=202607182015" alt="FSDP 中每张设备只保存参数、梯度和优化器状态分片，计算时 all-gather 完整参数"><figcaption>FSDP：状态分片；计算时临时 all-gather 完整参数，activation 保持完整。</figcaption></figure>
+
+  <h2>TP：切一个大 Linear 的 channel</h2>
+  <p>TP 用于<strong>一个 layer 本身就太大</strong>的情况。它把权重和 channel-direction 的中间 activation 分到多卡，每卡只计算自己的 channel shard；必要时再通信合并。以 MLP 为例，令 <code>T = B × S</code>：</p>
+  <div class="equation">X ∈ ℝ<sup>T × D</sup>, W<sub>1</sub> ∈ ℝ<sup>D × H</sup>, W<sub>2</sub> ∈ ℝ<sup>H × D</sup><br>H = GELU(XW<sub>1</sub>), Y = HW<sub>2</sub></div>
+  <div class="layout">W₁ 按列切：W₁ = [W₁⁽⁰⁾ … W₁⁽ᵗ⁻¹⁾]        W₁⁽ⁱ⁾: [D, H/t]
+W₂ 按行切：W₂ = [W₂⁽⁰⁾; …; W₂⁽ᵗ⁻¹⁾]        W₂⁽ⁱ⁾: [H/t, D]
+
+GPU i: Hᵢ = GELU(XW₁⁽ⁱ⁾)     [T, H/t]  本地计算
+GPU i: Yᵢ = HᵢW₂⁽ⁱ⁾           [T, D]    部分输出
+       Y = ΣᵢYᵢ                           all-reduce</div>
+  <p><strong>注意：</strong>在 tensor parallel 中，X 在 TP group 内复制；权重 W<sub>1</sub>、W<sub>2</sub> 沿 channel 维切开，中间 activation H 也随之切开。也就是说，同一个 TP group 内的每张 device 拿到相同的数据，只做其中一部分计算。Attention 同理：Q/K/V 按 head 切，分别计算本地 head，输出 projection 再合并。</p>
+  <div class="note"><strong>TP 与 FSDP：</strong>FSDP 临时聚合完整参数，activation 和 layer computation 不切；TP 始终把一个 layer 的 channel-shard 权重、activation 和计算放在不同 GPU。</div>
+  <figure class="mechanism-figure"><img src="tensor-mechanism.png?v=202607182015" alt="Tensor parallel 中权重按列或行切分，每张设备计算局部 activation"><figcaption>TP：列切 W<sub>1</sub> 得到局部 H；行切 W<sub>2</sub> 后合并局部输出。</figcaption></figure>
+
+  <h2>PP：按网络深度 block 切分</h2>
+  <p>PP 沿网络深度切：连续的 Transformer blocks 分给不同 stage，每张 device 只保存并计算自己的那段模型。一个 training batch 再切成 M<sub>0</sub>、M<sub>1</sub>…等 micro-batch，依次在 stage 间传 activation；反向时 gradient 沿反方向传回。</p>
+  <div class="layout">forward:  M₀: stage 0 → stage 1 → stage 2
+backward: M₀: stage 0 ← stage 1 ← stage 2
+
+同一时刻：stage 0 可算 M₃，stage 1 可算 M₂，stage 2 可算 M₁。</div>
+  <h3>1F1B：一个新的前向，配一个更早的反向</h3>
+  <p><strong>1F1B 不是同一个 micro-batch 刚前向就立刻反向。</strong>它必须先到最后一个 stage 才能产生 loss 和 gradient。它的意思是：流水线填满后，每个 stage 交替处理<strong>一个较新的 micro-batch 的 forward</strong>和<strong>一个较早的 micro-batch 的 backward</strong>。</p>
+  <figure class="mechanism-figure"><img src="megascale-interleaved-1f1b.png?v=202607182025" alt="三阶段、每阶段两个 virtual stage 的 interleaved 1F1B 调度时间线"><figcaption>Interleaved 1F1B：横轴为时间，数字为 micro-batch ID，粉色为 forward、蓝色为 backward、灰色为 bubble。来源：<a href="https://www.usenix.org/system/files/nsdi24-jiang-ziheng.pdf">MegaScale，Figure 2</a>。</figcaption></figure>
+  <table class="parallel-table"><thead><tr><th>阶段</th><th>发生什么</th><th>目的</th></tr></thead><tbody>
+    <tr><td>warm-up</td><td>只做 forward，把多个 micro-batch 填进流水线。</td><td>让最后一个 stage 拿到第一个 loss。</td></tr>
+    <tr><td>steady（1F1B）</td><td>交替做一个 F 和一个 B，例如 F(M<sub>4</sub>)、B(M<sub>1</sub>)、F(M<sub>5</sub>)、B(M<sub>2</sub>)。</td><td>保持设备忙碌，同时不必保留所有 micro-batch 的 activation。</td></tr>
+    <tr><td>cool-down</td><td>不再注入新的 micro-batch，只完成剩余的 backward。</td><td>排空流水线并累积完这一 batch 的梯度。</td></tr>
+  </tbody></table>
+  <p>灰色空档就是 pipeline bubble：开头还没填满、结尾已没有新的 forward 可做。micro-batch 越多，bubble 占比越小；但调度和 stage 间通信会增加。GPipe 的 flush 调度是先完成所有 forward、再做所有 backward，简单但要保留更多 activation；1F1B 更省 activation。</p>
+  <h3>Interleaved 1F1B：一张卡持有多个 virtual stage</h3>
+  <p>图中的 3 个 physical stage 又各拆成 2 个 model chunk，共 6 个 logical stage。以 device 0 为例，它持有 chunk 0 和 chunk 3；一个 micro-batch 的 forward 路径是 <code>device 0 → 1 → 2 → 0 → 1 → 2</code>。这样把流水线切得更细，减少 bubble，但会增加 stage 间传输和调度复杂度。</p>
+
+  <h2>CP / SP：按 token 切序列</h2>
+  <p>逐 token 的操作可本地做；attention 难在每个 query 需要全序列 K/V。最简单的方案是 all-gather K/V。Ring Attention 则固定本地 query，让 K/V block 在环上流动，以 online softmax 累积精确 attention。</p>
+  <figure class="comparison-figure"><img src="ring-vs-sequence.svg" alt="普通序列并行与 Ring Attention 对比"><figcaption>Ring Attention 流式传递 K/V block，不在每张卡 materialize 完整 K/V。</figcaption></figure>
+  <p>Ulysses 是另一种布局：从 <code>[sequence shard, all heads]</code> 经 all-to-all 变成 <code>[full sequence, head shard]</code>，本地完成 attention 后再 all-to-all 变回去。它交换的是切分轴；Ring Attention 则流式传递 K/V。</p>
+
+  <h2>EP：按 expert 切 MoE</h2>
+  <p>每张卡保存完整 expert，router 把 token 经 all-to-all 发往被选中的 expert，再 all-to-all 返回输出。容量随 expert 数增加，但每个 token 只激活 top-k 个 expert；瓶颈是路由失衡。</p>
+  <figure class="mechanism-figure"><img src="expert-mechanism.png?v=202607182015" alt="专家并行中 router 只选择少数 expert 处理 token"><figcaption>EP：router 只激活少数 expert；图中 Expert 1 和 Expert 4 被选中。</figcaption></figure>
+
+  <h2>组合</h2>
+  <p><strong>FSDP/DP × TP × PP × CP/SP × EP。</strong>常见做法是把通信最频繁的 TP 放在 NVLink/NVSwitch 岛内，用 FSDP/DP 跨节点扩展副本，再按需要加入 PP、CP 和 EP。</p>
+  <div class="subscribe-box"><p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p><form class="subscribe-form" data-title="大模型训练的并行策略：基础必备知识你都知道吗？" data-url="https://guochengqian.github.io/blog/parallelism-from-first-principles/cn.html"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form></div>
+</article></div>
+</body>
+</html>
