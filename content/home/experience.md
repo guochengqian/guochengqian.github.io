@@ -19,12 +19,22 @@ date_format = "Jan 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[experience]]
+  title = "Staff Researcher"
+  company = "ByteDance"
+  company_url = "https://www.bytedance.com/"
+  location = "San Jose, CA, USA"
+  date_start = "2026-07-01"
+  date_end = ""
+  description = ""
+  logo = "bytedance-logo-simple.svg"
+
+[[experience]]
   title = "Senior Research Scientist"
   company = "Snap Research"
   company_url = "https://www.snapchat.com/"
-  location = "Palo Alto, USA"
+  location = "Palo Alto, CA, USA"
   date_start = "2023-12-18"
-  date_end = "" 
+  date_end = "2026-07-01"
   description = ""
   logo = "snapchat-logo-simple.svg"
 

@@ -1,7 +1,7 @@
 ---
 
 # Display name
-name: Gordon Guocheng Qian
+name: Gordon Qian
 namecn: 钱国成
 
 # # Username (this should match the folder name)
@@ -12,24 +12,25 @@ namecn: 钱国成
 superuser: true
 
 # Role/position
-role: Senior Research Scientist 
+role: Staff Researcher
 
 # Organizations/Affiliations
 organizations:
-- name: Snap Research
-  url: "https://research.snap.com/team/creative-vision.html"
+- name: ByteDance
+  url: "https://www.bytedance.com/"
+  logo: bytedance-logo-simple.svg
 
 # Address
 # For available fields see: https://sourcethemes.com/academic/docs/page-builder/#contact
 address:
   street: ""
-  city: Palo Alto
+  city: San Jose
   region: CA
   postcode: ""
   country: United States
 
 # Short bio (displayed in user profile at end of posts)
-bio: Gordon Guocheng Qian is a Senior Research Scientist at Snap Inc. working on generative models across image, video, and 3D.
+bio: Gordon Guocheng Qian is a Staff Researcher at ByteDance working on post-training of Seedance video generation models.
 
 education:
   courses:
@@ -50,10 +51,9 @@ education:
   #   year: 2017 Spring
 
 interests:
-  - item: Generative AI
-    works: <a target="_blank" href="https://snap-research.github.io/Omni-ID/">Omni-ID</a>, <a target="_blank" href="https://guochengqian.github.io/project/magic123">Magic123</a> 
-  - item: Computer Vision
-    works:  <a target="_blank" href="https://arxiv.org/abs/2206.04670">PointNeXt</a>, <a target="_blank" href="https://arxiv.org/abs/1910.06849">DeepGCNs</a>
+  - item: Video Generation
+  - item: Image Generation
+  - item: 3D Vision
   
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/widgets/#icons

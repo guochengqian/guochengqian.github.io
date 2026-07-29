@@ -44,7 +44,7 @@ local_business_type = ""
 org_name = ""
 
 # Description for social sharing and search engines. If undefined, superuser role is used in place.
-description = "Gordon Guocheng Qian Homepage - 钱国成的个人主页"
+description = "Gordon Qian (Guocheng Qian) - Staff Researcher at ByteDance working on post-training of Seedance video generation models. Ex-Snap, PhD from KAUST. 钱国成的个人主页"
 
 # Display a logo in navigation bar rather than title (optional).
 #   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".

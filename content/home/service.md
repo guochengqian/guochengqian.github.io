@@ -48,4 +48,5 @@ subtitle = ""
 +++
 - Area Chair: [ICLR](https://iclr.cc/Conferences/2026/ProgramCommittee), NeurIPS.
 - Gold Reviewer: ICML.
+- Outstanding Reviewer: [ECCV](https://eccv.ecva.net/Conferences/2026/ProgramCommittee#outstanding-reviewer).
 

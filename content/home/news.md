@@ -46,6 +46,8 @@ subtitle = ""
  # CSS class.
  css_class = "news-scroll"
 +++
+- *2026/07*: Recognized as an [ECCV 2026 Outstanding Reviewer](https://eccv.ecva.net/Conferences/2026/ProgramCommittee#outstanding-reviewer).
+- *2026/07*: Joined ByteDance as a Staff Researcher, working on post-training of Seedance video generation models.
 - *2026/06*: [Prompt2Effect](https://arxiv.org/abs/2606.13971) accepted to ECCV 2026!
 - *2026/05*: Recognized as an ICML 2026 Gold Reviewer.
 - *2026/03*: Corresponding authored [Canvas-to-Image](https://snap-research.github.io/canvas-to-image) accepted to SIGGRAPH 2026!
@@ -65,9 +67,7 @@ subtitle = ""
 - *2022/11*: One paper accepted to __Advanced Science__ (IF 2021: 17.52).
 - *2022/10*: First-authored paper [PointNeXt](https://arxiv.org/abs/2206.04670) accepted to __NeurIPS'22__.
 - *2022/08*: Joined On Device AI team under XRTech in Meta as an AI research scientist intern. 
-- *2022/06*: First-authored paper [TENet](https://arxiv.org/abs/2206.04670) accepted to ICCP'22.
-- *2022/04*: First-authored paper [TNAS](https://openaccess.thecvf.com/content/CVPR2022W/ECV/papers/Qian_When_NAS_Meets_Trees_An_Efficient_Algorithm_for_Neural_Architecture_CVPRW_2022_paper.pdf) accepted to CVPR'22 workshop. 
-- *2021/10*: First-authored paper [ASSANet](https://arxiv.org/abs/2110.10538) accepted to __NeurIPS'21__ as a __spotlight__ paper.
+- *2022/06*: First-authored paper [TENet](https://arxiv.org/abs/2206.04670) accepted to ICCP'22.- *2021/10*: First-authored paper [ASSANet](https://arxiv.org/abs/2110.10538) accepted to __NeurIPS'21__ as a __spotlight__ paper.
 - *2021/03*: Co-first-authored paper [DeepGCNs](https://arxiv.org/abs/1910.06849) accepted to __TPAMI'21__.
 - *2021/03*: First-authored paper [PU-GCN](https://arxiv.org/abs/1912.03264) accepted to __CVPR'21__.
 - *2020/12*: Graduated with a master's degree in Computer Science.

@@ -5,11 +5,20 @@ headless = true
 active = true
 weight = 24
 
-title = "Focused Areas"
+title = "Focus Areas"
 subtitle = ""
 
 [advanced]
   css_class = "focused-areas-section"
+
+[[focus_areas]]
+  title = "Video Generation"
+  summary = "Now post-training Seedance at ByteDance. Previously worked on video pretraining, post-training (camera control, editing), and alignment tuning."
+  highlights = [
+    { name = "EasyV2V", url = "https://snap-research.github.io/easyv2v/", label = "CVPR" },
+    { name = "Diffusion-DRF", url = "https://snap-research.github.io/diffusion-drf/", label = "Video alignment tuning" },
+    { name = "AC3D", url = "https://snap-research.github.io/ac3d/", label = "CVPR" },
+  ]
 
 [[focus_areas]]
   title = "Image Generation (Personalization)"
@@ -18,15 +27,6 @@ subtitle = ""
     { name = "Canvas-to-Image", url = "https://snap-research.github.io/canvas-to-image/", label = "SIGGRAPH" },
     { name = "Omni-ID", url = "https://snap-research.github.io/Omni-ID/", label = "CVPR" },
     { name = "ComposeMe", url = "https://snap-research.github.io/composeme/", label = "SIGGRAPH Asia" },
-  ]
-
-[[focus_areas]]
-  title = "Video Generation"
-  summary = "Worked on video pretraining, post-training (camera control, editing), and alignment tuning."
-  highlights = [
-    { name = "EasyV2V", url = "https://snap-research.github.io/easyv2v/", label = "CVPR" },
-    { name = "Diffusion-DRF", url = "https://snap-research.github.io/diffusion-drf/", label = "Video alignment tuning" },
-    { name = "AC3D", url = "https://snap-research.github.io/ac3d/", label = "CVPR" },
   ]
 
 [[focus_areas]]
