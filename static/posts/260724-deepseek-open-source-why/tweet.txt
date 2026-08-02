@@ -1,0 +1,14 @@
+Title: Why DeepSeek open-sources — and always will
+
+DeepSeek's Liang Wenfeng, on why they open-source and won't stop:
+
+It isn't idealism. It's arithmetic.
+
+AI may end up ~10% of human GDP. Try to own something that big and history buries you — someone willing to take a smaller cut always undercuts you. So they cap profit at a "reasonable" ~6x: about 10 months to recoup a server.
+
+Here's the part people miss: at 6x, open-sourcing costs them nothing. Hand over the full weights and a third party redeploying them still pays ~20x DeepSeek's cost. The moat is the engineering to hit 10-month payback, not secrecy. Open vs. closed only becomes a real conflict if you're greedy for 100x.
+
+So restraint isn't charity. It's the move that maximizes their odds of reaching AGI — which is why the open-sourcing won't stop.
+
+Format: long-form (exceeds 280). Thread option: hook = first 2 lines, then the 6x/20x logic, then the restraint line.
+Account: @guocheng_qian

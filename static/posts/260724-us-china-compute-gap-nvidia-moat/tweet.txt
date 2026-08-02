@@ -1,0 +1,12 @@
+Title: The Nvidia moat Liang Wenfeng talked around
+
+DeepSeek's Liang Wenfeng: the whole US–China gap is compute. Not talent, not algorithms — resources. ~20k H-equivalent GPUs, not enough to train an 800B-active model. His framing: ~12–18 months behind, on 1/20th the compute.
+
+On Nvidia he's bullish. CUDA's moat, he argues, is dissolving fast: AI writes the kernels now, dedicated chips don't need CUDA, and their own TileLang rewrites the whole stack at a 1–2% perf hit. Huawei's 950: "4x the cards + 2 years behind" and you've matched a GB300.
+
+But here's what he talks around: Nvidia's real moat was never CUDA. It's that Nvidia's orders lock up the world's advanced packaging (CoWoS) and HBM. Nvidia books ~60% of TSMC's CoWoS capacity; CoWoS and 2nm are sold out into 2027. Huawei's own Ascend still leans on stockpiled TSMC dies + Korean HBM — SemiAnalysis says HBM, not logic, caps its 2026 output.
+
+Liang waves capacity away — "won't be the bottleneck in 5 years" — but his basis is an analogy (every shortage in history got solved in 2–3 years), and he's really betting on Huawei/SMIC ramping. That ramp is gated by the exact same wall (no EUV at SMIC, HBM under export control). The deepest moat is the one he didn't answer.
+
+Format: long-form. Thread: gap = compute → CUDA dissolving / 4x+2yr → the capacity moat he skipped.
+Account: @guocheng_qian

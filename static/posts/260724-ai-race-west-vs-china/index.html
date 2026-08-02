@@ -1,0 +1,332 @@
+<title>AI 竞争 · 欧美 vs 中国</title>
+<style>
+  :root{
+    --bg:#fcfcfb; --panel:#ffffff; --panel-2:#f7f6f2;
+    --ink:#1a1a19; --muted:#6f6d66; --faint:#9a978e; --hair:#e6e3dc;
+    --west:#2f62d6; --west-bg:rgba(47,98,214,.07); --west-line:rgba(47,98,214,.22);
+    --china:#d23a2a; --china-bg:rgba(210,58,42,.07); --china-line:rgba(210,58,42,.22);
+    --hatch:#c9c5bc;
+    --shadow:0 1px 2px rgba(20,20,18,.05),0 4px 14px rgba(20,20,18,.05);
+    --radius:12px;
+    --maxw:1180px;
+    --fdisplay:"SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    --fsans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+    --fnum:"SF Pro Display",ui-sans-serif,-apple-system,"Helvetica Neue",sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#141413; --panel:#1f1f1d; --panel-2:#26251f;
+      --ink:#f2f0ea; --muted:#a5a299; --faint:#77746c; --hair:#33322d;
+      --west:#5b8def; --west-bg:rgba(91,141,239,.12); --west-line:rgba(91,141,239,.30);
+      --china:#e0553f; --china-bg:rgba(224,85,63,.12); --china-line:rgba(224,85,63,.32);
+      --hatch:#4a483f;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#fcfcfb; --panel:#ffffff; --panel-2:#f7f6f2;
+    --ink:#1a1a19; --muted:#6f6d66; --faint:#9a978e; --hair:#e6e3dc;
+    --west:#2f62d6; --west-bg:rgba(47,98,214,.07); --west-line:rgba(47,98,214,.22);
+    --china:#d23a2a; --china-bg:rgba(210,58,42,.07); --china-line:rgba(210,58,42,.22);
+    --hatch:#c9c5bc; --shadow:0 1px 2px rgba(20,20,18,.05),0 4px 14px rgba(20,20,18,.05);
+  }
+  :root[data-theme="dark"]{
+    --bg:#141413; --panel:#1f1f1d; --panel-2:#26251f;
+    --ink:#f2f0ea; --muted:#a5a299; --faint:#77746c; --hair:#33322d;
+    --west:#5b8def; --west-bg:rgba(91,141,239,.12); --west-line:rgba(91,141,239,.30);
+    --china:#e0553f; --china-bg:rgba(224,85,63,.12); --china-line:rgba(224,85,63,.32);
+    --hatch:#4a483f; --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--fsans);
+    -webkit-font-smoothing:antialiased; line-height:1.5;
+    padding:36px 22px 60px;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto}
+  .tnum{font-family:var(--fnum); font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
+
+  /* ---------- masthead ---------- */
+  header{margin-bottom:26px}
+  .kick{font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--faint); font-weight:600; margin-bottom:12px}
+  h1{
+    font-family:var(--fdisplay); font-weight:800; letter-spacing:-.015em;
+    font-size:clamp(30px,5.4vw,52px); line-height:1.02; margin:0; text-wrap:balance;
+  }
+  h1 .vs{color:var(--faint); font-weight:500; padding:0 .18em}
+  h1 .w{color:var(--west)} h1 .c{color:var(--china)}
+  .sub{margin-top:12px; color:var(--muted); font-size:15px; max-width:60ch}
+  .metaline{display:flex; flex-wrap:wrap; gap:10px 18px; margin-top:16px; align-items:center; font-size:12.5px; color:var(--muted)}
+  .legend{display:inline-flex; align-items:center; gap:7px}
+  .swatch{width:12px; height:12px; border-radius:3px; display:inline-block}
+  .sw-w{background:var(--west)} .sw-c{background:var(--china)}
+  .pill{border:1px solid var(--hair); border-radius:999px; padding:3px 10px; color:var(--muted); background:var(--panel)}
+
+  /* ---------- stack scaffold ---------- */
+  .stackhint{display:flex; justify-content:space-between; font-size:11.5px; letter-spacing:.04em; color:var(--faint); margin:0 2px 8px; text-transform:uppercase; font-weight:600}
+  .stack{display:flex; flex-direction:column; gap:14px}
+
+  .layer{
+    background:var(--panel); border:1px solid var(--hair); border-radius:var(--radius);
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  .row{
+    display:grid; grid-template-columns:1fr 168px 1fr; align-items:stretch;
+  }
+  .side{padding:16px 16px 14px; display:flex; flex-wrap:wrap; gap:9px; align-content:flex-start}
+  .side.west{justify-content:flex-end; background:linear-gradient(90deg,transparent,var(--west-bg))}
+  .side.china{justify-content:flex-start; background:linear-gradient(90deg,var(--china-bg),transparent)}
+
+  .spine{
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    padding:14px 8px; gap:3px; border-left:1px solid var(--hair); border-right:1px solid var(--hair);
+    background:var(--panel-2);
+  }
+  .spine .lidx{font-family:var(--fnum); font-size:11px; font-weight:700; color:var(--faint); letter-spacing:.05em}
+  .spine .lzh{font-size:16.5px; font-weight:800; letter-spacing:.01em; line-height:1.15}
+  .spine .len{font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--faint); font-weight:600}
+
+  /* ---------- company card ---------- */
+  .card{
+    background:var(--panel); border:1px solid var(--hair); border-radius:10px;
+    padding:9px 11px; min-width:124px; max-width:190px; position:relative;
+  }
+  .side.west .card{border-top:2px solid var(--west)}
+  .side.china .card{border-top:2px solid var(--china)}
+  .card .cname{font-size:13.5px; font-weight:700; line-height:1.2; letter-spacing:.005em}
+  .card .corg{font-size:10px; color:var(--faint); font-weight:600; letter-spacing:.02em; margin-top:1px}
+  .card .cval{font-family:var(--fnum); font-variant-numeric:tabular-nums; font-size:19px; font-weight:800; letter-spacing:-.01em; margin-top:5px; line-height:1}
+  .side.west .card .cval{color:var(--west)} .side.china .card .cval{color:var(--china)}
+  .card .cval small{font-size:10.5px; font-weight:600; color:var(--muted); letter-spacing:.02em}
+  .card .cnote{font-size:11px; color:var(--muted); margin-top:4px; line-height:1.32}
+  .tagp{display:inline-block; font-size:9.5px; font-weight:700; letter-spacing:.03em; padding:1px 6px; border-radius:5px; background:var(--panel-2); color:var(--muted); border:1px solid var(--hair); vertical-align:middle}
+  .tag-priv{color:var(--china); border-color:var(--china-line); background:var(--china-bg)}
+  .tag-pub{color:var(--muted)}
+  .card.ghost{background:repeating-linear-gradient(135deg,transparent,transparent 6px,var(--panel-2) 6px,var(--panel-2) 12px); border-style:dashed}
+
+  /* ---------- comparison bar ---------- */
+  .cmp{padding:10px 16px 14px; border-top:1px solid var(--hair); background:var(--panel)}
+  .cmp .track{display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:0; height:18px}
+  .cmp .half{height:12px; display:flex; align-items:center}
+  .cmp .half.l{justify-content:flex-end}
+  .cmp .bar{height:12px; border-radius:4px}
+  .cmp .bar.w{background:var(--west)} .cmp .bar.c{background:var(--china)}
+  .cmp .center{width:1px; align-self:stretch; background:var(--hair)}
+  .cmp .labels{display:flex; justify-content:space-between; margin-top:6px; font-size:11.5px; color:var(--muted)}
+  .cmp .labels b{font-family:var(--fnum); font-variant-numeric:tabular-nums}
+  .cmp .labels .lw b{color:var(--west)} .cmp .labels .lc b{color:var(--china)}
+  .cmp .cnote{font-size:10.5px; color:var(--faint); margin-top:3px; text-align:center}
+
+  /* ---------- footnotes ---------- */
+  footer{margin-top:30px; border-top:1px solid var(--hair); padding-top:18px; font-size:11.5px; color:var(--muted); line-height:1.6}
+  footer h4{margin:0 0 6px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); font-weight:700}
+  footer ul{margin:0 0 12px; padding-left:18px} footer li{margin:2px 0}
+  footer .src{color:var(--faint)}
+  a{color:inherit}
+
+  /* theme toggle */
+  .toggle{position:fixed; top:14px; right:14px; z-index:9; background:var(--panel); border:1px solid var(--hair); color:var(--muted); border-radius:999px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; font-family:var(--fsans)}
+
+  @media (max-width:820px){
+    .row{grid-template-columns:1fr}
+    .spine{flex-direction:row; gap:8px; justify-content:center; border-left:0; border-right:0; border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); order:-1}
+    .side.west,.side.china{justify-content:center; background:var(--panel)}
+    .side.west{border-bottom:1px dashed var(--hair)}
+  }
+</style>
+
+<button class="toggle" id="tg" aria-label="切换主题">◐ 主题</button>
+<div class="wrap">
+  <header>
+    <div class="kick">AI Stack · Power Map · 2026</div>
+    <h1><span class="w">欧美</span><span class="vs">vs</span><span class="c">中国</span> · AI 竞争全景</h1>
+    <div class="sub">把 AI 竞争拆成 8 层技术栈——从底层光刻机到顶层大模型，每层列出代表公司与其美元市值/估值。地基（物理层）在下，应用（模型层）在上。</div>
+    <div class="metaline">
+      <span class="legend"><span class="swatch sw-w"></span>欧美 / 西方阵营</span>
+      <span class="legend"><span class="swatch sw-c"></span>中国</span>
+      <span class="pill">数据截至 2026年7月</span>
+      <span class="pill">单位：美元</span>
+      <span class="pill">私有公司＝最新融资估值</span>
+    </div>
+  </header>
+
+  <div class="stackhint"><span>↑ 越靠上 · 越接近应用</span><span>越靠下 · 越接近物理地基 ↓</span></div>
+  <div class="stack" id="stack"></div>
+
+  <footer>
+    <h4>读数说明 · Notes</h4>
+    <ul>
+      <li><b>市值</b>为 2026 年 7 月单日快照，AI 行情波动大，视作 ±数个百分点；已按汇率折美元（KRW÷1380 · CNY÷7.2 · HKD÷7.8 · JPY÷160）。</li>
+      <li><b>私有/未上市</b>公司（OpenAI、Anthropic、xAI、DeepSeek、月之暗面 Kimi、上海微电子）用最新一轮融资估值。<b>智谱 z.ai、MiniMax</b>已于 2026 年 1 月港股上市，<b>长鑫 CXMT</b>正 IPO（7月27日，约 $80.8B）。</li>
+      <li><b>国家电网、华为</b>未上市、无市值，用营业收入代表规模（不计入对比条）。跨层巨头（英伟达网络、微软/亚马逊/谷歌云、Alphabet 旗下 DeepMind、阿里旗下 Qwen）标注的是<b>母公司整体市值</b>，非该业务单独估值。</li>
+      <li><b>制程与良率</b>（TSMC N2 ~70%、SMIC 7nm ~30–55%、YMTC 294层 &gt;90%）均为第三方/媒体估算，厂商不公布，仅供量级参考；光刻设备的节点为能力/目标：ASML EUV 覆盖 7/5/3nm 并支持 2nm，Canon NIL 为 5nm（2nm 目标），Nikon ArF 浸没式 DUV 可用于 7nm 多重曝光；SMEE 28nm DUV 为送测阶段、非量产。</li>
+      <li><b>AI 加速器定位</b>统一以 H100 为参照：Ascend 910C 的推理实测约为 0.6×；阿里真武 M890 按公开的 H20 级定位折算约 0.15×；寒武纪 MLU590 的 FP16 峰值约 315 TFLOPS（约 0.3×）；摩尔线程 S5000 的 FP8 峰值约为 0.5×。不同精度、显存带宽、软件栈和集群互联会显著改变真实吞吐，不能将倍数直接视为训练速度或成本。</li>
+      <li><b>对比条</b>＝该层"可量化市值"之和，按每层较大一方归一化；一方有未上市巨头时以标记提示，条形会低估该方。</li>
+      <li class="src">来源：companiesmarketcap · stockanalysis · Bloomberg · CNBC · SCMP · TechCrunch · Digitimes · Tom's Hardware · 各公司 IR / 年报。</li>
+    </ul>
+  </footer>
+</div>
+
+<script>
+const LAYERS = [
+  { zh:'模型', en:'Foundation Models', idx:'L8', barNote:'Google/阿里 为母公司整体市值，不计入对比条',
+    west:[
+      {n:'OpenAI', org:'美国', cap:852, tag:['私有'], note:'$122B 轮·2026/3'},
+      {n:'Anthropic', org:'美国', cap:965, tag:['私有'], note:'Series H·近万亿'},
+      {n:'xAI', org:'美国', cap:250, tag:['私有'], note:'并入 SpaceX·2026/2'},
+      {n:'Google', org:'美国', cap:4300, barX:true, note:'整体市值·Gemini/DeepMind'},
+    ],
+    china:[
+      {n:'智谱 z.ai', org:'中国', cap:116, tag:['已上市'], note:'港股·HK$1T 级'},
+      {n:'阿里 Qwen', org:'中国', cap:269, barX:true, note:'整体市值·通义千问'},
+      {n:'DeepSeek 深度求索', org:'中国', cap:55, tag:['私有'], note:'~$50–63B·母幻方'},
+      {n:'月之暗面 Kimi', org:'中国', cap:31.5, tag:['私有'], note:'最新 pre-IPO 轮'},
+      {n:'MiniMax', org:'中国', cap:11.5, tag:['已上市'], note:'港股·2026/1'},
+    ] },
+
+  { zh:'云 · 数据中心', en:'Cloud & Datacenter', idx:'L7',
+    west:[
+      {n:'Alphabet · Google Cloud', org:'美国', cap:4300, note:'整体市值·云 +82% YoY'},
+      {n:'Microsoft · Azure', org:'美国', cap:2900, note:'整体市值·Azure +39%'},
+      {n:'Amazon · AWS', org:'美国', cap:2550, note:'整体市值·AWS +28%'},
+      {n:'Meta', org:'美国', cap:1510, note:'整体·自建 6.5GW 算力'},
+    ],
+    china:[
+      {n:'腾讯 Tencent', org:'中国', cap:551, note:'整体市值'},
+      {n:'阿里 · 阿里云', org:'中国', cap:269, note:'整体·中国云第一'},
+      {n:'百度 Baidu', org:'中国', cap:37, note:'整体·AI 云'},
+    ] },
+
+  { zh:'网络 · 互联', en:'Networking & Interconnect', idx:'L6', barNote:'Nvidia·博通 亦主导 AI 网络（见芯片层），本层仅计纯网络厂商',
+    west:[
+      {n:'Cisco', org:'美国', cap:444, note:'Nexus / Silicon One'},
+      {n:'Arista', org:'美国', cap:230, note:'AI 集群以太网'},
+    ],
+    china:[
+      {n:'华为 Huawei', org:'中国', cap:null, ghost:true, note:'未上市·营收 ~$127B·UnifiedBus'},
+      {n:'中兴 ZTE', org:'中国', cap:24.8, note:'通信/光网络设备'},
+    ] },
+
+  { zh:'能源 · 电力', en:'Energy & Power', idx:'L5',
+    west:[
+      {n:'GE Vernova', org:'美国', cap:284, note:'燃气轮机+电网'},
+      {n:'Constellation', org:'美国', cap:98.7, note:'核电·微软 PPA'},
+    ],
+    china:[
+      {n:'宁德时代 CATL', org:'中国', cap:264, note:'全球最大电池·储能'},
+      {n:'长江电力', org:'中国', cap:98, note:'全球最大水电'},
+      {n:'国家电网', org:'中国', cap:null, ghost:true, note:'未上市·营收 ~$546B'},
+    ] },
+
+  { zh:'AI 芯片 · 加速器', en:'AI Accelerators · GPU/ASIC', idx:'L4', barNote:'Google TPU 属 Alphabet；华为昇腾、阿里平头哥未上市，均不计入对比条',
+    west:[
+      {n:'Nvidia', org:'美国', cap:5050, note:'GPU·全球最贵公司'},
+      {n:'Broadcom', org:'美国', cap:1840, note:'定制 AI ASIC (XPU)'},
+      {n:'AMD', org:'美国', cap:868, note:'Instinct MI 系列'},
+      {n:'Google TPU', org:'美国', cap:4300, barX:true, note:'整体·属 Alphabet'},
+    ],
+    china:[
+      {n:'华为昇腾 Ascend', org:'中国 · 国产第一', cap:null, ghost:true, note:'910C·推理~0.6×H100'},
+      {n:'阿里平头哥 T-Head', org:'中国 · 国产第二', cap:null, ghost:true, note:'真武 M890·~0.15×H100'},
+      {n:'寒武纪 Cambricon', org:'中国 · 纯AI芯片龙头', cap:105, tag:['已上市'], note:'MLU590·A100级·~0.3×H100'},
+      {n:'海光信息 Hygon', org:'中国', cap:78, tag:['已上市'], note:'DCU·GPGPU·政企/运营商'},
+      {n:'摩尔线程', org:'中国', cap:40, tag:['已上市'], note:'S5000·FP8~0.5×H100'},
+    ] },
+
+  { zh:'内存 · HBM', en:'Memory · DRAM/HBM/NAND', idx:'L3',
+    west:[
+      {n:'Samsung', org:'韩国', cap:1300, note:'首发 HBM4E 12层'},
+      {n:'Micron', org:'美国', cap:1160, note:'HBM 售罄至2026'},
+      {n:'SK Hynix', org:'韩国', cap:925, note:'HBM 龙头·供英伟达'},
+    ],
+    china:[
+      {n:'长鑫 CXMT', org:'中国', cap:80.8, tag:['IPO中'], note:'DDR5·HBM3 研发·落后~2代'},
+      {n:'长江存储 YMTC', org:'中国', cap:23.5, tag:['私有'], note:'294层 NAND·实体清单'},
+    ] },
+
+  { zh:'代工 · 先进封装', en:'Foundry & Packaging', idx:'L2',
+    west:[
+      {n:'TSMC 台积电', org:'中国台湾', cap:2160, note:'N2 良率~70%·CoWoS 英伟达占~60%'},
+    ],
+    china:[
+      {n:'中芯国际 SMIC', org:'中国', cap:78, note:'7nm(DUV 多重曝光)·良率~30–55%'},
+    ] },
+
+  { zh:'光刻机', en:'Lithography', idx:'L1',
+    west:[
+      {n:'ASML', org:'荷兰', cap:703.7, note:'EUV：7/5/3nm·2nm量产'},
+      {n:'Canon', org:'日本', cap:24.2, note:'纳米压印：5nm·2nm目标'},
+      {n:'Nikon', org:'日本', cap:4.6, note:'ArF 浸没 DUV·7nm多重曝光'},
+    ],
+    china:[
+      {n:'上海微电子 SMEE', org:'中国', cap:null, ghost:true, note:'28nm 浸没 DUV·送测·未量产'},
+    ] },
+];
+
+function fmt(b){
+  if(b==null||b===0) return null;
+  if(b>=1000) return {v:(b/1000).toFixed(2), u:'T'};
+  if(b>=100)  return {v:String(Math.round(b)), u:'B'};
+  return {v:b.toFixed(1), u:'B'};
+}
+function tagClass(t){ return t==='私有'?'tag-priv':'tag-pub'; }
+
+function cardHTML(c){
+  const f = fmt(c.cap);
+  const tags = (c.tag||[]).map(t=>`<span class="tagp ${tagClass(t)}">${t}</span>`).join(' ');
+  const val = f
+    ? `<div class="cval">$${f.v}<small>${f.u}</small></div>`
+    : `<div class="cval"><small style="font-size:12px;font-weight:700">未上市</small></div>`;
+  return `<div class="card${c.ghost?' ghost':''}">
+    <div class="cname">${c.n}</div>
+    <div class="corg">${c.org||''}${tags?' · '+tags:''}</div>
+    ${val}
+    <div class="cnote">${c.note||''}</div>
+  </div>`;
+}
+
+function sumCap(arr){ return arr.reduce((s,c)=>s+(c.barX?0:(c.cap||0)),0); }
+function hasUnlisted(arr){ return arr.some(c=>c.cap==null); }
+
+function layerHTML(L){
+  const w = sumCap(L.west), c = sumCap(L.china);
+  const mx = Math.max(w,c) || 1;
+  const wPct = (w/mx*100), cPct=(c/mx*100);
+  const fw=fmt(w), fc=fmt(c);
+  const wlab = fw?`$${fw.v}${fw.u}`:'—';
+  const clab = fc?`$${fc.v}${fc.u}`:'—';
+  const anyGhost = L.west.some(x=>x.ghost)||L.china.some(x=>x.ghost);
+  const anyBarX = L.west.some(x=>x.barX)||L.china.some(x=>x.barX);
+  let cnote='';
+  if(L.barNote) cnote=L.barNote;
+  else if(anyBarX) cnote='母公司整体市值不计入对比条';
+  else if(anyGhost) cnote='虚线卡＝未上市 / 子公司，未计入对比条';
+  return `<div class="layer">
+    <div class="row">
+      <div class="side west">${L.west.map(cardHTML).join('')}</div>
+      <div class="spine"><div class="lidx">${L.idx}</div><div class="lzh">${L.zh}</div><div class="len">${L.en}</div></div>
+      <div class="side china">${L.china.map(cardHTML).join('')}</div>
+    </div>
+    <div class="cmp">
+      <div class="track">
+        <div class="half l"><div class="bar w" style="width:${wPct}%"></div></div>
+        <div class="half r"><div class="bar c" style="width:${cPct}%"></div></div>
+      </div>
+      <div class="labels"><span class="lw">欧美 <b>${wlab}</b></span><span class="lc"><b>${clab}</b> 中国</span></div>
+      ${cnote?`<div class="cnote">${cnote}</div>`:''}
+    </div>
+  </div>`;
+}
+
+document.getElementById('stack').innerHTML = LAYERS.map(layerHTML).join('');
+
+// theme toggle
+const root=document.documentElement, tg=document.getElementById('tg');
+if(location.search.indexOf('dark')>-1) root.setAttribute('data-theme','dark');
+if(location.search.indexOf('export')>-1) tg.style.display='none';
+tg.addEventListener('click',()=>{
+  const cur=root.getAttribute('data-theme')|| (matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  root.setAttribute('data-theme', cur==='dark'?'light':'dark');
+});
+</script>

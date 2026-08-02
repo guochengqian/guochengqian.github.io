@@ -1,0 +1,9 @@
+Title: When 10,000-GPU Training Fails, How Does It Keep Going? — Gordon Qian's Blog
+
+Failures are normal at 10,000 GPUs. The advantage comes from recovery: detect, fence, replace, restore, verify.
+
+Full sheet + sources: https://guochengqian.github.io/blog/fault-tolerance-at-10k-gpu-training/
+
+Format: Single post.
+Images: preview.jpg (3:4 cover).
+Account: @guocheng_qian

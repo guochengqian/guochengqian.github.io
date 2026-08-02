@@ -1,0 +1,12 @@
+Title: Half of DeepSeek's core researchers are labeling data
+
+The most surprising line from Liang Wenfeng: right now half of DeepSeek's people — including half its most important researchers — are labeling data.
+
+Why it's the battlefield: at this stage (post-training), what actually moves model capability is high-quality labeled data. Not a bigger cluster — better labels.
+
+Why China has no cost edge: high-end labeling isn't cheap manual work, it's expert judgment. On that, China's cost is no lower than the US's, and it's expensive either way. The labor-cost advantage that exists for low-end labeling just doesn't transfer.
+
+How they close the gap: walk on two legs — label the cheap stuff first. And accept that the bottleneck is time, not money: even without more capital, existing capital already funds the fastest possible ramp; the US just started earlier. His call: within a year, domestic high-quality data should catch up. Longer term, continual learning is what frees them from human labeling.
+
+Format: long-form. Thread: half the team labels → why it's the battle → no cost edge → time not money.
+Account: @guocheng_qian

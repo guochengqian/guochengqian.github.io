@@ -1,0 +1,15 @@
+Title: DeepSeek's next model's first user is itself
+
+Liang Wenfeng's AGI roadmap is a ladder — each rung built on the last:
+LLM → CoT → Agent (this year) → continual learning (the next wall, unsolved everywhere) → a self-iteration "singularity" (gradual, not a jump) → embodiment.
+
+Two things stuck with me.
+
+1) Commercialization is a by-product. They don't build models to serve C-end or B-end users — they chase AGI, and the products fall out along the way. "Worst case, just selling the API can support a public company." Doing lower-tier product work from the height of AGI research is, in his words, a dimensional-reduction strike.
+
+2) The next model's first user is DeepSeek itself. Its #1 goal isn't that you find it useful — it's that they do. A model that speeds up their own research is the fastest path to AGI.
+
+So what they actually care about internally isn't grabbing C-end traffic or B-end revenue. It's the next rung on that ladder.
+
+Format: long-form. Thread: the ladder → by-product → model-for-ourselves.
+Account: @guocheng_qian
