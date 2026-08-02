@@ -110,6 +110,25 @@ def inline_nodes(node, slug, marks=None):
             out += inline_nodes(c, slug, marks + [{'type': 'em'}])
         elif c.tag == 'code':
             out += inline_nodes(c, slug, marks + [{'type': 'code'}])
+        elif c.tag in ('sub', 'sup'):
+            # The Substack document schema does not reliably retain HTML-style
+            # sub/sup tags.  Unicode keeps mathematical notation intact in both
+            # the editor preview and the published renderer.
+            shift = SUBSCRIPT if c.tag == 'sub' else SUPERSCRIPT
+            raw = c.text()
+            # Unicode has only a limited subscript alphabet.  For a compound
+            # index such as Σ_{e ∈ TopK(g(x))}, preserve its exact meaning in
+            # familiar plain-text mathematical notation rather than partially
+            # converting only a few characters.
+            if c.tag == 'sub' and any(ch not in SUBSCRIPT_SOURCE for ch in raw):
+                item = {'type': 'text', 'text': '_{' + raw + '}'}
+                if marks:
+                    item['marks'] = [dict(m) for m in marks]
+                out.append(item)
+            else:
+                for item in inline_nodes(c, slug, marks):
+                    item['text'] = item['text'].translate(shift)
+                    out.append(item)
         elif c.tag == 'a':
             href = resolve(c.attrs.get('href', ''), slug)
             out += inline_nodes(c, slug, marks + [{'type': 'link', 'attrs': {'href': href}}])
@@ -130,6 +149,10 @@ def inline_nodes(node, slug, marks=None):
         out[0]['text'] = out[0]['text'].lstrip()
         out[-1]['text'] = out[-1]['text'].rstrip()
     return [n for n in out if n['text']]
+
+SUPERSCRIPT = str.maketrans('0123456789+-=()TDH', '⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ᵀᴰᴴ')
+SUBSCRIPT_SOURCE = '0123456789+-=()aeijknoph tx'
+SUBSCRIPT = str.maketrans(SUBSCRIPT_SOURCE, '₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑᵢⱼₖₙₒₚₕ ₜₓ')
 
 # ---------- image upload ----------
 def api(path, payload=None, method=None):
@@ -176,6 +199,22 @@ def image_block(fspath, caption_inline, dry):
 SKIP_CLASSES = {'byline', 'author-card', 'comments', 'chips', 'email-post-end', 'email-post-btn',
                 'subscribe-form', 'subscribe-box', 'lang-row'}
 
+def convert_equation(node, slug):
+    """Keep each visual equation line together instead of flattening its DOM."""
+    blocks, line = [], Node('equation-line')
+    for child in node.children:
+        if isinstance(child, Node) and child.tag == 'br':
+            content = inline_nodes(line, slug)
+            if content:
+                blocks.append({'type': 'paragraph', 'content': content})
+            line = Node('equation-line')
+        else:
+            line.children.append(child)
+    content = inline_nodes(line, slug)
+    if content:
+        blocks.append({'type': 'paragraph', 'content': content})
+    return blocks
+
 def convert_blocks(parent, slug, dry, warnings):
     blocks = []
     for c in parent.children:
@@ -218,7 +257,9 @@ def convert_blocks(parent, slug, dry, warnings):
         elif c.tag == 'figure':
             blocks.append(convert_figure(c, slug, dry, warnings))
         elif c.tag == 'div':
-            if 'table-wrap' in cls:
+            if 'equation' in cls:
+                blocks += convert_equation(c, slug)
+            elif 'table-wrap' in cls:
                 png = SPECIAL.get((slug, 'table'))
                 if png:
                     blocks.append(image_block(png, None, dry))
@@ -400,7 +441,7 @@ SLUGS = ['hermes-agent', 'elorian-ai', 'agent-for-finance', 'visual-generation-c
          'next-scaling-after-model-scaling', 'stock-inspiration-20260701', 'claude-hosted-blog',
          'squirrel-rime', 'sync-skills-across-agents', 'wake-my-gpu-on-demand',
          'ai-compute-load-sheet', 'meta-missing-culture', 'parallelism-from-first-principles',
-         'fault-tolerance-at-10k-gpu-training']  # oldest -> newest
+         'fault-tolerance-at-10k-gpu-training', 'optimizer-evolution-sgd-adamw-lamb-muon']  # oldest -> newest
 
 if __name__ == '__main__':
     mode = sys.argv[1] if len(sys.argv) > 1 else 'dry'  # dry | push | update
