@@ -9,6 +9,14 @@
   <lastBuildDate>Sat, 18 Jul 2026 12:00:00 +0000</lastBuildDate>
 
   <item>
+    <title>从 SGD 到 Muon per head：优化器到底在控制什么？</title>
+    <link>https://guochengqian.github.io/blog/optimizer-evolution-sgd-adamw-lamb-muon/</link>
+    <guid>https://guochengqian.github.io/blog/optimizer-evolution-sgd-adamw-lamb-muon/</guid>
+    <pubDate>Sat, 18 Jul 2026 12:00:00 +0000</pubDate>
+    <description>从 SGD、Adam、AdamW、LAMB 到 Muon、MuonClip：更新控制粒度如何从全局步长推进到每一个 attention head。</description>
+  </item>
+
+  <item>
     <title>When 10,000-GPU Training Fails, How Does It Keep Going?</title>
     <link>https://guochengqian.github.io/blog/fault-tolerance-at-10k-gpu-training/</link>
     <guid>https://guochengqian.github.io/blog/fault-tolerance-at-10k-gpu-training/</guid>

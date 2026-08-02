@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>从 SGD 到 Muon per head：优化器到底在控制什么？ — Gordon's Blog</title>
+  <meta name="description" content="从 SGD、Adam、AdamW、LAMB 到 Muon、MuonClip：更新控制粒度如何从全局步长推进到每一个 attention head。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../img/favicon.png?v=202607072">
+  <link rel="stylesheet" href="../blog.css?v=202607070200">
+  <script src="../blog-theme.js?v=202607051748"></script>
+  <script src="../blog-layout.js?v=202607181902" defer></script>
+  <style>
+    .thesis,.callout{margin:24px 0;padding:17px 18px;border-left:4px solid var(--accent);background:var(--soft);font:16px/1.65 var(--sans)}
+    .route{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:22px 0 34px;font-family:var(--sans)}
+    .route div{padding:11px;border:1px solid var(--border);border-radius:8px;background:var(--soft);font-size:13px;line-height:1.4}.route b{display:block;color:var(--accent);font-size:12px;letter-spacing:.06em}
+    .equation{margin:13px 0 17px;padding:14px 16px;overflow-x:auto;border-left:3px solid var(--accent);background:var(--soft);font:14px/1.78 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-line}
+    .optimizer{margin:40px 0 6px;padding-top:1px;border-top:1px solid var(--border)}.optimizer h2 small{display:block;margin-top:4px;color:var(--muted);font:500 13px/1.4 var(--sans)}
+    .four{display:grid;grid-template-columns:106px 1fr;gap:7px 14px;margin:18px 0;font:15px/1.58 var(--sans)}.four b{padding-top:3px;color:var(--accent);font-size:11px;letter-spacing:.07em}.four p{margin:0}
+    .comparison{width:100%;margin:20px 0 30px;border-collapse:collapse;font:14px/1.45 var(--sans)}.comparison th,.comparison td{padding:9px 8px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border)}.comparison th{color:var(--muted);font-size:11px;letter-spacing:.06em}.comparison td:first-child{font-weight:700}
+    .source-list{font:15px/1.65 var(--sans)}.source-list li{margin:7px 0}
+    @media(max-width:640px){.route{grid-template-columns:repeat(2,1fr)}.four{grid-template-columns:76px 1fr;gap:7px 10px}.comparison{font-size:12px}.comparison th,.comparison td{padding:7px 5px}}
+  </style>
+</head>
+<body data-blog-slug="optimizer-evolution-sgd-adamw-lamb-muon">
+<div class="page"><article>
+  <p class="article-tag">AI · Optimization</p>
+  <h1>从 SGD 到 Muon per head：优化器到底在控制什么？</h1>
+  <p class="subtitle">优化器的演进不是不断“加技巧”，而是把更新的控制粒度从一个全局步长，一路推进到坐标、层、矩阵奇异值，最后到每一个 attention head。</p>
+  <div class="byline">
+    <img src="../img/avatar.jpg" alt=""><div><div class="byline-name"><a href="/">Gordon Guocheng Qian</a></div><div class="byline-sub">2026 年 7 月 18 日 · 阅读约 10 分钟</div></div>
+    <form class="subscribe-form subscribe-compact byline-subscribe" data-title="从 SGD 到 Muon per head：优化器到底在控制什么？" data-url="https://guochengqian.github.io/blog/optimizer-evolution-sgd-adamw-lamb-muon/"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form>
+  </div>
+
+  <figure><img src="preview.png" alt="SGD、Adam、AdamW、LAMB、Muon 与 MuonClip 的优化器演进路线图"><figcaption>优化器逐步从“往哪走”，接管更新的尺度、几何与局部稳定性。</figcaption></figure>
+
+  <div class="thesis"><strong>先给结论：</strong>SGD 只问梯度指向哪里；Adam 为每个参数调步长；AdamW 把正则化从自适应机制中拆出来；LAMB 让每一层保有合适的相对步长；Muon 不再逐元素缩放，而是把<strong>整个矩阵更新正交化</strong>；MuonClip 再针对失控的 attention head 限制 QK logits。<strong>“Muon per head”并不是另一个独立优化器，而是 MuonClip 里的 per-head QK-Clip。</strong></div>
+
+  <div class="route" aria-label="优化器演进">
+    <div><b>SGD</b>全局 learning rate<br>控制方向</div><div><b>ADAM</b>逐参数 RMS<br>控制坐标尺度</div><div><b>ADAMW</b>独立 decay<br>控制参数范数</div>
+    <div><b>LAMB</b>layer trust ratio<br>控制层尺度</div><div><b>MUON</b>orthogonalization<br>控制矩阵谱</div><div><b>MUONCLIP</b>per-head QK clip<br>控制注意力稳定性</div>
+  </div>
+
+  <h2>统一记号：所有人都在改这一行</h2>
+  <p>令参数为 θ<sub>t</sub>，随机梯度为 g<sub>t</sub> = ∇L(θ<sub>t</sub>)。所有优化器都可写成：</p>
+  <div class="equation">θₜ₊₁ = θₜ − ηₜ · uₜ</div>
+  <p>差别全藏在更新 <em>u<sub>t</sub></em>：它可以是原始梯度、逐元素归一化后的梯度、按层重缩放的梯度，或一个具有特定奇异值谱的矩阵。</p>
+
+  <section class="optimizer">
+    <h2>1. SGD：先相信梯度 <small>1950s–</small></h2>
+    <div class="four">
+      <b>MOTIVATION</b><p>完整数据集的梯度太贵。每次只看一个 mini-batch，也希望平均而言往下降。</p>
+      <b>WHAT</b><p><strong>用一个全局步长，沿负梯度走。</strong></p>
+      <b>FORMULA</b><div class="equation">θₜ₊₁ = θₜ − ηgₜ</div>
+      <b>CONTRIBUTION</b><p>把大规模学习变成可扩展的随机优化。动量用历史梯度平滑噪声，但本质仍是共享全局尺度。</p>
+      <b>RESULT</b><p>简单、状态少、泛化常很强，长期是视觉任务的硬基线。</p>
+      <b>LIMITATION</b><p>所有坐标、所有层共享 η。稀疏梯度、曲率和层尺度不均时，同一把尺子太粗。</p>
+    </div>
+  </section>
+
+  <section class="optimizer">
+    <h2>2. Adam：给每个坐标一把尺子 <small>Kingma &amp; Ba, 2014</small></h2>
+    <div class="four">
+      <b>MOTIVATION</b><p>有的参数梯度持续很大，有的很稀疏；单步方向又有噪声。SGD 的单一 η 对它们并不公平。</p>
+      <b>WHAT</b><p><strong>一阶矩估计方向，二阶矩估计每个坐标的 RMS，再做 bias correction。</strong></p>
+      <b>FORMULA</b><div class="equation">mₜ = β₁mₜ₋₁ + (1−β₁)gₜ
+vₜ = β₂vₜ₋₁ + (1−β₂)gₜ²
+m̂ₜ = mₜ/(1−β₁ᵗ),  v̂ₜ = vₜ/(1−β₂ᵗ)
+θₜ₊₁ = θₜ − η · m̂ₜ/(√v̂ₜ + ε)</div>
+      <b>CONTRIBUTION</b><p>合并 momentum 和 RMSProp。大梯度坐标自动慢一点，稀疏坐标相对快一点，成为近乎“开箱即用”的默认选择。</p>
+      <b>RESULT</b><p>在非平稳、噪声大、稀疏梯度的任务上实用，迅速成为 Transformer 训练的共同语言。</p>
+      <b>LIMITATION</b><p>每个参数保存 m、v 两份状态；更关键的是，逐元素预条件会扭曲正则化。“Adam + L2”并不等于真正的 weight decay。</p>
+    </div>
+  </section>
+
+  <section class="optimizer">
+    <h2>3. AdamW：把“学得快”和“别长太大”拆开 <small>Loshchilov &amp; Hutter, 2017/2019</small></h2>
+    <div class="four">
+      <b>MOTIVATION</b><p>对 SGD，向 loss 加 λ‖θ‖²/2 与每步缩小参数等价；对 Adam，λθ 会进 m、v，再被 √v̂ 逐坐标缩放，二者不再等价。</p>
+      <b>WHAT</b><p><strong>先做 Adam 的数据梯度更新，再独立收缩参数。</strong></p>
+      <b>FORMULA</b><div class="equation">θₜ₊₁ = (1 − ηλ)θₜ − η · m̂ₜ/(√v̂ₜ + ε)
+
+而不是先把 λθₜ 混进 gₜ。</div>
+      <b>CONTRIBUTION</b><p>weight decay 从自适应预条件器中解耦：学习率决定优化步长，λ 决定参数收缩，两个超参不再被绑死。</p>
+      <b>RESULT</b><p>原论文在图像分类上改善 Adam 的泛化，让 Adam 族能与 momentum SGD 竞争；它后来成为语言模型训练的默认基线。</p>
+      <b>LIMITATION</b><p>它修复的是<strong>正则化语义</strong>，不是层间尺度或矩阵几何；仍是逐元素 adaptive method，状态内存依然很重。</p>
+    </div>
+  </section>
+
+  <section class="optimizer">
+    <h2>4. LAMB：每一层也要有自己的相对步长 <small>You et al., 2019</small></h2>
+    <div class="four">
+      <b>MOTIVATION</b><p>batch 大到几万时，AdamW 的不同层更新幅度差别很大；一个全局 η 难以让所有层同步、稳定地扩大 batch。</p>
+      <b>WHAT</b><p><strong>保留 Adam 型逐坐标方向，再用 trust ratio 把每层更新范数对齐到参数范数。</strong></p>
+      <b>FORMULA</b><div class="equation">uₜ⁽ˡ⁾ = m̂ₜ⁽ˡ⁾/(√v̂ₜ⁽ˡ⁾ + ε) + λθₜ⁽ˡ⁾
+rₜ⁽ˡ⁾ = ‖θₜ⁽ˡ⁾‖₂ / (‖uₜ⁽ˡ⁾‖₂ + ε)
+θₜ₊₁⁽ˡ⁾ = θₜ⁽ˡ⁾ − η · rₜ⁽ˡ⁾uₜ⁽ˡ⁾</div>
+      <b>CONTRIBUTION</b><p>在“每个元素”和“全模型”之间增加 layer-wise 粒度：每层按自身权重尺度走相似的相对距离。</p>
+      <b>RESULT</b><p>论文报告 BERT 在 batch 32,768 下无性能损失；mixed-batch training 下在 TPUv3 Pod 上把预训练从约 3 天压到 76 分钟。</p>
+      <b>LIMITATION</b><p>仍沿用 Adam 的 diagonal 预条件，状态重；trust ratio 只看整层范数，看不到矩阵内不同奇异方向的失衡。</p>
+    </div>
+  </section>
+
+  <section class="optimizer">
+    <h2>5. Muon：不要逐元素改矩阵，直接改它的谱 <small>Jordan, 2024；Moonshot AI, 2025</small></h2>
+    <div class="four">
+      <b>MOTIVATION</b><p>Transformer 的大量容量在 2D linear weights。逐元素除 RMS 只看坐标轴；矩阵真正的病态、冗余与有效更新方向由奇异值结构决定。</p>
+      <b>WHAT</b><p><strong>先积累 momentum，再把这个矩阵近似投影成所有非零奇异值都接近 1 的极分解因子。</strong></p>
+      <b>FORMULA</b><div class="equation">Mₜ = μMₜ₋₁ + Gₜ
+Mₜ = UΣVᵀ  ⟹  O(Mₜ) = UVᵀ
+Wₜ₊₁ = Wₜ − η · s(W) · O(Mₜ)
+
+Newton–Schulz（示意）：
+X₀ = M/‖M‖F
+Xₖ₊₁ = ½Xₖ(3I − XₖᵀXₖ)  ≈ UVᵀ</div>
+      <b>CONTRIBUTION</b><p>核心不是“二阶”标签，而是<strong>矩阵更新正交化</strong>：用 GPU 友好的 Newton–Schulz 迭代近似 polar factor，避免显式 SVD。通常只用于 2D 权重；bias、norm、embedding 等 1D 参数仍交给 AdamW。</p>
+      <b>RESULT</b><p>Moonlight 报告称：加入 weight decay 与正确的 per-parameter update scale 后，Muon 在 compute-optimal scaling 实验中约有 AdamW 的 <strong>2× 计算效率</strong>；其 3B activated / 16B total MoE 用 5.7T tokens 训练。</p>
+      <b>LIMITATION</b><p>不是替换一行 optimizer：矩阵形状与 RMS 需仔细缩放，1D 参数须混用别的优化器；Newton–Schulz 还增加计算与数值实现要求。放大时 attention logits 仍可能爆炸。</p>
+    </div>
+  </section>
+
+  <section class="optimizer">
+    <h2>6. MuonClip：把爆炸的 attention head 单独拉回来 <small>Kimi K2, 2025</small></h2>
+    <div class="four">
+      <b>MOTIVATION</b><p>Muon 很 token-efficient，但放大训练时，极少数 head 的 QK 点积会先冲高，随后 loss spike 或发散。对全部 head 一刀切会伤到正常 head。</p>
+      <b>WHAT</b><p><strong>Muon 更新后，监控每个 head 的最大 attention logit；只缩小超阈值 head 的 Q/K 权重。</strong>这就是 “Muon per head”。</p>
+      <b>FORMULA</b><div class="equation">Sʰ = Qʰ(Kʰ)ᵀ / √d,   Sʰmax = max |Sʰ|
+γʰ = min(1, τ / Sʰmax)
+WQʰ ← (γʰ)ᵅWQʰ,  WKʰ ← (γʰ)¹⁻ᵅWKʰ
+
+常用 α = 1/2：WQʰ、WKʰ 都乘 √γʰ
+⇒ QK 点积整体乘 γʰ</div>
+      <b>CONTRIBUTION</b><p>QK-Clip 从<strong>权重源头</strong>约束 logits，不是在 softmax 前截断已经爆炸的数值。per-head γ<sup>h</sup> 精确限定在失控 head；对 MLA，只缩放非共享的 head-specific 分量，避免影响其他 head。</p>
+      <b>RESULT</b><p>Kimi K2 将 Muon、weight decay、一致 update-RMS scaling 和 QK-Clip 组合为 MuonClip；技术报告称其 1T 参数、32B activated 的 MoE 在 <strong>15.5T tokens 预训练中零 loss spike</strong>。</p>
+      <b>LIMITATION</b><p>这是 attention instability 的针对性稳定器，不是普适“更好 Muon”的定理。阈值 τ、统计窗口、MHA/MLA 的实现细节都会影响行为，不能替代初始化、precision 与 learning-rate schedule。</p>
+    </div>
+  </section>
+
+  <h2>把路线压成一张表</h2>
+  <table class="comparison"><thead><tr><th>方法</th><th>新增控制量</th><th>解决什么</th><th>留下什么</th></tr></thead><tbody>
+    <tr><td>SGD</td><td>全局 η</td><td>随机梯度能否学习</td><td>各层各坐标同尺</td></tr>
+    <tr><td>Adam</td><td>逐坐标 1/√v̂</td><td>噪声、稀疏、尺度不均</td><td>正则被扭曲；状态重</td></tr>
+    <tr><td>AdamW</td><td>独立 λ</td><td>adaptive method 的 decay</td><td>仍是 diagonal geometry</td></tr>
+    <tr><td>LAMB</td><td>逐层 r<sup>(l)</sup></td><td>大 batch 层间失衡</td><td>看不到层内奇异方向</td></tr>
+    <tr><td>Muon</td><td>UV<sup>T</sup></td><td>矩阵更新的谱与冗余</td><td>attention 稳定性</td></tr>
+    <tr><td>MuonClip</td><td>逐 head γ<sup>(h)</sup></td><td>少数 QK logits 爆炸</td><td>阈值与架构特定</td></tr>
+  </tbody></table>
+
+  <h2>真正的主线：控制对象越来越接近故障发生的尺度</h2>
+  <p>这不是一条“新方法取代旧方法”的直线。真实训练栈常是混合的：Muon 管 2D matrices，AdamW 管 1D parameters，weight decay 仍在，MuonClip 只在注意力出现风险时介入。</p>
+  <div class="callout"><strong>一句话记忆：</strong>SGD 控方向；Adam 控坐标尺度；AdamW 控参数收缩；LAMB 控层的相对步长；Muon 控矩阵奇异值；MuonClip 控每个 head 的 QK 风险。<br><br><strong>Muon per head 不是“把 Muon 按 head 跑一遍”。</strong>Muon 给矩阵更均衡的更新；per-head QK-Clip 在极少数 head 的注意力分数开始爆炸时，精准踩一脚刹车。</div>
+
+  <h2>资料来源</h2>
+  <ul class="source-list">
+    <li><a href="https://arxiv.org/abs/1412.6980">Kingma &amp; Ba, Adam: A Method for Stochastic Optimization</a></li>
+    <li><a href="https://arxiv.org/abs/1711.05101">Loshchilov &amp; Hutter, Decoupled Weight Decay Regularization</a></li>
+    <li><a href="https://arxiv.org/abs/1904.00962">You et al., Large Batch Optimization for Deep Learning: Training BERT in 76 minutes</a></li>
+    <li><a href="https://arxiv.org/abs/2502.16982">Moonshot AI, Muon is Scalable for LLM Training</a></li>
+    <li><a href="https://arxiv.org/abs/2507.20534">Moonshot AI, Kimi K2: Open Agentic Intelligence</a>（MuonClip、QK-Clip 与 per-head 细节）</li>
+  </ul>
+  <div class="subscribe-box"><p>喜欢这篇文章？发到自己邮箱，稍后阅读。</p><form class="subscribe-form" data-title="从 SGD 到 Muon per head：优化器到底在控制什么？" data-url="https://guochengqian.github.io/blog/optimizer-evolution-sgd-adamw-lamb-muon/"><input type="email" name="email" required placeholder="输入你的邮箱…"><button type="submit">发送到邮箱</button></form></div>
+</article></div>
+</body>
+</html>
