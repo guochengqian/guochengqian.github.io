@@ -140,7 +140,11 @@
       dek: 'A visual map of stragglers, hard failures, slow recovery, and silent data corruption — with the response for each.',
       zh: { file: 'cn.html', title: '万卡训练平均三小时就有一次硬件错误，怎么解决的？',
         date: '2026 年 7 月 18 日', read: '阅读约 6 分钟', tag: 'AI Systems',
-        dek: '一张图看懂万卡训练的四类问题：慢卡、硬故障、慢恢复、静默算错，以及每一类的处理方法。' } }
+        dek: '一张图看懂万卡训练的四类问题：慢卡、硬故障、慢恢复、静默算错，以及每一类的处理方法。' } },
+    { slug: 'optimizer-evolution-sgd-adamw-lamb-muon',
+      title: '从 SGD 到 Muon per head：优化器到底在控制什么？',
+      date: '2026 年 7 月 18 日', read: '阅读约 10 分钟', tag: 'AI', image: 'preview.png',
+      dek: '从 SGD、Adam、AdamW、LAMB 到 Muon、MuonClip：更新控制粒度如何从全局步长推进到每一个 attention head。' }
   ];
 
   var ACTIONS_VERSION = '202607081900'; // blog-actions.js cache-buster, managed here only.
@@ -292,7 +296,7 @@
       '<img src="../img/avatar.jpg" alt="Gordon Guocheng Qian">' +
       '<div>' +
         '<div class="author-name">Gordon Guocheng Qian</div>' +
-        '<p>Senior Research Scientist at Snap Inc. Writing about GenAI research, agents, and AI markets.</p>' +
+        '<p>Staff Researcher at ByteDance. Writing about GenAI research, agents, and AI markets.</p>' +
         '<div class="author-links">' +
           '<a href="/">Homepage</a>' +
           '<a href="https://scholar.google.com/citations?user=DUDaxg4AAAAJ">Google Scholar</a>' +
