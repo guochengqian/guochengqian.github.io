@@ -46,6 +46,7 @@ subtitle = ""
  # CSS class.
  css_class = "news-scroll"
 +++
+- *2026/08*: Two papers, [CanvasComposer](https://arxiv.org/abs/2510.20820) and [EgoPlay](https://arxiv.org/abs/2607.24560), accepted to SIGGRAPH Asia 2026!
 - *2026/07*: Recognized as an [ECCV 2026 Outstanding Reviewer](https://eccv.ecva.net/Conferences/2026/ProgramCommittee#outstanding-reviewer).
 - *2026/07*: Joined ByteDance as a Staff Researcher, working on post-training of Seedance video generation models.
 - *2026/06*: [Prompt2Effect](https://arxiv.org/abs/2606.13971) accepted to ECCV 2026!
