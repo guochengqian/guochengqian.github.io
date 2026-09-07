@@ -1,7 +1,7 @@
 +++
 
-title = "LayerComposer: Multi-Human Personalized Generation via Layered Canvas"
-date = 2025-10-25T00:00:00
+title = "CanvasComposer: Personalized Group Photo Generation via a Multi-Reference Canvas"
+date = 2026-09-07T00:00:00
 draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
@@ -10,13 +10,14 @@ authors = [
 "Ruihang Zhang", 
 "Tsai-Shien Chen", 
 "Yusuf Dalva", 
-"Anujraaj Goyal", 
+"Anujraaj Argo Goyal", 
 "Willi Menapace", 
 "Ivan Skorokhodov", 
-"Daniil Ostashev", 
 "Meng Dong", 
 "Arpit Sahni", 
+"Daniil Ostashev", 
 "Ju Hu", 
+"Mukesh Singhal", 
 "Sergey Tulyakov", 
 "Kuan-Chieh Jackson Wang", 
 ]
@@ -30,19 +31,19 @@ authors = [
 # 4 = Report
 # 5 = Book
 # 6 = Book section
-publication_types = ["3"]
+publication_types = ["1"]
 
 # Publication name and optional abbreviated version.
-publication ="arXiv preprint, 2025"
-publication_short = "*arXiv'25*"
+publication ="SIGGRAPH Asia, 2026"
+publication_short = "*SIGGRAPH Asia'26*"
 
 # Abstract and optional shortened version.
-abstract = "Despite their impressive visual fidelity, existing personalized generative models lack interactive control over spatial composition and scale poorly to multiple subjects. To address these limitations, we present LayerComposer, an interactive framework for personalized, multi-subject text-to-image generation. Our approach introduces two main contributions: (1) a layered canvas, a novel representation in which each subject is placed on a distinct layer, enabling occlusion-free composition; and (2) a locking mechanism that preserves selected layers with high fidelity while allowing the remaining layers to adapt flexibly to the surrounding context. Similar to professional image-editing software, the layered canvas allows users to place, resize, or lock input subjects through intuitive layer manipulation. Our versatile locking mechanism requires no architectural changes, relying instead on inherent positional embeddings combined with a complementary data sampling strategy. Extensive experiments demonstrate that LayerComposer achieves superior spatial control and identity preservation compared to the state-of-the-art methods in human-centric personalized image generation."
-abstract_short = "LayerComposer enables Photoshop-like control for multi-subject text-to-image generation, allowing users to naturally compose scenes by intuitively placing, resizing, and locking elements in a layered canvas with high fidelity."
+abstract = "Existing personalized image generators still struggle to preserve multiple reference identities in natural and coherent multi-human generations. To address these limitations, we present CanvasComposer, an interactive framework for personalized group photo generation. Inspired by professional image-editing software, CanvasComposer allows users to place reference subjects on a shared canvas, where each subject keeps its own RGBA cutout of the input. This multi-reference canvas preserves reference content under overlap while providing an intuitive interface for organizing multiple identities; the subjects remain separate elements on the input canvas, and the model outputs a single personalized and harmonized image. To keep this representation efficient, transparent latent pruning retains only tokens from each subject's non-transparent region, and cross-reference training mitigates copy-paste artifacts by learning to harmonize references sampled from different images. Extensive experiments demonstrate that CanvasComposer achieves coherent generation and strong identity preservation compared to state-of-the-art methods in multi-human personalized image generation."
+abstract_short = "CanvasComposer enables Photoshop-like personalized group photo generation: users place RGBA cutouts of multiple reference subjects on a shared canvas, and the model outputs a single harmonized image with strong identity preservation."
 # Is this a selected publication? (true/false)
 selected = true
 # Is this a featured publication? (true/false)
-featured = false 
+featured = true
 
 # Projects (optional).
 # Associate this publication with one or more of your projects.
@@ -62,13 +63,13 @@ slides = ""
 
 # Tags (optional).
 # Set tags = [] for no tags, or use the form tags = ["A Tag", "Another Tag"] for one or more tags.
-tags = ["Generative Models", "Personalization", "Interactive AI"]
+tags = ["Generative Models", "Personalization", "Multi-Human Generation", "Interactive AI"]
 
 # Links (optional).
 url_preprint = "https://arxiv.org/abs/2510.20820"
 #url_code = ""
 #url_dataset = ""
-url_project = "https://snap-research.github.io/layercomposer/"
+url_project = "https://snap-research.github.io/canvascomposer/"
 #url_slides = ""
 url_video = "https://www.youtube.com/watch?v=veBk9Ur3Fe4"
 #url_poster = ""
@@ -96,7 +97,7 @@ math = true
 
 [image]  
   # Caption (optional)
-  # caption = "LayerComposer"
+  # caption = "CanvasComposer"
   
   # Focal point (optional)
   # Options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
