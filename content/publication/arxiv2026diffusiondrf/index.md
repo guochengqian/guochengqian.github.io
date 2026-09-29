@@ -1,7 +1,7 @@
 +++
 
 title = "Diffusion-DRF: Free, Rich, and Differentiable Reward for Video Diffusion Fine-Tuning"
-date = 2026-01-07T00:00:00
+date = 2026-09-28T00:00:00
 draft = false
 
 # Authors. Comma separated list, e.g. ["Bob Smith", "__**David Jones**__"].
@@ -23,11 +23,11 @@ authors = [
 # 4 = Report
 # 5 = Book
 # 6 = Book section
-publication_types = ["3"]
+publication_types = ["1"]
 
 # Publication name and optional abbreviated version.
-publication ="arXiv preprint, 2026"
-publication_short = "*arXiv'26*"
+publication ="Conference on Neural Information Processing Systems, 2026"
+publication_short = "*NeurIPS'26*"
 
 # Abstract and optional shortened version.
 abstract = "Video diffusion alignment has been heavily relied on scalar rewards. These rewards are typically derived from learned reward models in human preference datasets, requiring additional training and extensive collection. Moreover, scalar rewards provide coarse, global supervision, offering limited prompt-generation mismatch credit assignment and making models prone to reward exploitation and unstable optimization. We propose Diffusion-DRF, a free, rich, and differentiable reward framework for video diffusion fine-tuning."
