@@ -38,9 +38,9 @@ abstract = "While personalizing Image-to-Video (I2V) diffusion models with speci
 abstract_short = "Prompt2Effect synthesizes effect-specific LoRA weights for image-to-video diffusion models in a single forward pass, reducing per-effect specialization from 56 GPU hours to 3.3 seconds."
 
 # Is this a selected publication? (true/false)
-selected = true
+selected = false
 # Is this a featured publication? (true/false)
-featured = true
+featured = false
 
 # Projects (optional).
 projects = []

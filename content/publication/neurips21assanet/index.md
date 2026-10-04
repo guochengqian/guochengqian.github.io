@@ -26,9 +26,9 @@ publication_short = "*NeurIPS'21, Spotlight*"
 abstract = "Access to 3D point cloud representations has been widely facilitated by LiDAR sensors embedded in various mobile devices.  This has led to an emerging needfor fast and accurate point cloud processing techniques. In this paper, we revisitand dive deeper into PointNet++, one of the most influential yet under-explored networks, and develop faster and more accurate variants of the model.  We first present  a  novel  Separable  Set  Abstraction  (SA)  module  that  disentangles  the vanilla SA module used in PointNet++ into two separate learning stages:  (1)learning channel correlation and (2) learning spatial correlation. The Separable SA module is significantly faster than the vanilla version, yet it achieves comparable performance. We then introduce a new Anisotropic Reduction function into our Separable SA module and propose an Anisotropic Separable SA (ASSA) modulethat substantially increases the network’s accuracy.  We later replace the vanilla SA modules in PointNet++ with the proposed ASSA modules, and denote the modified network as ASSANet. Extensive experiments on point cloud classification,semantic segmentation, and part segmentation show that ASSANet outperforms PointNet++ and other methods, achieving much higher accuracy and faster speeds.In particular, ASSANet outperforms PointNet++ by 7.4 mIoU on S3DIS Area 5, while maintaining 1.6$\times$ faster inference speed on a single NVIDIA 2080Ti GPU. Our scaled ASSANet variant achieves 66.8mIoU and outperforms KPConv, while being more than 54$\times$ faster."
 abstract_short = "ASSANet makes PointNet++ faster and more accurate."
 # Is this a selected publication? (true/false)
-selected = true
+selected = false
 # Is this a featured publication? (true/false)
-featured = true
+featured = false
 
 # Projects (optional).
 # Associate this publication with one or more of your projects.

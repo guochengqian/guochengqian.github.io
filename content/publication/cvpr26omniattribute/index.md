@@ -32,9 +32,9 @@ abstract = "Visual concept personalization aims to transfer only specific image 
 abstract_short = "Omni-Attribute can isolate a specific attribute, whether it is an abstract concept or not, from any image and merge those selected attributes from multiple images into a coherent generation."
 
 # Is this a selected publication? (true/false)
-selected = true
+selected = false
 # Is this a featured publication? (true/false)
-featured = true
+featured = false
 
 # Projects (optional).
 # Associate this publication with one or more of your projects.

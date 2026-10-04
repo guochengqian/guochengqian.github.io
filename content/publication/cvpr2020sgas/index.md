@@ -27,9 +27,9 @@ abstract = "Architecture design has become a crucial component of successful dee
 abstract_short = ""
 
 # Is this a selected publication? (true/false)
-selected = true
+selected = false
 # Is this a featured publication? (true/false)
-featured = true
+featured = false
 
 # Projects (optional).
 # Associate this publication with one or more of your projects.
