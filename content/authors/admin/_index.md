@@ -30,7 +30,7 @@ address:
   country: United States
 
 # Short bio (displayed in user profile at end of posts)
-bio: Gordon Guocheng Qian is a Staff Researcher at ByteDance working on post-training of Seedance video generation models.
+bio: Gordon Guocheng Qian is a Staff Researcher at ByteDance (San Jose), working on post-training of Seedance video generation models.
 
 education:
   courses:
