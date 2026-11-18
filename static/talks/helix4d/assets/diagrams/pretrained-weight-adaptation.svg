@@ -1,0 +1,145 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 620 128"
+  role="img"
+>
+  <title>Reuse the 3D backbone weights and update self-attention</title>
+  <desc>
+    A schematic transformer block is initialized from pretrained 3D weights.
+    During 4D adaptation its self-attention layers are updated, while the other
+    layers remain frozen.
+  </desc>
+  <style>
+    text {
+      font:
+        15px Arial,
+        sans-serif;
+      fill: #526d93;
+    }
+    .heading {
+      font-weight: 700;
+      fill: #244d82;
+    }
+    .small {
+      font-size: 13px;
+    }
+  </style>
+  <text
+    class="heading"
+    x="132"
+    y="17"
+    text-anchor="middle"
+  >
+    Pretrained 3D block
+  </text>
+  <rect
+    x="25"
+    y="33"
+    width="110"
+    height="50"
+    rx="7"
+    fill="#e1ebf8"
+    stroke="#a9bfdc"
+  />
+  <text
+    x="80"
+    y="63"
+    text-anchor="middle"
+  >
+    Self-attn
+  </text>
+  <rect
+    x="145"
+    y="33"
+    width="92"
+    height="50"
+    rx="7"
+    fill="#e1ebf8"
+    stroke="#a9bfdc"
+  />
+  <text
+    x="191"
+    y="63"
+    text-anchor="middle"
+  >
+    FFN
+  </text>
+  <path
+    d="M252 58H311M303 52L311 58L303 64"
+    fill="none"
+    stroke="#315fa6"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <text
+    class="small"
+    x="282"
+    y="102"
+    text-anchor="middle"
+  >
+    Reuse weights
+  </text>
+  <text
+    class="heading"
+    x="464"
+    y="17"
+    text-anchor="middle"
+  >
+    Adapted 4D block
+  </text>
+  <rect
+    x="332"
+    y="33"
+    width="124"
+    height="50"
+    rx="7"
+    fill="#315fa6"
+  />
+  <text
+    x="394"
+    y="63"
+    text-anchor="middle"
+    style="fill: white; font-weight: 700"
+  >
+    Train attention
+  </text>
+  <rect
+    x="469"
+    y="33"
+    width="119"
+    height="50"
+    rx="7"
+    fill="#edf1f6"
+    stroke="#a9bfdc"
+  />
+  <text
+    x="516"
+    y="63"
+    text-anchor="middle"
+  >
+    FFN
+  </text>
+  <rect
+    x="551"
+    y="54"
+    width="17"
+    height="14"
+    rx="3"
+    fill="#71829b"
+  />
+  <path
+    d="M554 54V49A5.5 5.5 0 0 1 565 49V54"
+    fill="none"
+    stroke="#71829b"
+    stroke-width="2"
+  />
+  <text
+    class="small"
+    x="461"
+    y="114"
+    text-anchor="middle"
+  >
+    Update attention · freeze other layers
+  </text>
+</svg>

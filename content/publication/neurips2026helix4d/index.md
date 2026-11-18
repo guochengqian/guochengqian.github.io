@@ -80,6 +80,10 @@ doi = ""
 # Does this page contain LaTeX math? (true/false)
 math = false
 
+[[links]]
+  name = "Talk"
+  url = "/talks/helix4d/helix4d_18slides_research_deep_dive.html"
+
 # To use, place an image named `featured.jpg/png` in your page's folder.
 # Placement options: 1 = Full column width, 2 = Out-set, 3 = Screen-width
 # Focal point options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight

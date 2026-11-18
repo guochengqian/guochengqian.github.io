@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="532.8pt" height="151.2pt" viewBox="0 0 532.8 151.2" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <title>first-frame-conditioning-ablation</title>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>first-frame-conditioning-ablation</dc:title>
+    <dc:date>2026-11-09T13:58:12.019094</dc:date>
+    <dc:description>Original Helix4D v1 tables; absolute bars start at zero. Blue is Helix4D; gold is the strongest alternative for the metric.</dc:description>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.9.4, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 151.2
+L 532.8 151.2
+L 532.8 0
+L 0 0
+L 0 151.2
+z
+" style="fill: none; opacity: 0"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 154.512 125.496
+L 436.896 125.496
+L 436.896 4.536
+L 154.512 4.536
+L 154.512 125.496
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 154.512 125.496
+L 154.512 4.536
+" clip-path="url(#pb2af6e016a)" style="fill: none; stroke: #e1e8f2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="fill: #526d93; font: 11px 'Arial'; text-anchor: middle" x="154.512" y="138.369594" transform="rotate(-0 154.512 138.369594)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 282.868364 125.496
+L 282.868364 4.536
+" clip-path="url(#pb2af6e016a)" style="fill: none; stroke: #e1e8f2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="fill: #526d93; font: 11px 'Arial'; text-anchor: middle" x="282.868364" y="138.369594" transform="rotate(-0 282.868364 138.369594)">0.025</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 411.224727 125.496
+L 411.224727 4.536
+" clip-path="url(#pb2af6e016a)" style="fill: none; stroke: #e1e8f2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="fill: #526d93; font: 11px 'Arial'; text-anchor: middle" x="411.224727" y="138.369594" transform="rotate(-0 411.224727 138.369594)">0.05</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7"/>
+     <g id="text_4">
+      <text style="fill: #526d93; font: 12.8px 'Arial'; text-anchor: end" x="149.512" y="35.233364" transform="rotate(-0 149.512 35.233364)">No clean frame-0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8"/>
+     <g id="text_5">
+      <text style="fill: #315fa6; font: 700 12.8px 'Arial'; text-anchor: end" x="149.512" y="103.960636" transform="rotate(-0 149.512 103.960636)">Full Helix4D</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 154.512 10.034182
+L 405.063622 10.034182
+L 405.063622 51.270545
+L 154.512 51.270545
+z
+" clip-path="url(#pb2af6e016a)" style="fill: #cbd6e7; stroke: #cbd6e7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 154.512 78.761455
+L 392.741411 78.761455
+L 392.741411 119.997818
+L 154.512 119.997818
+z
+" clip-path="url(#pb2af6e016a)" style="fill: #315fa6; stroke: #315fa6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 154.512 125.496
+L 436.896 125.496
+" style="fill: none; stroke: #bdcbe0; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_6">
+    <text style="fill: #172b49; font: 12.2px 'Arial'; text-anchor: start" x="412.123222" y="33.806254" transform="rotate(-0 412.123222 33.806254)">0.0488</text>
+   </g>
+   <g id="text_7">
+    <text style="fill: #172b49; font: 700 12.2px 'Arial'; text-anchor: start" x="399.801011" y="102.542105" transform="rotate(-0 399.801011 102.542105)">0.0464</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pb2af6e016a">
+   <rect x="154.512" y="4.536" width="282.384" height="120.96"/>
+  </clipPath>
+ </defs>
+</svg>
