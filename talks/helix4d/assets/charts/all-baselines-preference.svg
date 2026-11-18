@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="331.2pt" height="180pt" viewBox="0 0 331.2 180" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <title>all-baselines-preference</title>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>all-baselines-preference</dc:title>
+    <dc:date>2026-11-09T13:58:12.011730</dc:date>
+    <dc:description>Original Helix4D v1 tables; absolute bars start at zero. Blue is Helix4D; gold is the strongest alternative for the metric.</dc:description>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.9.4, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 180
+L 331.2 180
+L 331.2 0
+L 0 0
+L 0 180
+z
+" style="fill: none; opacity: 0"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 112.608 149.4
+L 271.584 149.4
+L 271.584 5.4
+L 112.608 5.4
+L 112.608 149.4
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 112.608 149.4
+L 112.608 5.4
+" clip-path="url(#p143e068cc7)" style="fill: none; stroke: #e1e8f2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="fill: #526d93; font: 11px 'Arial'; text-anchor: middle" x="112.608" y="162.273594" transform="rotate(-0 112.608 162.273594)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 192.096 149.4
+L 192.096 5.4
+" clip-path="url(#p143e068cc7)" style="fill: none; stroke: #e1e8f2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="fill: #526d93; font: 11px 'Arial'; text-anchor: middle" x="192.096" y="162.273594" transform="rotate(-0 192.096 162.273594)">50</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 271.584 149.4
+L 271.584 5.4
+" clip-path="url(#p143e068cc7)" style="fill: none; stroke: #e1e8f2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="fill: #526d93; font: 11px 'Arial'; text-anchor: middle" x="271.584" y="162.273594" transform="rotate(-0 271.584 162.273594)">100</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7"/>
+     <g id="text_4">
+      <text style="fill: #315fa6; font: 700 12.8px 'Arial'; text-anchor: end" x="107.608" y="25.064004" transform="rotate(-0 107.608 25.064004)">SS4D</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8"/>
+     <g id="text_5">
+      <text style="fill: #b47922; font: 700 12.8px 'Arial'; text-anchor: end" x="107.608" y="53.600502" transform="rotate(-0 107.608 53.600502)">ShapeGen4D</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9"/>
+     <g id="text_6">
+      <text style="fill: #315fa6; font: 700 12.8px 'Arial'; text-anchor: end" x="107.608" y="81.981" transform="rotate(-0 107.608 81.981)">Mesh4D</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_10"/>
+     <g id="text_7">
+      <text style="fill: #315fa6; font: 700 12.8px 'Arial'; text-anchor: end" x="107.608" y="110.439498" transform="rotate(-0 107.608 110.439498)">Motion 3-to-4</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_11"/>
+     <g id="text_8">
+      <text style="fill: #315fa6; font: 700 12.8px 'Arial'; text-anchor: end" x="107.608" y="138.897996" transform="rotate(-0 107.608 138.897996)">ActionMesh</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 112.608 11.945455
+L 225.798912 11.945455
+L 225.798912 29.020553
+L 112.608 29.020553
+z
+" clip-path="url(#p143e068cc7)" style="fill: #315fa6; stroke: #315fa6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 112.608 40.403953
+L 220.552704 40.403953
+L 220.552704 57.479051
+L 112.608 57.479051
+z
+" clip-path="url(#p143e068cc7)" style="fill: #b47922; stroke: #b47922; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 112.608 68.862451
+L 239.470848 68.862451
+L 239.470848 85.937549
+L 112.608 85.937549
+z
+" clip-path="url(#p143e068cc7)" style="fill: #315fa6; stroke: #315fa6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 112.608 97.320949
+L 240.901632 97.320949
+L 240.901632 114.396047
+L 112.608 114.396047
+z
+" clip-path="url(#p143e068cc7)" style="fill: #315fa6; stroke: #315fa6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 112.608 125.779447
+L 255.368448 125.779447
+L 255.368448 142.854545
+L 112.608 142.854545
+z
+" clip-path="url(#p143e068cc7)" style="fill: #315fa6; stroke: #315fa6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 112.608 149.4
+L 271.584 149.4
+" style="fill: none; stroke: #bdcbe0; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_9">
+    <text style="fill: #172b49; font: 700 12.2px 'Arial'; text-anchor: start" x="229.773312" y="23.645473" transform="rotate(-0 229.773312 23.645473)">71.2%</text>
+   </g>
+   <g id="text_10">
+    <text style="fill: #172b49; font: 700 12.2px 'Arial'; text-anchor: start" x="224.527104" y="52.103971" transform="rotate(-0 224.527104 52.103971)">67.9%</text>
+   </g>
+   <g id="text_11">
+    <text style="fill: #172b49; font: 700 12.2px 'Arial'; text-anchor: start" x="243.445248" y="80.562469" transform="rotate(-0 243.445248 80.562469)">79.8%</text>
+   </g>
+   <g id="text_12">
+    <text style="fill: #172b49; font: 700 12.2px 'Arial'; text-anchor: start" x="244.876032" y="109.020967" transform="rotate(-0 244.876032 109.020967)">80.7%</text>
+   </g>
+   <g id="text_13">
+    <text style="fill: #172b49; font: 700 12.2px 'Arial'; text-anchor: start" x="259.342848" y="137.479465" transform="rotate(-0 259.342848 137.479465)">89.8%</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p143e068cc7">
+   <rect x="112.608" y="5.4" width="158.976" height="144"/>
+  </clipPath>
+ </defs>
+</svg>

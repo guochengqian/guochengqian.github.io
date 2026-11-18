@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="331.2pt" height="180pt" viewBox="0 0 331.2 180" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <title>all-baselines-action-cd3d</title>
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>all-baselines-action-cd3d</dc:title>
+    <dc:date>2026-11-09T13:58:12.002527</dc:date>
+    <dc:description>Original Helix4D v1 tables; absolute bars start at zero. Blue is Helix4D; gold is the strongest alternative for the metric.</dc:description>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.9.4, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 180
+L 331.2 180
+L 331.2 0
+L 0 0
+L 0 180
+z
+" style="fill: none; opacity: 0"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 112.608 149.4
+L 271.584 149.4
+L 271.584 5.4
+L 112.608 5.4
+L 112.608 149.4
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 112.608 149.4
+L 112.608 5.4
+" clip-path="url(#p143e068cc7)" style="fill: none; stroke: #e1e8f2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="fill: #526d93; font: 11px 'Arial'; text-anchor: middle" x="112.608" y="162.273594" transform="rotate(-0 112.608 162.273594)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 192.096 149.4
+L 192.096 5.4
+" clip-path="url(#p143e068cc7)" style="fill: none; stroke: #e1e8f2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="fill: #526d93; font: 11px 'Arial'; text-anchor: middle" x="192.096" y="162.273594" transform="rotate(-0 192.096 162.273594)">0.06</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 271.584 149.4
+L 271.584 5.4
+" clip-path="url(#p143e068cc7)" style="fill: none; stroke: #e1e8f2; stroke-width: 0.7; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="fill: #526d93; font: 11px 'Arial'; text-anchor: middle" x="271.584" y="162.273594" transform="rotate(-0 271.584 162.273594)">0.12</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7"/>
+     <g id="text_4">
+      <text style="fill: #526d93; font: 12.8px 'Arial'; text-anchor: end" x="107.608" y="23.539442" transform="rotate(-0 107.608 23.539442)">SS4D</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8"/>
+     <g id="text_5">
+      <text style="fill: #526d93; font: 12.8px 'Arial'; text-anchor: end" x="107.608" y="46.994065" transform="rotate(-0 107.608 46.994065)">ShapeGen4D</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9"/>
+     <g id="text_6">
+      <text style="fill: #526d93; font: 12.8px 'Arial'; text-anchor: end" x="107.608" y="70.292688" transform="rotate(-0 107.608 70.292688)">Mesh4D</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_10"/>
+     <g id="text_7">
+      <text style="fill: #526d93; font: 12.8px 'Arial'; text-anchor: end" x="107.608" y="93.669312" transform="rotate(-0 107.608 93.669312)">Motion 3-to-4</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_11"/>
+     <g id="text_8">
+      <text style="fill: #b47922; font: 700 12.8px 'Arial'; text-anchor: end" x="107.608" y="117.045935" transform="rotate(-0 107.608 117.045935)">ActionMesh</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_12"/>
+     <g id="text_9">
+      <text style="fill: #315fa6; font: 700 12.8px 'Arial'; text-anchor: end" x="107.608" y="140.422558" transform="rotate(-0 107.608 140.422558)">Helix4D</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 112.608 11.945455
+L 251.712 11.945455
+L 251.712 25.971429
+L 112.608 25.971429
+z
+" clip-path="url(#p143e068cc7)" style="fill: #cbd6e7; stroke: #cbd6e7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 112.608 35.322078
+L 186.7968 35.322078
+L 186.7968 49.348052
+L 112.608 49.348052
+z
+" clip-path="url(#p143e068cc7)" style="fill: #cbd6e7; stroke: #cbd6e7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 112.608 58.698701
+L 239.7888 58.698701
+L 239.7888 72.724675
+L 112.608 72.724675
+z
+" clip-path="url(#p143e068cc7)" style="fill: #cbd6e7; stroke: #cbd6e7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 112.608 82.075325
+L 202.6944 82.075325
+L 202.6944 96.101299
+L 112.608 96.101299
+z
+" clip-path="url(#p143e068cc7)" style="fill: #cbd6e7; stroke: #cbd6e7; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 112.608 105.451948
+L 182.8224 105.451948
+L 182.8224 119.477922
+L 112.608 119.477922
+z
+" clip-path="url(#p143e068cc7)" style="fill: #b47922; stroke: #b47922; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 112.608 128.828571
+L 180.1728 128.828571
+L 180.1728 142.854545
+L 112.608 142.854545
+z
+" clip-path="url(#p143e068cc7)" style="fill: #315fa6; stroke: #315fa6; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 112.608 149.4
+L 271.584 149.4
+" style="fill: none; stroke: #bdcbe0; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_10">
+    <text style="fill: #172b49; font: 12.2px 'Arial'; text-anchor: start" x="255.6864" y="22.112332" transform="rotate(-0 255.6864 22.112332)">0.105</text>
+   </g>
+   <g id="text_11">
+    <text style="fill: #172b49; font: 12.2px 'Arial'; text-anchor: start" x="190.7712" y="45.488956" transform="rotate(-0 190.7712 45.488956)">0.056</text>
+   </g>
+   <g id="text_12">
+    <text style="fill: #172b49; font: 12.2px 'Arial'; text-anchor: start" x="243.7632" y="68.865579" transform="rotate(-0 243.7632 68.865579)">0.096</text>
+   </g>
+   <g id="text_13">
+    <text style="fill: #172b49; font: 12.2px 'Arial'; text-anchor: start" x="206.6688" y="92.242202" transform="rotate(-0 206.6688 92.242202)">0.068</text>
+   </g>
+   <g id="text_14">
+    <text style="fill: #172b49; font: 700 12.2px 'Arial'; text-anchor: start" x="186.7968" y="115.627404" transform="rotate(-0 186.7968 115.627404)">0.053</text>
+   </g>
+   <g id="text_15">
+    <text style="fill: #172b49; font: 700 12.2px 'Arial'; text-anchor: start" x="184.1472" y="139.004027" transform="rotate(-0 184.1472 139.004027)">0.051</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p143e068cc7">
+   <rect x="112.608" y="5.4" width="158.976" height="144"/>
+  </clipPath>
+ </defs>
+</svg>

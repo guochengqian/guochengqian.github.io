@@ -1,0 +1,3327 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1"
+    />
+    <title>Helix4D: Complex 4D Mesh Generation (NeurIPS 2026 Oral)</title>
+    <style>
+      /* Fixed slide geometry: resize the page as a whole, preserving all line breaks. */
+      :root {
+        --slide-width: 1600px;
+        --slide-height: 900px;
+        --slide-scale: 1;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        height: 100vh;
+        height: 100dvh;
+        margin: 0;
+        padding: 16px;
+        overflow: hidden;
+        background: #e8edf5;
+        color: #172b49;
+        font-family: Inter, Arial, sans-serif;
+      }
+
+      #deck {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+      }
+
+      .slide {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        flex-direction: column;
+        justify-content: center;
+        width: var(--slide-width);
+        height: var(--slide-height);
+        padding: 72px 88px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 10px 40px #1232;
+        transform: translate(-50%, -50%) scale(var(--slide-scale));
+      }
+
+      .slide.active {
+        display: flex;
+      }
+
+      .slide::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 10px;
+        height: 100%;
+        background: #315fa6;
+      }
+
+      /* Typography uses fixed sizes in slide coordinates. */
+      .tag {
+        color: #315fa6;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: 0.15em;
+      }
+
+      h1 {
+        margin: 12px 0;
+        font-size: 56px;
+      }
+      h2 {
+        margin: 0 0 24px;
+        color: #526d93;
+        font-size: 30px;
+        font-weight: 500;
+      }
+      .content {
+        font-size: 24px;
+        line-height: 1.42;
+      }
+      .content p {
+        margin: 10px 0;
+      }
+      a {
+        color: #235caa;
+      }
+
+      /* Title slide: speaker details and offline, print-ready QR codes. */
+      .conference {
+        display: block;
+        margin-top: 12px;
+        color: #315fa6;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .title-slide h2 {
+        margin-bottom: 18px;
+      }
+
+      .title-slide .conference-logo {
+        display: flex;
+        position: absolute;
+        top: 44px;
+        right: 88px;
+        z-index: 2;
+        align-items: center;
+        gap: 16px;
+        color: #68448b;
+        text-decoration: none;
+      }
+
+      .conference-logo img {
+        display: block;
+        width: 190px;
+        height: auto;
+      }
+
+      .conference-logo span {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .presenter {
+        font-size: 28px;
+      }
+
+      .qr-links {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-top: 28px;
+      }
+
+      .qr-card {
+        margin: 0;
+        padding: 16px;
+        border: 1px solid #c9d8ed;
+        border-radius: 12px;
+        background: #f4f8fe;
+        text-align: center;
+      }
+
+      .qr-card a {
+        display: flex;
+        justify-content: center;
+      }
+
+      .qr-card img {
+        display: block;
+        width: 176px;
+        height: 176px;
+      }
+
+      .qr-card img.qr-xiaohongshu {
+        object-fit: contain;
+        background: white;
+      }
+
+      .qr-card figcaption {
+        margin-top: 8px;
+        color: #21508e;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .qr-url {
+        display: block;
+        margin-top: 4px;
+        font-size: 16px;
+        font-weight: 400;
+      }
+
+      /* Slides 02–03: source-backed video evidence and the 3D-to-4D motivation. */
+      .evidence-slide {
+        justify-content: flex-start;
+        padding-top: 52px;
+        padding-bottom: 80px;
+      }
+      .evidence-slide h1 {
+        margin: 8px 0;
+        font-size: 46px;
+      }
+      .evidence-slide h2 {
+        margin-bottom: 16px;
+        font-size: 26px;
+      }
+      .media-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: 38px;
+        margin-bottom: 12px;
+      }
+      .case-tabs {
+        display: flex;
+        gap: 8px;
+      }
+      .case-tabs button,
+      .media-toggle {
+        padding: 8px 12px;
+        border: 1px solid #c9d8ed;
+        background: #f4f8fe;
+        color: #244d82;
+        font-size: 16px;
+      }
+      .case-tabs button[aria-pressed='true'] {
+        border-color: #315fa6;
+        background: #315fa6;
+        color: white;
+      }
+      .media-grid {
+        display: grid;
+        gap: 16px;
+      }
+      .comparison-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .comparison-grid .demo-video,
+      .comparison-grid .print-poster {
+        height: 320px;
+      }
+      .trellis-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .demo-card {
+        min-width: 0;
+        margin: 0;
+        overflow: hidden;
+        border: 1px solid #c9d8ed;
+        border-radius: 12px;
+        background: #f4f8fe;
+      }
+      .demo-heading {
+        padding: 10px 14px;
+        color: #21508e;
+        font-size: 23px;
+        font-weight: 700;
+        line-height: 1.25;
+      }
+      .method-family {
+        display: block;
+        margin-bottom: 4px;
+        color: #526d93;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .demo-heading a {
+        text-decoration: none;
+      }
+      .demo-video,
+      .print-poster {
+        display: block;
+        width: 100%;
+        height: 260px;
+        background: black;
+        object-fit: contain;
+      }
+      .print-poster {
+        display: none;
+      }
+      .demo-description {
+        margin: 0;
+        padding: 10px 14px 12px;
+        color: #526d93;
+        font-size: 18px;
+        line-height: 1.3;
+      }
+      .comparison-grid .demo-description {
+        min-height: 68px;
+      }
+      .limitations {
+        margin-top: 18px;
+      }
+      .limitations-heading {
+        margin: 0 0 8px;
+        color: #244d82;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .limitation-list {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 20px;
+        margin: 0;
+        padding-left: 24px;
+        color: #172b49;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+      .limitation-list li {
+        padding-left: 2px;
+      }
+      .limitation-list li::marker {
+        color: #315fa6;
+      }
+      .media-source {
+        margin: 14px 0 0;
+        color: #71829b;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+      .turntable-note {
+        margin: 0;
+        color: #526d93;
+        font-size: 18px;
+      }
+      .trellis-grid .demo-description {
+        min-height: 70px;
+      }
+      .idea-bridge {
+        margin-top: 18px;
+        padding: 16px 20px;
+        border-left: 4px solid #315fa6;
+        border-radius: 0 12px 12px 0;
+        background: #eaf2ff;
+      }
+      .idea-flow {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        color: #244d82;
+        font-size: 27px;
+      }
+      .idea-bridge p {
+        margin: 8px 0 0;
+        font-size: 22px;
+        line-height: 1.35;
+      }
+      @media print {
+        .media-toolbar .case-tabs,
+        .media-toggle {
+          display: none;
+        }
+        .demo-video {
+          display: none;
+        }
+        .print-poster {
+          display: block;
+        }
+      }
+
+      /* Animated previews bypass missing video decoders in embedded HTML viewers. */
+      .demo-video[data-image-fallback='true'] {
+        display: none;
+      }
+      .demo-animation {
+        display: block;
+        width: 100%;
+        height: 260px;
+        object-fit: contain;
+        background: black;
+      }
+      .comparison-grid .demo-animation {
+        height: 320px;
+      }
+      @media print {
+        .demo-animation {
+          display: none;
+        }
+      }
+
+      /* Slide 04: challenge-to-solution overview; diagrams are explanatory schematics. */
+      .challenge-slide {
+        justify-content: flex-start;
+        padding-top: 52px;
+      }
+      .challenge-slide h1 {
+        margin: 8px 0;
+        font-size: 48px;
+      }
+      .challenge-slide h2 {
+        margin-bottom: 24px;
+        font-size: 28px;
+      }
+      .challenge-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+      }
+      .challenge-card {
+        padding: 18px 24px;
+        border: 1px solid #c9d8ed;
+        border-radius: 12px;
+        background: #f4f8fe;
+      }
+      .challenge-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .challenge-number {
+        display: flex;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #e0ebfa;
+        color: #315fa6;
+        font-size: 18px;
+        font-weight: 800;
+      }
+      .challenge-title h3 {
+        margin: 0;
+        color: #172b49;
+        font-size: 25px;
+        font-weight: 700;
+      }
+      .challenge-context {
+        margin: 9px 0 8px;
+        color: #526d93;
+        font-size: 20px;
+      }
+      .challenge-visual {
+        height: 120px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        background: white;
+      }
+      .challenge-visual img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .challenge-solution {
+        margin: 0 0 6px;
+        color: #21508e;
+        font-size: 25px;
+        font-weight: 700;
+      }
+      .challenge-detail {
+        margin: 0;
+        color: #526d93;
+        font-size: 17px;
+        line-height: 1.35;
+      }
+
+      /* RoPE ablation: same-backbone comparison, reported numbers, and original Figure 6. */
+      .rope-ablation-slide {
+        justify-content: flex-start;
+        padding-top: 52px;
+        padding-bottom: 80px;
+      }
+      .rope-ablation-slide h1 {
+        margin: 8px 0;
+        font-size: 48px;
+      }
+      .rope-ablation-slide h2 {
+        margin-bottom: 20px;
+        font-size: 27px;
+      }
+      .rope-ablation-overview {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        align-items: center;
+        gap: 24px;
+      }
+      .rope-ablation-variants {
+        display: grid;
+        gap: 14px;
+      }
+      .rope-variant {
+        padding: 16px 18px;
+        border: 1px solid #c9d8ed;
+        border-left: 4px solid #315fa6;
+        border-radius: 0 10px 10px 0;
+        background: #f4f8fe;
+      }
+      .rope-variant-stacked {
+        border-left-color: #b9854b;
+        background: #fcf8f1;
+      }
+      .rope-variant h3 {
+        margin: 0 0 10px;
+        color: #244d82;
+        font-size: 23px;
+      }
+      .rope-variant-flow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 19px;
+        font-weight: 600;
+      }
+      .rope-variant p {
+        margin: 9px 0 0;
+        color: #526d93;
+        font-size: 19px;
+        line-height: 1.35;
+      }
+      .rope-ablation-figure {
+        margin: 0;
+      }
+      .rope-ablation-figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .rope-ablation-figure figcaption {
+        margin-top: 10px;
+        color: #526d93;
+        font-size: 17px;
+        line-height: 1.35;
+      }
+      .rope-ablation-table {
+        margin: 18px 0 0;
+        font-size: 23px;
+      }
+      .rope-ablation-table caption {
+        margin-bottom: 8px;
+        color: #526d93;
+        text-align: left;
+        font-size: 17px;
+      }
+      .rope-ablation-table th,
+      .rope-ablation-table td {
+        padding: 12px 14px;
+      }
+      .rope-ablation-table tbody th {
+        background: transparent;
+        color: #172b49;
+        font-weight: 500;
+      }
+      .rope-ablation-table tbody th span {
+        color: #526d93;
+        font-size: 17px;
+      }
+      .rope-ablation-table tbody tr:last-child {
+        background: #eaf2ff;
+      }
+      .rope-ablation-table tbody tr:last-child th {
+        color: #21508e;
+        font-weight: 700;
+      }
+      .rope-ablation-takeaway {
+        margin: 18px 0 0;
+        color: #244d82;
+        font-size: 23px;
+        line-height: 1.35;
+      }
+      .rope-ablation-source {
+        margin: 10px 0 0;
+        color: #71829b;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      /* Experiment slides: zero-baseline bars and explicit metric-specific comparators. */
+      .experiment-slide {
+        justify-content: flex-start;
+        padding-top: 48px;
+        padding-bottom: 80px;
+      }
+      .experiment-slide h1 {
+        margin: 8px 0;
+        font-size: 48px;
+      }
+      .experiment-slide h2 {
+        margin-bottom: 16px;
+        font-size: 26px;
+      }
+      .experiment-charts {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+      .experiment-chart {
+        min-width: 0;
+        margin: 0;
+      }
+      .experiment-chart h3 {
+        margin: 0;
+        color: #244d82;
+        font-size: 22px;
+      }
+      .metric-highlight {
+        margin: 5px 0 3px;
+        color: #315fa6;
+        font-size: 44px;
+        font-weight: 800;
+        line-height: 1.1;
+      }
+      .metric-comparator {
+        margin: 0;
+        color: #526d93;
+        font-size: 16px;
+        line-height: 1.3;
+      }
+      .experiment-chart img {
+        display: block;
+        width: 100%;
+        height: 180px;
+        margin-top: 5px;
+        object-fit: contain;
+      }
+      .experiment-table {
+        margin: 12px 0 0;
+        font-size: 17px;
+      }
+      .experiment-table caption {
+        margin-bottom: 5px;
+        color: #526d93;
+        font-size: 14px;
+        text-align: left;
+      }
+      .experiment-table th,
+      .experiment-table td {
+        padding: 6px 10px;
+      }
+      .experiment-table tbody th {
+        background: transparent;
+        color: #172b49;
+        font-weight: 400;
+      }
+      .experiment-source {
+        margin: 9px 0 0;
+        color: #71829b;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+      .actionbench-highlight {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .actionbench-highlight figure {
+        margin: 0;
+      }
+      .actionbench-highlight figcaption {
+        color: #244d82;
+        font-size: 23px;
+        font-weight: 700;
+      }
+      .actionbench-highlight img {
+        display: block;
+        width: 100%;
+        height: 225px;
+        object-fit: contain;
+      }
+      .actionbench-callout .metric-highlight {
+        font-size: 64px;
+      }
+      .actionbench-callout h3 {
+        margin: 8px 0 12px;
+        color: #244d82;
+        font-size: 31px;
+      }
+      .actionbench-callout p {
+        margin: 8px 0;
+        color: #526d93;
+        font-size: 24px;
+        line-height: 1.35;
+      }
+      .geometry-metrics {
+        margin: 10px 0;
+        font-size: 20px;
+      }
+      .geometry-metrics th,
+      .geometry-metrics td {
+        padding: 10px 12px;
+      }
+      .geometry-caveat {
+        margin: 14px 0 0;
+        font-size: 22px;
+        line-height: 1.4;
+      }
+
+      /* 4D rotary derivation: local vector diagram and native MathML for offline viewing. */
+      .rerope-math-slide {
+        justify-content: flex-start;
+        padding-top: 48px;
+        padding-bottom: 80px;
+      }
+      .rerope-math-slide h1 {
+        margin: 8px 0;
+        font-size: 44px;
+      }
+      .rerope-math-slide h2 {
+        margin-bottom: 14px;
+        font-size: 26px;
+      }
+      .rerope-allocation {
+        margin: 0;
+      }
+      .rerope-allocation img {
+        display: block;
+        width: 100%;
+        height: 185px;
+        object-fit: contain;
+      }
+      .rerope-allocation figcaption {
+        margin: 4px 0 0;
+        color: #71829b;
+        font-size: 14px;
+      }
+      .rerope-math-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-top: 16px;
+      }
+      .rerope-math-panel {
+        padding: 16px 18px;
+        border: 1px solid #c9d8ed;
+        border-radius: 10px;
+        background: #f4f8fe;
+      }
+      .rerope-math-panel h3 {
+        margin: 0 0 10px;
+        color: #244d82;
+        font-size: 23px;
+      }
+      .rerope-math-panel math {
+        margin: 9px 0;
+        color: #172b49;
+        font-family: 'STIX Two Math', 'Cambria Math', 'Latin Modern Math', math;
+        font-size: 23px;
+      }
+      .rerope-math-panel p {
+        margin: 10px 0 0;
+        color: #526d93;
+        font-size: 16px;
+        line-height: 1.4;
+      }
+      .rerope-math-source {
+        margin: 10px 0 0;
+        color: #71829b;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      /* Methodology Figure 4: evidence for spatial-frequency repurposing. */
+      .rope-ratio-slide {
+        justify-content: flex-start;
+        padding-top: 48px;
+        padding-bottom: 80px;
+      }
+      .rope-ratio-slide h1 {
+        margin: 8px 0;
+        font-size: 46px;
+      }
+      .rope-ratio-slide h2 {
+        margin-bottom: 12px;
+        font-size: 26px;
+      }
+      .rope-ratio-probe {
+        margin: 0 0 12px;
+        color: #526d93;
+        font-size: 19px;
+        line-height: 1.35;
+      }
+      .rope-ratio-figure {
+        margin: 0;
+      }
+      .rope-ratio-figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .rope-ratio-figure figcaption {
+        margin: 8px 0 0;
+        color: #526d93;
+        font-size: 17px;
+        line-height: 1.35;
+      }
+      .rope-ratio-cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 18px;
+      }
+      .rope-ratio-card {
+        padding: 14px 16px;
+        border-top: 3px solid #315fa6;
+        background: #f4f8fe;
+      }
+      .rope-ratio-card h3 {
+        margin: 0 0 6px;
+        color: #21508e;
+        font-size: 22px;
+      }
+      .rope-ratio-card p {
+        margin: 0;
+        color: #526d93;
+        font-size: 19px;
+        line-height: 1.35;
+      }
+      .rope-band-table {
+        margin: 12px 0 0;
+        font-size: 18px;
+        font-variant-numeric: tabular-nums;
+      }
+      .rope-band-table th,
+      .rope-band-table td {
+        padding: 6px 10px;
+      }
+      .rope-ratio-slide .rope-ratio-cards {
+        margin-top: 14px;
+      }
+
+      .rope-ratio-source {
+        margin: 10px 0 0;
+        color: #71829b;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      /* Reusable content layouts. */
+      .cards {
+        display: flex;
+        gap: 16px;
+        margin: 14px 0;
+      }
+      .card {
+        flex: 1;
+        min-width: 0;
+        padding: 18px;
+        border: 1px solid #c9d8ed;
+        border-radius: 12px;
+        background: #f4f8fe;
+      }
+      .card b {
+        color: #21508e;
+      }
+      .card p {
+        font-size: 0.85em;
+      }
+
+      .flow {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 28px 0;
+      }
+      .flow div {
+        flex: 1;
+        padding: 18px 9px;
+        border: 1px solid #bfd2ef;
+        border-radius: 10px;
+        background: #eaf2ff;
+        text-align: center;
+        font-weight: bold;
+      }
+      .flow span {
+        color: #3765a0;
+      }
+
+      table {
+        width: 100%;
+        margin: 10px 0;
+        border-collapse: collapse;
+        font-size: 0.82em;
+      }
+      th,
+      td {
+        padding: 11px 12px;
+        border-bottom: 1px solid #dce5f0;
+        text-align: left;
+      }
+      th {
+        background: #eaf2ff;
+        color: #244d82;
+      }
+      tr:last-child {
+        background: #f3f8ff;
+      }
+
+      .formula {
+        margin: 12px 0;
+        padding: 12px 18px;
+        border-left: 4px solid #4976b8;
+        background: #edf3fb;
+        font-family: Georgia, serif;
+      }
+
+      /* Overview: show the left pipeline panel of the unmodified original Figure 2. */
+      .pipeline-slide {
+        justify-content: flex-start;
+        padding-top: 52px;
+        padding-bottom: 80px;
+      }
+      .pipeline-slide h1 {
+        margin: 8px 0 12px;
+        font-size: 52px;
+      }
+      .pipeline-slide h2 {
+        margin-bottom: 22px;
+        font-size: 28px;
+      }
+      .pipeline-figure {
+        width: 1260px;
+        margin: 0 auto;
+      }
+      .pipeline-crop {
+        width: 100%;
+        aspect-ratio: 1380 / 540;
+        overflow: hidden;
+        background: white;
+      }
+      .pipeline-crop img {
+        display: block;
+        width: calc(100% * 2442 / 1380);
+        max-width: none;
+        height: auto;
+      }
+      .pipeline-figure figcaption {
+        margin-top: 12px;
+        color: #71829b;
+        font-size: 17px;
+        line-height: 1.4;
+      }
+      .pipeline-note {
+        margin: 20px 0 0;
+        color: #526d93;
+        font-size: 24px;
+        line-height: 1.4;
+      }
+
+      /* Conclusion: three visual summaries of the lightweight 3D-to-4D conversion. */
+      .conclusion-slide {
+        justify-content: flex-start;
+        padding-top: 52px;
+        padding-bottom: 80px;
+      }
+      .conclusion-slide h1 {
+        margin: 12px 0 16px;
+      }
+      .conclusion-lead {
+        max-width: 1380px;
+        margin: 0 0 26px;
+        color: #526d93;
+        font-size: 28px;
+        line-height: 1.4;
+      }
+      .conclusion-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+      .conclusion-card {
+        min-width: 0;
+        padding: 22px;
+        border: 1px solid #c9d8ed;
+        border-radius: 14px;
+        background: #f4f8fe;
+      }
+      .conclusion-card h2 {
+        min-height: 68px;
+        margin: 0 0 16px;
+        color: #21508e;
+        font-size: 27px;
+        font-weight: 700;
+        line-height: 1.25;
+      }
+      .conclusion-card img {
+        display: block;
+        width: 100%;
+        height: 208px;
+        border-radius: 9px;
+        background: white;
+        object-fit: contain;
+      }
+      .conclusion-card p {
+        margin: 18px 0 0;
+        color: #526d93;
+        font-size: 23px;
+        line-height: 1.4;
+      }
+      .conclusion-card strong {
+        color: #172b49;
+      }
+      .conclusion-links {
+        display: flex;
+        gap: 28px;
+        margin: 22px 0 0;
+        font-size: 19px;
+      }
+
+      /* Original paper figures: local assets, with CSS-only panel crops. */
+      .paper-figure-slide {
+        justify-content: flex-start;
+        padding-top: 52px;
+        padding-bottom: 80px;
+      }
+      .paper-figure-slide h1 {
+        margin: 8px 0;
+        font-size: 48px;
+      }
+      .paper-figure-slide h2 {
+        margin-bottom: 18px;
+        font-size: 28px;
+      }
+      .paper-figure {
+        margin: 0;
+      }
+      .paper-figure > img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+      .paper-figure figcaption {
+        margin-top: 8px;
+        color: #71829b;
+        font-size: 17px;
+        line-height: 1.35;
+      }
+      .paper-crop {
+        position: relative;
+        flex: none;
+        aspect-ratio: var(--crop-w) / var(--crop-h);
+        overflow: hidden;
+        background: white;
+      }
+      .paper-crop > img {
+        display: block;
+        position: absolute;
+        top: calc(-100% * var(--crop-y) / var(--crop-h));
+        left: calc(-100% * var(--crop-x) / var(--crop-w));
+        width: calc(100% * var(--image-w) / var(--crop-w));
+        max-width: none;
+        height: auto;
+        border-radius: 0;
+      }
+      .paper-card-pair {
+        display: flex;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+      }
+      .paper-card-pair figure {
+        margin: 0;
+      }
+      .paper-card-pair figcaption {
+        margin-bottom: 3px;
+        color: #244d82;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: center;
+      }
+      .paper-card-pair .paper-crop {
+        width: 94px;
+        margin: 0 auto;
+      }
+      .paper-transition {
+        color: #315fa6;
+        font-size: 32px;
+      }
+      .paper-card-credit {
+        position: absolute;
+        right: 10px;
+        bottom: 8px;
+        font-size: 12px;
+      }
+      .paper-card-rope {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 36px;
+      }
+      .paper-card-rope .paper-crop {
+        width: 178px;
+      }
+      .paper-card-rope strong,
+      .paper-card-rope span,
+      .paper-card-rope a {
+        display: block;
+      }
+      .paper-card-rope strong {
+        color: #244d82;
+        font-size: 20px;
+      }
+      .paper-card-rope span {
+        margin: 6px 0;
+        color: #526d93;
+        font-size: 15px;
+      }
+      .paper-card-rope a {
+        font-size: 13px;
+      }
+      .paper-attention-notes {
+        margin-top: 18px;
+        font-size: 22px;
+      }
+      .paper-attention-notes .card {
+        padding: 14px 18px;
+      }
+      .paper-attention-notes .card p {
+        margin: 8px 0 0;
+        font-size: 20px;
+      }
+      .paper-attention-notes .formula {
+        margin: 14px 0 0;
+      }
+      .anchor-figure-slide .flow {
+        margin: 8px 0 18px;
+        font-size: 20px;
+      }
+      .anchor-figure-slide .flow div {
+        padding: 14px 9px;
+      }
+      .anchor-detail-grid {
+        display: grid;
+        grid-template-columns: 600px 1fr;
+        align-items: center;
+        gap: 44px;
+      }
+      .anchor-paper-figure .paper-crop {
+        width: 550px;
+        margin: 0 auto;
+      }
+      .anchor-paper-figure figcaption {
+        text-align: center;
+      }
+      .anchor-training-notes article {
+        margin: 16px 0;
+        padding: 20px 24px;
+        border: 1px solid #c9d8ed;
+        border-radius: 12px;
+        background: #f4f8fe;
+      }
+      .anchor-training-notes h3 {
+        margin: 0 0 8px;
+        color: #21508e;
+        font-size: 26px;
+      }
+      .anchor-training-notes p {
+        margin: 0;
+        color: #526d93;
+        font-size: 24px;
+      }
+      .rope-motivation-slide .content {
+        font-size: 23px;
+      }
+      .rope-motivation-figure {
+        margin-top: 22px;
+      }
+      .rope-motivation-figure > img {
+        height: 300px;
+      }
+      .results-paper-figure > img {
+        height: 440px;
+      }
+      .paper-results-slide .cards {
+        gap: 18px;
+        margin-top: 16px;
+        font-size: 21px;
+      }
+      .paper-results-slide .card {
+        padding: 12px 16px;
+      }
+      .paper-results-slide .card p {
+        margin: 6px 0 0;
+        font-size: 18px;
+      }
+      .paper-results-links {
+        margin: 10px 0 0;
+        font-size: 16px;
+      }
+      .conclusion-paper-visual {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 208px;
+        border-radius: 9px;
+        background: white;
+      }
+      .conclusion-paper-visual .paper-crop {
+        width: calc(208px * var(--crop-w) / var(--crop-h));
+      }
+      .paper-mini-source {
+        display: block;
+        margin-top: 4px;
+        font-size: 13px;
+        line-height: 18px;
+        text-align: right;
+      }
+
+      /* Consolidated 12-page talk: preserve the existing fixed 1600 × 900 canvas. */
+      .title-slide {
+        background: radial-gradient(ellipse at 82% 26%, #eaf3ff 0%, white 67%);
+      }
+      .title-art {
+        position: absolute;
+        top: 105px;
+        right: -65px;
+        width: 1280px;
+        height: 510px;
+        object-fit: contain;
+        opacity: 0.22;
+        mix-blend-mode: multiply;
+        mask-image: linear-gradient(90deg, transparent, #000 37%, #000 92%, transparent);
+        pointer-events: none;
+      }
+      .title-slide h1,
+      .title-slide h2,
+      .title-slide .content {
+        position: relative;
+        z-index: 1;
+      }
+      .title-slide .foot {
+        z-index: 1;
+      }
+      .title-slide .qr-card {
+        background: rgba(244, 248, 254, 0.94);
+      }
+      .merged-attention-slide,
+      .dynamic-results-slide,
+      .complete-results-slide,
+      .combined-ablation-slide {
+        justify-content: flex-start;
+        padding-top: 48px;
+        padding-bottom: 80px;
+      }
+      .merged-attention-slide h1,
+      .dynamic-results-slide h1,
+      .complete-results-slide h1,
+      .combined-ablation-slide h1 {
+        margin: 8px 0;
+        font-size: 46px;
+      }
+      .merged-attention-slide h2,
+      .dynamic-results-slide h2,
+      .complete-results-slide h2,
+      .combined-ablation-slide h2 {
+        margin-bottom: 16px;
+        font-size: 26px;
+      }
+      .merged-attention-figure {
+        margin: 0;
+      }
+      .merged-attention-figure img {
+        display: block;
+        width: 100%;
+        height: 310px;
+        object-fit: contain;
+      }
+      .merged-attention-figure figcaption {
+        margin-top: 6px;
+        color: #71829b;
+        font-size: 16px;
+      }
+      .merged-attention-rule {
+        margin: 14px 0;
+        padding: 10px 18px;
+        border-left: 4px solid #4976b8;
+        background: #edf3fb;
+        font-family: Georgia, serif;
+        font-size: 24px;
+      }
+      .merged-attention-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1.4fr;
+        gap: 20px;
+      }
+      .merged-attention-cards article {
+        padding: 16px 20px;
+        border: 1px solid #c9d8ed;
+        border-radius: 12px;
+        background: #f4f8fe;
+      }
+      .merged-attention-cards h3 {
+        margin: 0 0 8px;
+        color: #21508e;
+        font-size: 24px;
+      }
+      .merged-attention-cards p {
+        margin: 8px 0 0;
+        color: #526d93;
+        font-size: 21px;
+        line-height: 1.35;
+      }
+      .merged-attention-cards .attention-small {
+        font-size: 17px;
+      }
+      .dynamic-results-slide .media-toolbar {
+        margin-bottom: 12px;
+        color: #526d93;
+        font-size: 19px;
+      }
+      .dynamic-results-grid {
+        display: grid;
+        grid-template-columns: 930px 1fr;
+        gap: 28px;
+      }
+      .results-reel .demo-video,
+      .results-reel .demo-animation,
+      .results-reel .print-poster {
+        width: 100%;
+        height: 510px;
+        object-fit: contain;
+        background: black;
+      }
+      .results-reel figcaption {
+        padding: 12px 16px;
+        color: #526d93;
+        font-size: 17px;
+      }
+      .dynamic-result-notes article {
+        margin-bottom: 18px;
+        padding: 20px 24px;
+        border: 1px solid #c9d8ed;
+        border-radius: 12px;
+        background: #f4f8fe;
+      }
+      .dynamic-result-notes h3 {
+        margin: 0 0 10px;
+        color: #21508e;
+        font-size: 26px;
+      }
+      .dynamic-result-notes p {
+        margin: 0;
+        color: #526d93;
+        font-size: 23px;
+        line-height: 1.4;
+      }
+      .dynamic-result-notes > a {
+        font-size: 18px;
+      }
+      .complete-charts {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .complete-chart {
+        min-width: 0;
+        margin: 0;
+        padding: 12px;
+        border: 1px solid #c9d8ed;
+        border-radius: 12px;
+        background: #f4f8fe;
+      }
+      .complete-chart h3 {
+        margin: 0;
+        color: #244d82;
+        font-size: 20px;
+      }
+      .complete-chart figcaption > strong {
+        display: block;
+        margin: 4px 0 2px;
+        color: #315fa6;
+        font-size: 38px;
+        line-height: 1.05;
+      }
+      .complete-chart figcaption > p {
+        min-height: 22px;
+        margin: 0;
+        color: #526d93;
+        font-size: 14px;
+        line-height: 1.15;
+      }
+      .complete-chart img {
+        display: block;
+        width: 100%;
+        height: 180px;
+        object-fit: contain;
+      }
+      .complete-chart-legend {
+        display: flex;
+        gap: 24px;
+        margin: 6px 0;
+        color: #71829b;
+        font-size: 14px;
+      }
+      .legend-ours {
+        color: #315fa6;
+        font-weight: 700;
+      }
+      .legend-alternative {
+        color: #a16b19;
+        font-weight: 700;
+      }
+      .complete-results-table {
+        margin: 0;
+        font-size: 15px;
+        font-variant-numeric: tabular-nums;
+      }
+      .complete-results-table caption {
+        margin-bottom: 6px;
+        color: #526d93;
+        font-size: 16px;
+        text-align: left;
+      }
+      .complete-results-table th,
+      .complete-results-table td {
+        padding: 6px;
+        white-space: nowrap;
+      }
+      .complete-results-table tbody th {
+        background: transparent;
+        font-weight: 400;
+      }
+      .complete-results-table .result-best {
+        color: #21508e;
+        font-weight: 800;
+      }
+      .complete-results-table tbody tr:last-child th {
+        font-weight: 800;
+      }
+      .complete-results-note {
+        margin: 12px 0 6px;
+        color: #526d93;
+        font-size: 17px;
+        line-height: 1.35;
+      }
+      .complete-results-source {
+        margin: 0;
+        color: #71829b;
+        font-size: 14px;
+        line-height: 1.35;
+      }
+      .combined-ablation-visuals,
+      .combined-ablation-tables {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 26px;
+      }
+      .ablation-visual {
+        margin: 0;
+        padding: 14px 18px;
+        border: 1px solid #c9d8ed;
+        border-radius: 12px;
+        background: #f4f8fe;
+      }
+      .ablation-visual h3,
+      .combined-ablation-tables h3 {
+        margin: 0 0 8px;
+        color: #21508e;
+        font-size: 23px;
+      }
+      .ablation-visual img {
+        display: block;
+        width: 100%;
+        object-fit: contain;
+      }
+      .rotary-ablation-original {
+        height: 220px;
+        background: white;
+      }
+      .conditioning-ablation-chart {
+        height: 186px;
+      }
+      .ablation-visual figcaption {
+        margin-top: 8px;
+        color: #526d93;
+        font-size: 16px;
+        line-height: 1.35;
+      }
+      .anchor-ablation-extra {
+        margin: 12px 0 0;
+        color: #21508e;
+        font-size: 17px;
+      }
+      .combined-ablation-tables {
+        margin-top: 22px;
+      }
+      .combined-ablation-tables table {
+        margin: 0;
+        font-size: 16px;
+        font-variant-numeric: tabular-nums;
+      }
+      .combined-ablation-tables th,
+      .combined-ablation-tables td {
+        padding: 8px 7px;
+        white-space: nowrap;
+      }
+      .combined-ablation-tables tbody th {
+        background: transparent;
+        font-weight: 400;
+      }
+      .combined-ablation-tables tr:last-child {
+        color: #21508e;
+        font-weight: 700;
+      }
+      .combined-ablation-tables p {
+        margin: 10px 0 0;
+        color: #526d93;
+        font-size: 16px;
+        line-height: 1.35;
+      }
+      .combined-ablation-source {
+        margin: 12px 0 0;
+        color: #71829b;
+        font-size: 14px;
+        line-height: 1.35;
+      }
+      .conclusion-slide h1 {
+        font-size: 46px;
+        letter-spacing: -0.015em;
+      }
+
+      /* Full-slide demo followed by the opening-page reprise. */
+      .full-video-slide {
+        padding: 0;
+        background: black;
+      }
+      .full-video-slide::before {
+        display: none;
+      }
+      .full-video-figure {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      .full-video-figure .demo-video,
+      .full-video-figure .demo-animation,
+      .full-video-figure .print-poster {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: black;
+      }
+      .demo-timebar {
+        display: flex;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 3;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 24px;
+        background: rgba(12, 24, 40, 0.86);
+        color: white;
+        font-size: 20px;
+        font-variant-numeric: tabular-nums;
+      }
+      .demo-timebar input[type='range'] {
+        flex: 1;
+        min-width: 0;
+        height: 28px;
+        margin: 0;
+        accent-color: #9bc5ff;
+        cursor: pointer;
+      }
+      .demo-timebar output {
+        min-width: 58px;
+        text-align: center;
+      }
+      .demo-timebar button {
+        min-width: 88px;
+        padding: 9px 14px;
+        background: #315fa6;
+        color: white;
+        font-size: 18px;
+      }
+      .demo-timebar [data-demo-sound],
+      .demo-timebar [data-demo-fullscreen] {
+        min-width: 124px;
+      }
+      .demo-timebar button:disabled {
+        cursor: default;
+      }
+      .full-video-figure:fullscreen {
+        width: 100vw;
+        height: 100vh;
+        background: black;
+      }
+      .demo-playback-help {
+        position: absolute;
+        inset: 35% 12% auto;
+        z-index: 4;
+        padding: 28px;
+        background: rgba(12, 24, 40, 0.94);
+        color: white;
+        text-align: center;
+        font-size: 26px;
+        border-radius: 12px;
+      }
+      .demo-playback-help a {
+        color: #b5d4ff;
+      }
+      @media print {
+        .demo-timebar,
+        .demo-playback-help {
+          display: none;
+        }
+      }
+
+      .fallback-video-toggle {
+        display: none;
+        position: absolute;
+        right: 28px;
+        bottom: 24px;
+      }
+      @media screen {
+        .full-video-figure:has(.demo-animation) .fallback-video-toggle {
+          display: block;
+        }
+      }
+      .title-slide .closing-thanks {
+        position: absolute;
+        top: 36px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        margin: 0;
+        color: #315fa6;
+        font-size: 88px;
+        font-weight: 800;
+        line-height: 1.1;
+        white-space: nowrap;
+        text-align: center;
+      }
+
+      .foot {
+        position: absolute;
+        right: 88px;
+        bottom: 36px;
+        left: 88px;
+        display: flex;
+        justify-content: space-between;
+        color: #71829b;
+        font-size: 15px;
+      }
+
+      /* Controls occupy their own row, outside the scaled slide. */
+      #nav {
+        display: flex;
+        flex: none;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        max-width: 100%;
+        padding: 8px;
+        border-radius: 10px;
+        background: white;
+        box-shadow: 0 2px 12px #1233;
+      }
+      button {
+        padding: 9px 12px;
+        border: 0;
+        border-radius: 7px;
+        background: #315fa6;
+        color: white;
+        font: inherit;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+      button:focus-visible {
+        outline: 3px solid #172b49;
+        outline-offset: 3px;
+      }
+
+      /* Printing restores every slide at its original size, one page per slide. */
+      @media print {
+        @page {
+          size: 1600px 900px;
+          margin: 0;
+        }
+
+        body {
+          display: block;
+          height: auto;
+          padding: 0;
+          overflow: visible;
+          background: white;
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+        #deck {
+          width: auto;
+          overflow: visible;
+        }
+        .slide {
+          display: flex;
+          position: relative;
+          top: auto;
+          left: auto;
+          margin: 0;
+          box-shadow: none;
+          transform: none;
+          break-inside: avoid;
+          break-after: page;
+        }
+        .slide:last-child {
+          break-after: auto;
+        }
+        #nav {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main
+      id="deck"
+      aria-label="Helix4D research presentation"
+    >
+      <!-- Slide 01: Helix4D -->
+      <section class="slide title-slide active">
+        <a
+          class="conference-logo"
+          href="https://neurips.cc/Conferences/2026"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="NeurIPS 2026"
+        >
+          <img
+            src="assets/neurips-logo.svg"
+            alt="NeurIPS logo"
+            width="190"
+            height="85"
+          />
+          <span>2026</span>
+        </a>
+        <img
+          class="title-art"
+          src="assets/diagrams/helix4d-figure1.png"
+          alt=""
+          aria-hidden="true"
+          width="1752"
+          height="697"
+        />
+        <h1>
+          Helix4D: Complex 4D Mesh Generation
+          <span class="conference">(NeurIPS 2026 Oral)</span>
+        </h1>
+        <h2>From Trellis 3D to Helix 4D and to Code Video Model</h2>
+        <div class="content">
+          <p class="presenter">
+            Gordon Qian (钱国成) · Researcher @ ByteDance San Jose
+          </p>
+          <p>
+            <a href="https://guochengqian.github.io/">guochengqian.github.io</a>
+          </p>
+          <div class="qr-links">
+            <figure class="qr-card">
+              <a
+                href="https://snap-research.github.io/helix4d/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/qr-helix4d.svg"
+                  alt="QR code for the Helix4D project website"
+                  width="176"
+                  height="176"
+                />
+              </a>
+              <figcaption>
+                Helix4D
+                <span class="qr-url">snap-research.github.io/helix4d</span>
+              </figcaption>
+            </figure>
+            <figure class="qr-card">
+              <a
+                href="https://code-video-model.github.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/qr-code-video-model.svg"
+                  alt="QR code for the Code Video Model project website"
+                  width="176"
+                  height="176"
+                />
+              </a>
+              <figcaption>
+                Code Video Model
+                <span class="qr-url">code-video-model.github.io</span>
+              </figcaption>
+            </figure>
+            <figure class="qr-card">
+              <a
+                href="http://xhslink.com/m/6NMajASblz5"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  class="qr-xiaohongshu"
+                  src="assets/qr-xiaohongshu-guochengqian.jpg"
+                  alt="小红书二维码，小红书ID: guochengqian"
+                  width="176"
+                  height="176"
+                />
+              </a>
+              <figcaption>
+                小红书
+                <span class="qr-url">小红书ID: guochengqian</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="foot">
+          <span
+            >Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk
+            (Peking)</span
+          ><span>01 / 12 · 0:20</span>
+        </div>
+      </section>
+      <!-- Slide 02: Video-to-4D — Progress and Remaining Gaps -->
+      <section
+        class="slide evidence-slide"
+        data-comparison-slide
+      >
+        <div class="tag">BACKGROUND · PRIOR VIDEO-TO-4D METHODS</div>
+        <h1>Video-to-4D: Progress and Remaining Gaps</h1>
+        <h2>
+          Strong on rigid and simple objects; complex geometry and appearance remain
+          challenging.
+        </h2>
+        <div class="media-toolbar">
+          <div
+            class="case-tabs"
+            role="group"
+            aria-label="Choose a comparison example"
+          >
+            <button
+              type="button"
+              data-comparison-case="11"
+              aria-pressed="true"
+            >
+              Fish in glass
+            </button>
+            <button
+              type="button"
+              data-comparison-case="a306e2ee"
+              aria-pressed="false"
+            >
+              Breaking ship
+            </button>
+            <button
+              type="button"
+              data-comparison-case="05"
+              aria-pressed="false"
+            >
+              Robot in glass
+            </button>
+          </div>
+          <button
+            type="button"
+            class="media-toggle"
+            data-media-toggle
+            aria-pressed="false"
+          >
+            Pause videos
+          </button>
+        </div>
+        <div class="media-grid comparison-grid">
+          <figure class="demo-card">
+            <figcaption class="demo-heading">
+              <span class="method-family">Reference</span>
+              <a
+                href="https://snap-research.github.io/helix4d/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Input video</a
+              >
+            </figcaption>
+            <video
+              class="demo-video"
+              data-method="input"
+              data-src="assets/media/input-11.mp4"
+              data-playback-rate="0.5"
+              poster="assets/media/input-11.jpg"
+              muted
+              loop
+              playsinline
+              preload="none"
+              aria-label="Input video: fish in glass example"
+            ></video>
+            <img
+              class="print-poster"
+              src="assets/media/input-11.jpg"
+              alt="Input video: fish in glass example"
+              width="640"
+              height="640"
+            />
+            <p class="demo-description">Monocular, object-centric video</p>
+          </figure>
+          <figure class="demo-card">
+            <figcaption class="demo-heading">
+              <span class="method-family">Separate mesh + motion</span>
+              <a
+                href="https://arxiv.org/abs/2601.05251"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Mesh4D</a
+              >
+            </figcaption>
+            <video
+              class="demo-video"
+              data-method="mesh4d_rgb"
+              data-src="assets/media/mesh4d_rgb-11.mp4"
+              data-playback-rate="0.25"
+              poster="assets/media/mesh4d_rgb-11.jpg"
+              muted
+              loop
+              playsinline
+              preload="none"
+              aria-label="Mesh4D: fish in glass example"
+            ></video>
+            <img
+              class="print-poster"
+              src="assets/media/mesh4d_rgb-11.jpg"
+              alt="Mesh4D: fish in glass example"
+              width="640"
+              height="640"
+            />
+            <p class="demo-description">Canonical mesh + dense deformation</p>
+          </figure>
+          <figure class="demo-card">
+            <figcaption class="demo-heading">
+              <span class="method-family">Joint 4D generation</span>
+              <a
+                href="https://arxiv.org/abs/2512.14284"
+                target="_blank"
+                rel="noopener noreferrer"
+                >SS4D</a
+              >
+            </figcaption>
+            <video
+              class="demo-video"
+              data-method="ss4d_rgb"
+              data-src="assets/media/ss4d_rgb-11.mp4"
+              data-playback-rate="0.5"
+              poster="assets/media/ss4d_rgb-11.jpg"
+              muted
+              loop
+              playsinline
+              preload="none"
+              aria-label="SS4D: fish in glass example"
+            ></video>
+            <img
+              class="print-poster"
+              src="assets/media/ss4d_rgb-11.jpg"
+              alt="SS4D: fish in glass example"
+              width="640"
+              height="640"
+            />
+            <p class="demo-description">Structured spacetime latents</p>
+          </figure>
+        </div>
+        <div class="limitations">
+          <p class="limitations-heading">Remaining challenges</p>
+          <ul class="limitation-list">
+            <li>Complex topology variations</li>
+            <li>Material modeling</li>
+            <li>Transparency</li>
+            <li>Inner-surface reconstruction</li>
+          </ul>
+        </div>
+        <div class="foot">
+          <span>Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk (Peking)</span
+          ><span>02 / 12 · 0:35</span>
+        </div>
+      </section>
+      <!-- Slide 03: TRELLIS.2 — Strong 3D Priors, Lifted to 4D -->
+      <section class="slide evidence-slide trellis-slide">
+        <div class="tag">MOTIVATION · FROM STRONG 3D PRIORS TO 4D</div>
+        <h1>A Stronger 3D Starting Point: TRELLIS.2</h1>
+        <h2>
+          Geometry and material priors for thin, non-watertight and complex surfaces.
+        </h2>
+        <div class="media-toolbar">
+          <p class="turntable-note">
+            Image-to-3D results · static assets shown as turntables
+          </p>
+          <button
+            type="button"
+            class="media-toggle"
+            data-media-toggle
+            aria-pressed="false"
+          >
+            Pause videos
+          </button>
+        </div>
+        <div class="media-grid trellis-grid">
+          <figure class="demo-card">
+            <figcaption class="demo-heading">
+              Transparency + inner surfaces
+            </figcaption>
+            <video
+              class="demo-video"
+              data-src="assets/media/trellis2-fish-tank.mp4"
+              data-playback-rate="1"
+              poster="assets/media/trellis2-fish-tank.jpg"
+              muted
+              loop
+              playsinline
+              preload="none"
+              aria-label="TRELLIS.2: Transparency + inner surfaces"
+            ></video>
+            <img
+              class="print-poster"
+              src="assets/media/trellis2-fish-tank.jpg"
+              alt="TRELLIS.2: Transparency + inner surfaces"
+              width="640"
+              height="640"
+            />
+            <p class="demo-description">
+              Transparent enclosure and interior geometry; cutaway view reveals the
+              contents.
+            </p>
+          </figure>
+          <figure class="demo-card">
+            <figcaption class="demo-heading">Thin + open structures</figcaption>
+            <video
+              class="demo-video"
+              data-src="assets/media/trellis2-ship.mp4"
+              data-playback-rate="1"
+              poster="assets/media/trellis2-ship.jpg"
+              muted
+              loop
+              playsinline
+              preload="none"
+              aria-label="TRELLIS.2: Thin + open structures"
+            ></video>
+            <img
+              class="print-poster"
+              src="assets/media/trellis2-ship.jpg"
+              alt="TRELLIS.2: Thin + open structures"
+              width="640"
+              height="640"
+            />
+            <p class="demo-description">
+              Fine ropes, railings and sails without requiring a watertight surface.
+            </p>
+          </figure>
+          <figure class="demo-card">
+            <figcaption class="demo-heading">Rich PBR materials</figcaption>
+            <video
+              class="demo-video"
+              data-src="assets/media/trellis2-potions.mp4"
+              data-playback-rate="1"
+              poster="assets/media/trellis2-potions.jpg"
+              muted
+              loop
+              playsinline
+              preload="none"
+              aria-label="TRELLIS.2: Rich PBR materials"
+            ></video>
+            <img
+              class="print-poster"
+              src="assets/media/trellis2-potions.jpg"
+              alt="TRELLIS.2: Rich PBR materials"
+              width="640"
+              height="640"
+            />
+            <p class="demo-description">
+              Detailed appearance with base color, roughness, metallic and opacity.
+            </p>
+          </figure>
+        </div>
+        <div class="idea-bridge">
+          <div class="idea-flow">
+            <span>TRELLIS.2 · image → 3D</span><span aria-hidden="true">→</span
+            ><strong>Helix4D · video → 4D</strong>
+          </div>
+          <p>
+            Our idea: inherit TRELLIS.2’s expressive representation and pretrained
+            strengths for video-conditioned dynamic mesh generation.
+          </p>
+        </div>
+        <div class="foot">
+          <span>Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk (Peking)</span
+          ><span>03 / 12 · 0:45</span>
+        </div>
+      </section>
+      <!-- Slide 04: Four Challenges — Four Design Choices -->
+      <section class="slide challenge-slide">
+        <div class="tag">METHOD · FOUR CHALLENGES, FOUR DESIGN CHOICES</div>
+        <h1>From TRELLIS.2 to Helix4D</h1>
+        <h2>Enable temporal reasoning while preserving pretrained 3D strengths.</h2>
+        <div class="challenge-grid">
+          <article class="challenge-card">
+            <div class="challenge-title">
+              <span class="challenge-number">01</span>
+              <h3>Efficient cross-frame interaction</h3>
+            </div>
+            <p class="challenge-context">Share information at sparse-token scale.</p>
+            <div class="challenge-visual">
+              <img
+                src="assets/diagrams/cross-frame-attention.svg"
+                alt="Original per-frame attention has only diagonal frame blocks; cross-frame sliding-window attention adds interactions between nearby frames."
+                width="620"
+                height="128"
+              />
+            </div>
+            <p class="challenge-solution">Sliding-window cross-frame attention</p>
+            <p class="challenge-detail">
+              Local temporal context · efficient cross-frame interaction
+            </p>
+          </article>
+          <article class="challenge-card">
+            <div class="challenge-title">
+              <span class="challenge-number">02</span>
+              <h3>Rare geometry, limited 4D data</h3>
+            </div>
+            <p class="challenge-context">Retain transparency and inner surfaces.</p>
+            <div class="challenge-visual">
+              <img
+                src="assets/diagrams/first-frame-conditioning.svg"
+                alt="Sliding-window attention augmented with a clean first-frame anchor: every frame can attend to the first-frame column."
+                width="620"
+                height="128"
+              />
+            </div>
+            <p class="challenge-solution">Sliding window + first-frame anchor</p>
+            <p class="challenge-detail">
+              Clean TRELLIS.2 reference · inherited 3D capabilities
+            </p>
+          </article>
+          <article class="challenge-card">
+            <div class="challenge-title">
+              <span class="challenge-number">03</span>
+              <h3>Time in a spatial-only encoding</h3>
+            </div>
+            <p class="challenge-context">
+              Add time without disrupting pretrained Q/K phases.
+            </p>
+            <div class="challenge-visual">
+              <img
+                src="assets/diagrams/rope-frequency-repurposing.svg"
+                alt="Lowest-frequency spatial RoPE pairs reassigned to time; head dimension unchanged"
+                width="620"
+                height="128"
+              />
+            </div>
+            <p class="challenge-solution">Parameter-free 4D ReRoPE extension</p>
+            <p class="challenge-detail">
+              Repurpose low-frequency spatial bands · fixed head dimension
+            </p>
+          </article>
+          <article class="challenge-card">
+            <div class="challenge-title">
+              <span class="challenge-number">04</span>
+              <h3>Preserve pretrained quality</h3>
+            </div>
+            <p class="challenge-context">Keep strong geometry and material priors.</p>
+            <div class="challenge-visual">
+              <img
+                src="assets/diagrams/pretrained-weight-adaptation.svg"
+                alt="Reuse pretrained weights, update self-attention and freeze the other layers"
+                width="620"
+                height="128"
+              />
+            </div>
+            <p class="challenge-solution">Pretrained weights + minimal tuning</p>
+            <p class="challenge-detail">
+              Reuse initialization · fine-tune self-attention only
+            </p>
+          </article>
+        </div>
+        <div class="foot">
+          <span
+            >Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk
+            (Peking)</span
+          ><span>04 / 12 · 1:00</span>
+        </div>
+      </section>
+      <!-- Slide 05: Helix4D: Overview -->
+      <section class="slide pipeline-slide">
+        <div class="tag">METHOD · HELIX4D</div>
+        <h1>Helix4D: Overview</h1>
+        <h2>Video-conditioned sparse structure → geometry → material</h2>
+        <figure class="pipeline-figure">
+          <div class="pipeline-crop">
+            <img
+              src="assets/diagrams/helix4d-pipeline-figure2.png"
+              alt="Original Figure 2, left: video-conditioned sparse-structure, geometry and material transformers turn noisy latents into a dynamic 4D asset."
+              width="2442"
+              height="540"
+            />
+          </div>
+        </figure>
+        <p class="pipeline-note">
+          Each stage generates 16 frames jointly using cross-frame attention, a
+          first-frame anchor and 4D ReRoPE.
+        </p>
+        <div class="foot">
+          <span
+            >Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk
+            (Peking)</span
+          ><span>05 / 12 · 0:50</span>
+        </div>
+      </section>
+      <!-- Slide 06: Sliding-window Attention with Anchor -->
+      <section class="slide merged-attention-slide">
+        <div class="tag">METHOD · CROSS-FRAME INTERACTION</div>
+        <h1>Sliding-window Attention with Anchor</h1>
+        <h2>Local motion context + a clean global first-frame reference</h2>
+        <figure class="merged-attention-figure">
+          <img
+            src="assets/diagrams/helix4d-figure3.png"
+            alt="Original Figure 3: full, causal, sliding-window, spatial, and sliding-window plus first-frame anchor attention."
+            width="1680"
+            height="420"
+          />
+          <figcaption>
+            Orange: allowed · gray: masked · red: first-frame anchor.
+          </figcaption>
+        </figure>
+        <div class="merged-attention-cards">
+          <article>
+            <h3>Sliding window</h3>
+            <p>Nearby frames share motion and geometry information efficiently.</p>
+            <p class="attention-small">
+              Window size 5 · up to 100K tokens per 4D sample.
+            </p>
+          </article>
+          <article>
+            <h3>First-frame anchor</h3>
+            <p>
+              Every frame can access clean frame-0 tokens for a stable shape and
+              material reference.
+            </p>
+          </article>
+          <article>
+            <h3>First-frame conditioning</h3>
+            <p>
+              <strong>Train:</strong> ground-truth frame-0 latent, zero noise
+              timestep; loss only on later frames.
+            </p>
+            <p><strong>Infer:</strong> generate the anchor with frozen TRELLIS.2.</p>
+          </article>
+        </div>
+        <div class="foot">
+          <span
+            >Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk
+            (Peking)</span
+          ><span>06 / 12 · 1:00</span>
+        </div>
+      </section>
+
+      <!-- Slide 07: RoPE Frequency-band Analysis -->
+      <section class="slide rope-ratio-slide">
+        <div class="tag">METHOD · (b) 4D ROTARY</div>
+        <h1>RoPE Frequency-band Analysis</h1>
+        <h2>Why can low-frequency spatial bands be repurposed for time?</h2>
+        <p class="rope-ratio-probe">
+          Frozen TRELLIS.2 · 32 held-out objects · retain α of the spatial frequency
+          pairs; replace the remaining low-frequency rotations with identity.
+        </p>
+        <figure class="rope-ratio-figure">
+          <img
+            src="assets/diagrams/rope-ratio-figure4.png"
+            alt="Original Figure 4: low-frequency spatial RoPE rotations are replaced with identity. Geometry deteriorates at retained ratios 0.0 and 0.2; results at 0.4, 0.8 and 1.0 are visually similar. The middle matrix reassigns the available slots to temporal rotations."
+            width="1944"
+            height="517"
+          />
+        </figure>
+        <table class="rope-band-table">
+          <thead>
+            <tr>
+              <th scope="col">Retained ratio α</th>
+              <th scope="col">0.0</th>
+              <th scope="col">0.2</th>
+              <th scope="col">0.4</th>
+              <th scope="col">0.6</th>
+              <th scope="col">0.8</th>
+              <th scope="col">1.0</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">CD-3D vs full RoPE ↓</th>
+              <td>0.0181</td>
+              <td>0.0098</td>
+              <td>0.0079</td>
+              <td>0.0079</td>
+              <td>0.0079</td>
+              <td>0 · reference</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="rope-ratio-cards">
+          <article class="rope-ratio-card">
+            <h3>Observation</h3>
+            <p>Retaining ≥40% gives visually similar geometry in this probe.</p>
+          </article>
+          <article class="rope-ratio-card">
+            <h3>Band sensitivity</h3>
+            <p>CD plateaus at 0.0079 for α = 0.4, 0.6 and 0.8.</p>
+          </article>
+          <article class="rope-ratio-card">
+            <h3>4D allocation: α = 0.75</h3>
+            <p>75% spatial pairs · 25% temporal pairs · same head width.</p>
+          </article>
+        </div>
+        <div class="foot">
+          <span>
+            Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk (Peking)
+          </span>
+          <span>07 / 12 · 1:00</span>
+        </div>
+      </section>
+
+      <!-- Slide 08: Experiments -->
+      <section class="slide complete-results-slide">
+        <div class="tag">EXPERIMENTS · ALL BASELINES</div>
+        <h1>Experiments</h1>
+        <h2>52-video Helix4DBench + ActionBench + held-out TexVerse</h2>
+        <div class="complete-charts">
+          <figure class="complete-chart">
+            <figcaption>
+              <h3>ULIP-2 ↑</h3>
+              <strong>+5.7%</strong>
+              <p>vs Mesh4D · strongest alternative</p>
+            </figcaption>
+            <img
+              src="assets/charts/all-baselines-ulip2.svg"
+              alt="ULIP-2 ↑: all reported baselines. Highlight +5.7%, vs Mesh4D · strongest alternative. Absolute bars start at zero."
+            />
+          </figure>
+          <figure class="complete-chart">
+            <figcaption>
+              <h3>Uni3D ↑</h3>
+              <strong>+7.8%</strong>
+              <p>vs Motion 3-to-4 · strongest alternative</p>
+            </figcaption>
+            <img
+              src="assets/charts/all-baselines-uni3d.svg"
+              alt="Uni3D ↑: all reported baselines. Highlight +7.8%, vs Motion 3-to-4 · strongest alternative. Absolute bars start at zero."
+            />
+          </figure>
+          <figure class="complete-chart">
+            <figcaption>
+              <h3>ActionBench CD-3D ↓</h3>
+              <strong>−3.8%</strong>
+              <p>vs ActionMesh · strongest alternative</p>
+            </figcaption>
+            <img
+              src="assets/charts/all-baselines-action-cd3d.svg"
+              alt="ActionBench CD-3D ↓: all reported baselines. Highlight −3.8%, vs ActionMesh · strongest alternative. Absolute bars start at zero."
+            />
+          </figure>
+          <figure class="complete-chart">
+            <figcaption>
+              <h3>User preference ↑</h3>
+              <strong>67.9%</strong>
+              <p>vs ShapeGen4D · most competitive</p>
+            </figcaption>
+            <img
+              src="assets/charts/all-baselines-preference.svg"
+              alt="User preference ↑: all reported baselines. Highlight 67.9%, vs ShapeGen4D · most competitive. Absolute bars start at zero."
+            />
+          </figure>
+        </div>
+        <div class="complete-chart-legend">
+          <span class="legend-ours">Helix4D</span
+          ><span class="legend-alternative"
+            >Strongest alternative for each metric</span
+          >
+        </div>
+        <table class="complete-results-table">
+          <thead>
+            <tr>
+              <th
+                scope="col"
+                rowspan="2"
+              >
+                Method
+              </th>
+              <th
+                scope="colgroup"
+                colspan="7"
+              >
+                Helix4DBench
+              </th>
+              <th
+                scope="colgroup"
+                colspan="2"
+              >
+                ActionBench
+              </th>
+              <th
+                scope="colgroup"
+                colspan="2"
+              >
+                TexVerse
+              </th>
+            </tr>
+            <tr>
+              <th scope="col">CLIP ↑</th>
+              <th scope="col">CLIP-N ↑</th>
+              <th scope="col">ULIP-2 ↑</th>
+              <th scope="col">Uni3D ↑</th>
+              <th scope="col">DreamSim ↓</th>
+              <th scope="col">FVD ↓</th>
+              <th scope="col">Ours wins ↑</th>
+              <th scope="col">CD-3D ↓</th>
+              <th scope="col">CD-4D ↓</th>
+              <th scope="col">CD-3D ↓</th>
+              <th scope="col">CD-4D ↓</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">SS4D</th>
+              <td>0.8468</td>
+              <td>—</td>
+              <td>0.4191</td>
+              <td>0.3739</td>
+              <td>0.2745</td>
+              <td>1046</td>
+              <td>71.2%</td>
+              <td>0.105</td>
+              <td>0.120</td>
+              <td>0.052</td>
+              <td>0.103</td>
+            </tr>
+            <tr>
+              <th scope="row">ShapeGen4D</th>
+              <td>—</td>
+              <td>0.6876</td>
+              <td>0.4169</td>
+              <td>0.3687</td>
+              <td>—</td>
+              <td>—</td>
+              <td>67.9%</td>
+              <td>0.056</td>
+              <td>0.170</td>
+              <td>0.075</td>
+              <td>0.129</td>
+            </tr>
+            <tr>
+              <th scope="row">Mesh4D</th>
+              <td>0.8533</td>
+              <td>0.7399</td>
+              <td>0.4353</td>
+              <td>0.3691</td>
+              <td>0.3025</td>
+              <td>979</td>
+              <td>79.8%</td>
+              <td>0.096</td>
+              <td>0.141</td>
+              <td>0.058</td>
+              <td>0.100</td>
+            </tr>
+            <tr>
+              <th scope="row">Motion 3-to-4</th>
+              <td>0.8674</td>
+              <td>0.7442</td>
+              <td>0.4331</td>
+              <td>0.3768</td>
+              <td>0.2697</td>
+              <td>955</td>
+              <td>80.7%</td>
+              <td>0.068</td>
+              <td>0.114</td>
+              <td>0.056</td>
+              <td>0.108</td>
+            </tr>
+            <tr>
+              <th scope="row">ActionMesh</th>
+              <td>—</td>
+              <td>0.7156</td>
+              <td>0.4226</td>
+              <td>0.3761</td>
+              <td>—</td>
+              <td>—</td>
+              <td>89.8%</td>
+              <td>0.053</td>
+              <td class="result-best">0.081</td>
+              <td>0.056</td>
+              <td>0.111</td>
+            </tr>
+            <tr>
+              <th scope="row">Helix4D</th>
+              <td class="result-best">0.8723</td>
+              <td class="result-best">0.7569</td>
+              <td class="result-best">0.4600</td>
+              <td class="result-best">0.4063</td>
+              <td class="result-best">0.2593</td>
+              <td class="result-best">950</td>
+              <td>Ref.</td>
+              <td class="result-best">0.051</td>
+              <td>0.093</td>
+              <td class="result-best">0.045</td>
+              <td class="result-best">0.097</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="complete-results-note">
+          <strong>ActionMesh leads ActionBench CD-4D (0.081 vs 0.093).</strong>
+          Helix4D leads the other reported geometry metrics.
+        </p>
+        <div class="foot">
+          <span
+            >Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk
+            (Peking)</span
+          ><span>08 / 12 · 1:00</span>
+        </div>
+      </section>
+      <!-- Slide 09: Ablations: What Matters? -->
+      <section class="slide combined-ablation-slide">
+        <div class="tag">ABLATIONS · COMPONENTS AND ATTENTION</div>
+        <h1>Ablations: What Matters?</h1>
+        <h2>First-frame conditioning, 4D ReRoPE and cross-frame attention</h2>
+        <div class="combined-ablation-visuals">
+          <figure class="ablation-visual">
+            <h3>4D rotary</h3>
+            <img
+              class="rotary-ablation-original"
+              src="assets/diagrams/rope-ablation-figure6.png"
+              alt="Original Figure 6: clean geometry with our 4D rotary; rough back and extra arm with stacked temporal RoPE."
+              width="817"
+              height="264"
+            />
+            <figcaption>
+              “w/o 4D rotary” uses SS4D-style stacked temporal RoPE in the same
+              backbone.
+            </figcaption>
+          </figure>
+          <figure class="ablation-visual">
+            <h3>First-frame conditioning · CD-3D ↓</h3>
+            <img
+              class="conditioning-ablation-chart"
+              src="assets/charts/first-frame-conditioning-ablation.svg"
+              alt="Table 3 first-frame-conditioning ablation: without a clean first-frame reference CD-3D is 0.0488; full Helix4D is 0.0464. Bars start at zero."
+            />
+            <figcaption>
+              Clean frame-0 reference improves geometry.
+            </figcaption>
+            <p class="anchor-ablation-extra">
+              ULIP-2: 0.2809 → 0.2881 · Uni3D: 0.2554 → 0.2589
+            </p>
+          </figure>
+        </div>
+        <div class="combined-ablation-tables">
+          <div>
+            <h3>Component ablation</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Variant</th>
+                  <th scope="col">CD-3D ↓</th>
+                  <th scope="col">ULIP-2 ↑</th>
+                  <th scope="col">Uni3D ↑</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Without first-frame conditioning</th>
+                  <td>0.0488</td>
+                  <td>0.2809</td>
+                  <td>0.2554</td>
+                </tr>
+                <tr>
+                  <th scope="row">Stacked temporal RoPE</th>
+                  <td>0.0478</td>
+                  <td>0.2819</td>
+                  <td>0.2584</td>
+                </tr>
+                <tr>
+                  <th scope="row">Full self-attention</th>
+                  <td>0.0467</td>
+                  <td>0.2819</td>
+                  <td>0.2530</td>
+                </tr>
+                <tr>
+                  <th scope="row">Full Helix4D</th>
+                  <td>0.0464</td>
+                  <td>0.2881</td>
+                  <td>0.2589</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              “Full self-attention” replaces the proposed window + anchor pattern.
+            </p>
+          </div>
+          <div>
+            <h3>Attention pattern</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Pattern</th>
+                  <th scope="col">CD-3D ↓</th>
+                  <th scope="col">CD-4D ↓</th>
+                  <th scope="col">ULIP-2 ↑</th>
+                  <th scope="col">Uni3D ↑</th>
+                  <th scope="col">Time ↓</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Full</th>
+                  <td>0.0470</td>
+                  <td>0.1009</td>
+                  <td>0.2835</td>
+                  <td>0.2447</td>
+                  <td>2.3×</td>
+                </tr>
+                <tr>
+                  <th scope="row">Causal</th>
+                  <td>0.0491</td>
+                  <td>0.1038</td>
+                  <td>0.2838</td>
+                  <td>0.2564</td>
+                  <td>1.5×</td>
+                </tr>
+                <tr>
+                  <th scope="row">Window</th>
+                  <td>0.0468</td>
+                  <td>0.1085</td>
+                  <td>0.2870</td>
+                  <td>0.2538</td>
+                  <td>0.9×</td>
+                </tr>
+                <tr>
+                  <th scope="row">Spatial</th>
+                  <td>0.0471</td>
+                  <td>0.1011</td>
+                  <td>0.2791</td>
+                  <td>0.2548</td>
+                  <td>0.4×</td>
+                </tr>
+                <tr>
+                  <th scope="row">Window + anchor</th>
+                  <td>0.0454</td>
+                  <td>0.0970</td>
+                  <td>0.2879</td>
+                  <td>0.2576</td>
+                  <td>1.0×</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              <strong>Window + anchor: 2.3× faster than full attention</strong>, with
+              better reported quality.
+            </p>
+          </div>
+        </div>
+        <div class="foot">
+          <span>Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk (Peking)</span
+          ><span>09 / 12 · 0:50</span>
+        </div>
+      </section>
+      <!-- Slide 10: Conclusion -->
+      <section class="slide conclusion-slide">
+        <div class="tag">CONCLUSION · HELIX4D</div>
+        <h1>Helix4D Conclusion: From Pretrained 3D to Dynamic 4D</h1>
+        <p class="conclusion-lead">
+          We presented Helix4D, an approach that adapts a pretrained image-to-3D
+          generator into a video-to-4D mesh generator. We introduce a lightweight
+          conversion of Trellis2 to dynamic generation through:
+        </p>
+        <div class="conclusion-grid">
+          <article class="conclusion-card">
+            <h2>Temporal ReRoPE</h2>
+            <div class="conclusion-paper-visual">
+              <div
+                class="paper-crop"
+                style="
+                  --image-w: 1944;
+                  --crop-x: 0;
+                  --crop-y: 0;
+                  --crop-w: 790;
+                  --crop-h: 517;
+                "
+              >
+                <img
+                  src="assets/diagrams/rope-ratio-figure4.png"
+                  alt="Original Figure 4 left: spatial bands repurposed for temporal rotary encoding."
+                  width="1944"
+                  height="517"
+                />
+              </div>
+            </div>
+            <p>
+              <strong>Encode time without adding parameters.</strong>
+              Repurpose low-frequency spatial RoPE slots.
+            </p>
+          </article>
+          <article class="conclusion-card">
+            <h2>Sliding-window attention<br />with an anchor frame</h2>
+            <div class="conclusion-paper-visual">
+              <div
+                class="paper-crop"
+                style="
+                  --image-w: 1680;
+                  --crop-x: 1334;
+                  --crop-y: 0;
+                  --crop-w: 346;
+                  --crop-h: 420;
+                "
+              >
+                <img
+                  src="assets/diagrams/helix4d-figure3.png"
+                  alt="Original Figure 3 right: our sliding-window attention plus first-frame anchor."
+                  width="1680"
+                  height="420"
+                />
+              </div>
+            </div>
+            <p>
+              <strong>Share information efficiently.</strong>
+              Combine local motion context with a global reference.
+            </p>
+          </article>
+          <article class="conclusion-card">
+            <h2>First-frame conditioning</h2>
+            <img
+              src="assets/diagrams/conclusion-first-frame.svg"
+              alt="A clean first-frame reference generated by frozen TRELLIS.2 conditions noisy later-frame latents, retaining geometry and material priors."
+            />
+            <p>
+              <strong>Carry strong 3D priors into 4D.</strong>
+              Condition on a clean TRELLIS.2 first frame.
+            </p>
+          </article>
+        </div>
+        <p class="conclusion-links">
+          <a href="https://arxiv.org/abs/2605.26109">Paper · arXiv:2605.26109</a>
+          <a href="https://snap-research.github.io/helix4d/">Project · Helix4D</a>
+        </p>
+        <div class="foot">
+          <span
+            >Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk
+            (Peking)</span
+          ><span>10 / 12 · 0:40</span>
+        </div>
+      </section>
+      <!-- Slide 11: Code Video Model Demo -->
+      <section
+        class="slide full-video-slide"
+        aria-label="Code Video Model demo video"
+      >
+        <figure class="full-video-figure">
+          <video
+            class="demo-video"
+            data-src="assets/media/code-video-model-demo.mp4"
+            data-playback-rate="1"
+            data-native-only="true"
+            data-duration="137.97"
+            poster="assets/media/code-video-model-demo.jpg"
+            preload="metadata"
+            autoplay
+            muted
+            loop
+            playsinline
+            aria-label="Code Video Model official demo video"
+          ></video>
+          <img
+            class="print-poster"
+            src="assets/media/code-video-model-demo.jpg"
+            alt="Code Video Model demo: What if a video started as code?"
+            width="1600"
+            height="900"
+          />
+          <div class="demo-playback-help" data-demo-unavailable hidden>
+            <p>This viewer cannot play the HD video.</p>
+            <a href="#11">
+              Open HD preview · 1600 × 900 · 30 fps
+            </a>
+          </div>
+          <div
+            class="demo-timebar"
+            role="group"
+            aria-label="Demo video controls"
+          >
+            <button
+              type="button"
+              data-demo-play
+            >
+              Pause
+            </button>
+            <output
+              class="demo-current-time"
+              aria-label="Current playback time"
+              >0:00</output
+            >
+            <input
+              id="code-demo-seek"
+              type="range"
+              min="0"
+              max="137.97"
+              step="0.1"
+              value="0"
+              aria-label="Seek demo video"
+            />
+            <output
+              class="demo-total-time"
+              aria-label="Total duration"
+              >2:18</output
+            >
+            <button
+              type="button"
+              data-demo-sound
+              aria-pressed="false"
+            >
+              Sound off
+            </button>
+            <button
+              type="button"
+              data-demo-fullscreen
+            >
+              Fullscreen
+            </button>
+          </div>
+        </figure>
+      </section>
+      <!-- Slide 12: Thank You -->
+      <section class="slide title-slide closing-slide">
+        <p class="closing-thanks">Thank you</p>
+        <a
+          class="conference-logo"
+          href="https://neurips.cc/Conferences/2026"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="NeurIPS 2026"
+        >
+          <img
+            src="assets/neurips-logo.svg"
+            alt="NeurIPS logo"
+            width="190"
+            height="85"
+          />
+          <span>2026</span>
+        </a>
+        <img
+          class="title-art"
+          src="assets/diagrams/helix4d-figure1.png"
+          alt=""
+          aria-hidden="true"
+          width="1752"
+          height="697"
+        />
+        <h1>
+          Helix4D: Complex 4D Mesh Generation
+          <span class="conference">(NeurIPS 2026 Oral)</span>
+        </h1>
+        <h2>From Trellis 3D to Helix 4D and to Code Video Model</h2>
+        <div class="content">
+          <p class="presenter">
+            Gordon Qian (钱国成) · Researcher @ ByteDance San Jose
+          </p>
+          <p>
+            <a href="https://guochengqian.github.io/">guochengqian.github.io</a>
+          </p>
+          <div class="qr-links">
+            <figure class="qr-card">
+              <a
+                href="https://snap-research.github.io/helix4d/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/qr-helix4d.svg"
+                  alt="QR code for the Helix4D project website"
+                  width="176"
+                  height="176"
+                />
+              </a>
+              <figcaption>
+                Helix4D
+                <span class="qr-url">snap-research.github.io/helix4d</span>
+              </figcaption>
+            </figure>
+            <figure class="qr-card">
+              <a
+                href="https://code-video-model.github.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/qr-code-video-model.svg"
+                  alt="QR code for the Code Video Model project website"
+                  width="176"
+                  height="176"
+                />
+              </a>
+              <figcaption>
+                Code Video Model
+                <span class="qr-url">code-video-model.github.io</span>
+              </figcaption>
+            </figure>
+            <figure class="qr-card">
+              <a
+                href="http://xhslink.com/m/6NMajASblz5"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  class="qr-xiaohongshu"
+                  src="assets/qr-xiaohongshu-guochengqian.jpg"
+                  alt="小红书二维码，小红书ID: guochengqian"
+                  width="176"
+                  height="176"
+                />
+              </a>
+              <figcaption>
+                小红书
+                <span class="qr-url">小红书ID: guochengqian</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="foot">
+          <span
+            >Gordon Qian (钱国成) · Helix4D · NeurIPS 2026 Oral talk
+            (Peking)</span
+          ><span>12 / 12 · 0:20</span>
+        </div>
+      </section>
+    </main>
+    <nav
+      id="nav"
+      aria-label="Slide navigation"
+    >
+      <button
+        id="previous"
+        type="button"
+        aria-label="Previous slide"
+      >
+        ←
+      </button>
+      <span
+        id="count"
+        aria-live="polite"
+        aria-atomic="true"
+        >1 / 12</span
+      >
+      <button
+        id="next"
+        type="button"
+        aria-label="Next slide"
+      >
+        →
+      </button>
+      <button
+        id="fullscreen"
+        type="button"
+      >
+        Fullscreen
+      </button>
+    </nav>
+    <script>
+      // The CSS dimensions are the single source of truth for the page geometry.
+      const deck = document.getElementById('deck');
+      const slides = [...document.querySelectorAll('.slide')];
+      const count = document.getElementById('count');
+      const previousButton = document.getElementById('previous');
+      const nextButton = document.getElementById('next');
+      const fullscreenButton = document.getElementById('fullscreen');
+      let slideIndex = 0;
+
+      function fitSlide() {
+        const styles = getComputedStyle(document.documentElement);
+        const width = parseFloat(styles.getPropertyValue('--slide-width'));
+        const height = parseFloat(styles.getPropertyValue('--slide-height'));
+        const scale = Math.min(
+          deck.clientWidth / width,
+          deck.clientHeight / height,
+        );
+        document.documentElement.style.setProperty('--slide-scale', scale);
+      }
+
+      function go(offset) {
+        const previousIndex = slideIndex;
+        slides[slideIndex].classList.remove('active');
+        slideIndex = Math.max(
+          0,
+          Math.min(slides.length - 1, slideIndex + offset),
+        );
+        slides[slideIndex].classList.add('active');
+        if (slideIndex !== previousIndex && slides[slideIndex] === codeDemoSlide) {
+          codeDemoVideo.pause();
+          codeDemoVideo.currentTime = 0;
+          codeDemoClock.scrubbing = false;
+          codeDemoSlide.dataset.mediaPaused = 'false';
+        }
+        count.textContent = `${slideIndex + 1} / ${slides.length}`;
+        previousButton.disabled = slideIndex === 0;
+        nextButton.disabled = slideIndex === slides.length - 1;
+        syncSlideMedia();
+      }
+
+      async function toggleFullscreen() {
+        try {
+          if (document.fullscreenElement) {
+            await document.exitFullscreen();
+          } else {
+            await document.documentElement.requestFullscreen();
+          }
+        } catch (error) {
+          console.warn('Fullscreen is unavailable in this browser.', error);
+        }
+      }
+
+      previousButton.addEventListener('click', () => go(-1));
+      nextButton.addEventListener('click', () => go(1));
+      fullscreenButton.addEventListener('click', toggleFullscreen);
+
+      document.addEventListener('keydown', (event) => {
+        if (event.altKey || event.ctrlKey || event.metaKey) return;
+        if (event.target.closest('input, textarea, select, [contenteditable]'))
+          return;
+        if (event.key === ' ' && event.target.closest('button, a')) return;
+
+        if (['ArrowRight', ' ', 'PageDown'].includes(event.key)) {
+          event.preventDefault();
+          go(1);
+        } else if (['ArrowLeft', 'PageUp'].includes(event.key)) {
+          event.preventDefault();
+          go(-1);
+        } else if (event.key.toLowerCase() === 'f') {
+          event.preventDefault();
+          toggleFullscreen();
+        }
+      });
+
+      // Use animated previews when an embedded viewer cannot decode either video format.
+      const mediaLoadTimers = new WeakMap();
+
+      function enableAnimatedPreview(video) {
+        clearTimeout(mediaLoadTimers.get(video));
+        video.pause();
+        if (video.dataset.nativeOnly === 'true') {
+          video.dataset.playbackUnavailable = 'true';
+          video.closest('figure').querySelector('[data-demo-unavailable]').hidden = false;
+          return;
+        }
+        video.dataset.imageFallback = 'true';
+        const figure = video.closest('figure');
+        let preview = figure.querySelector('.demo-animation');
+        if (!preview) {
+          preview = document.createElement('img');
+          preview.className = 'demo-animation';
+          preview.width = 480;
+          preview.height = 480;
+          video.after(preview);
+        }
+        return preview;
+      }
+
+      function recoverVideoPlayback(video) {
+        clearTimeout(mediaLoadTimers.get(video));
+        if (
+          video.dataset.imageFallback === 'true' ||
+          video.dataset.playbackUnavailable === 'true'
+        ) return;
+        const source = video.getAttribute('src');
+        if (
+          source?.endsWith('.mp4') &&
+          video.dataset.nativeOnly !== 'true' &&
+          video.canPlayType('video/webm; codecs="vp9"')
+        ) {
+          video.src = source.replace(/\.mp4$/, '.webm');
+          video.load();
+        } else {
+          enableAnimatedPreview(video);
+        }
+        syncSlideMedia();
+      }
+
+      // Play only the active slide's media; retain static posters for PDF output.
+      function syncSlideMedia() {
+        for (const slide of slides) {
+          const playing =
+            slide.classList.contains('active') &&
+            slide.dataset.mediaPaused !== 'true';
+          for (const video of slide.querySelectorAll('.demo-video')) {
+            if (video.dataset.playbackUnavailable === 'true') continue;
+            if (
+              playing &&
+              !video.getAttribute('src') &&
+              video.dataset.imageFallback !== 'true'
+            ) {
+              const mp4 = video.canPlayType('video/mp4; codecs="avc1.42E01E"');
+              const webm = video.canPlayType('video/webm; codecs="vp9"');
+              if (mp4 || webm || video.dataset.nativeOnly === 'true') {
+                video.src = mp4 || video.dataset.nativeOnly === 'true'
+                  ? video.dataset.src
+                  : video.dataset.src.replace(/\.mp4$/, '.webm');
+                video.load();
+              } else {
+                enableAnimatedPreview(video);
+              }
+            }
+            if (video.dataset.playbackUnavailable === 'true') continue;
+            if (video.dataset.imageFallback === 'true') {
+              const preview = enableAnimatedPreview(video);
+              const source = playing
+                  ? video.dataset.src.replace(/\.mp4$/, '-preview.webp')
+                  : video.getAttribute('poster');
+              preview.alt = video.getAttribute('aria-label');
+              if (preview.getAttribute('src') !== source) preview.src = source;
+              continue;
+            }
+            if (playing) {
+              video.muted = video.dataset.soundEnabled !== 'true';
+              video.defaultMuted = true;
+              video.playsInline = true;
+              video.playbackRate = Number(video.dataset.playbackRate || 1);
+              video.play().catch((error) => {
+                if (error.name === 'NotAllowedError') {
+                  slide.dataset.mediaPaused = 'true';
+                  syncSlideMedia();
+                } else if (error.name !== 'AbortError' && !video.error) {
+                  enableAnimatedPreview(video);
+                  syncSlideMedia();
+                }
+              });
+              clearTimeout(mediaLoadTimers.get(video));
+              if (video.readyState < 2) {
+                mediaLoadTimers.set(
+                  video,
+                  setTimeout(() => {
+                    if (
+                      slide.classList.contains('active') &&
+                      slide.dataset.mediaPaused !== 'true' &&
+                      video.readyState < 2
+                    ) {
+                      enableAnimatedPreview(video);
+                      syncSlideMedia();
+                    }
+                  }, 6000),
+                );
+              }
+            } else {
+              clearTimeout(mediaLoadTimers.get(video));
+              video.pause();
+            }
+          }
+          const toggle = slide.querySelector('[data-media-toggle]');
+          if (toggle) {
+            toggle.textContent =
+              slide.dataset.mediaPaused === 'true' ? 'Play videos' : 'Pause videos';
+            toggle.setAttribute(
+              'aria-pressed',
+              String(slide.dataset.mediaPaused === 'true'),
+            );
+          }
+        }
+        updateCodeDemoTimebar();
+      }
+
+      for (const video of document.querySelectorAll('.demo-video')) {
+        video.addEventListener('error', () => recoverVideoPlayback(video));
+        video.addEventListener('playing', () =>
+          clearTimeout(mediaLoadTimers.get(video)),
+        );
+      }
+
+      for (const toggle of document.querySelectorAll('[data-media-toggle]')) {
+        toggle.addEventListener('click', () => {
+          const slide = toggle.closest('.slide');
+          slide.dataset.mediaPaused = String(slide.dataset.mediaPaused !== 'true');
+          syncSlideMedia();
+        });
+      }
+
+      const comparisonNames = {
+        a306e2ee: 'breaking ship',
+        11: 'fish in glass',
+        '05': 'robot in glass',
+      };
+      for (const button of document.querySelectorAll('[data-comparison-case]')) {
+        button.addEventListener('click', () => {
+          const slide = button.closest('.slide');
+          const example = button.dataset.comparisonCase;
+          for (const tab of slide.querySelectorAll('[data-comparison-case]')) {
+            tab.setAttribute('aria-pressed', String(tab === button));
+          }
+          for (const video of slide.querySelectorAll('.demo-video')) {
+            const stem = 'assets/media/' + video.dataset.method + '-' + example;
+            video.pause();
+            video.removeAttribute('src');
+            video.dataset.src = stem + '.mp4';
+            video.poster = stem + '.jpg';
+            video.dataset.playbackRate =
+              video.dataset.method === 'mesh4d_rgb'
+                ? '0.25'
+                : example === 'a306e2ee'
+                  ? '1'
+                  : '0.5';
+            const label =
+              video.closest('figure').querySelector('.demo-heading a').textContent +
+              ': ' +
+              comparisonNames[example] +
+              ' example';
+            video.setAttribute('aria-label', label);
+            const poster = video.closest('figure').querySelector('.print-poster');
+            poster.src = stem + '.jpg';
+            poster.alt = label;
+            video.load();
+          }
+          syncSlideMedia();
+        });
+      }
+
+      const codeDemoVideo = document.querySelector('.full-video-figure .demo-video');
+      const codeDemoSlide = codeDemoVideo.closest('.slide');
+      const codeDemoFigure = codeDemoVideo.closest('figure');
+      const codeDemoSeek = codeDemoFigure.querySelector('#code-demo-seek');
+      const codeDemoPlay = codeDemoFigure.querySelector('[data-demo-play]');
+      const codeDemoSound = codeDemoFigure.querySelector('[data-demo-sound]');
+      const codeDemoFullscreen = codeDemoFigure.querySelector(
+        '[data-demo-fullscreen]',
+      );
+      const codeDemoCurrent = codeDemoFigure.querySelector('.demo-current-time');
+      const codeDemoTotal = codeDemoFigure.querySelector('.demo-total-time');
+      const codeDemoClock = {
+        position: 0,
+        duration: Number(codeDemoVideo.dataset.duration),
+        scrubbing: false,
+      };
+
+      function formatDemoTime(seconds) {
+        const value = Math.max(0, Math.floor(seconds));
+        return `${Math.floor(value / 60)}:${String(value % 60).padStart(2, '0')}`;
+      }
+
+      function updateCodeDemoTimebar() {
+        const unavailable = codeDemoVideo.dataset.playbackUnavailable === 'true';
+        if (Number.isFinite(codeDemoVideo.duration) && codeDemoVideo.duration > 0) {
+          codeDemoClock.duration = codeDemoVideo.duration;
+        }
+        codeDemoClock.position = codeDemoVideo.currentTime || 0;
+        codeDemoSeek.max = String(codeDemoClock.duration);
+        codeDemoSeek.disabled = unavailable;
+        codeDemoPlay.disabled = unavailable;
+        if (!codeDemoClock.scrubbing)
+          codeDemoSeek.value = String(codeDemoClock.position);
+        codeDemoCurrent.textContent = formatDemoTime(codeDemoClock.position);
+        codeDemoTotal.textContent = formatDemoTime(Math.ceil(codeDemoClock.duration));
+        codeDemoSeek.setAttribute(
+          'aria-valuetext',
+          `${formatDemoTime(codeDemoClock.position)} of ${codeDemoTotal.textContent}`,
+        );
+        const paused = codeDemoVideo.paused;
+        codeDemoPlay.textContent = paused ? 'Play' : 'Pause';
+        codeDemoPlay.setAttribute(
+          'aria-label',
+          paused ? 'Play demo video' : 'Pause demo video',
+        );
+        codeDemoSound.disabled = unavailable;
+        codeDemoSound.textContent =
+          codeDemoVideo.muted ? 'Sound off' : 'Sound on';
+        codeDemoSound.setAttribute(
+          'aria-pressed',
+          String(!codeDemoVideo.muted),
+        );
+        codeDemoFullscreen.textContent =
+          document.fullscreenElement === codeDemoFigure
+            ? 'Exit fullscreen'
+            : 'Fullscreen';
+      }
+
+      codeDemoSeek.addEventListener('pointerdown', () => {
+        codeDemoClock.scrubbing = true;
+      });
+      window.addEventListener('pointerup', () => {
+        codeDemoClock.scrubbing = false;
+      });
+      codeDemoSeek.addEventListener('input', () => {
+        const position = Math.min(
+          Number(codeDemoSeek.value),
+          codeDemoClock.duration - 0.01,
+        );
+        codeDemoVideo.currentTime = position;
+        updateCodeDemoTimebar();
+      });
+      codeDemoPlay.addEventListener('click', () => {
+        const paused = codeDemoVideo.paused;
+        codeDemoSlide.dataset.mediaPaused = String(!paused);
+        syncSlideMedia();
+      });
+      codeDemoSound.addEventListener('click', () => {
+        codeDemoVideo.muted = !codeDemoVideo.muted;
+        codeDemoVideo.dataset.soundEnabled = String(!codeDemoVideo.muted);
+        updateCodeDemoTimebar();
+      });
+      codeDemoFullscreen.addEventListener('click', async () => {
+        try {
+          if (document.fullscreenElement === codeDemoFigure) {
+            await document.exitFullscreen();
+          } else {
+            await codeDemoFigure.requestFullscreen();
+          }
+        } catch (error) {
+          console.warn('Fullscreen is unavailable in this browser.', error);
+        }
+      });
+      for (const event of [
+        'loadedmetadata',
+        'timeupdate',
+        'seeked',
+        'play',
+        'pause',
+        'volumechange',
+      ]) {
+        codeDemoVideo.addEventListener(event, updateCodeDemoTimebar);
+      }
+      document.addEventListener('fullscreenchange', updateCodeDemoTimebar);
+      setInterval(updateCodeDemoTimebar, 150);
+
+      // ResizeObserver also handles fullscreen and navigation controls wrapping.
+      new ResizeObserver(fitSlide).observe(deck);
+      const requestedSlide = Number(location.hash.slice(1));
+      go(Number.isInteger(requestedSlide) && requestedSlide > 0 ? requestedSlide - 1 : 0);
+      fitSlide();
+    </script>
+  </body>
+</html>
